@@ -69,6 +69,18 @@
       color: transparent;
     }
     p { margin-top: 3cqh; max-width: 34em; color: #cdd5ea; font-size: 3.4cqh; font-weight: 600; line-height: 1.5; }
+    a.cta {
+      margin-top: 6cqh;
+      padding: 2.2cqh 5cqh;
+      border: 0;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #7fe3ff, #b9adff);
+      color: #071027;
+      font-size: 3.6cqh;
+      font-weight: 800;
+      box-shadow: 0 0 5cqh rgba(127,227,255,.55);
+    }
+    a.cta:hover { filter: brightness(1.1); }
     a { display: inline-block; margin-top: 5cqh; color: var(--cyan); font-size: 2.6cqh; font-weight: 700; text-decoration: none; border-bottom: 2px solid rgba(127,227,255,.4); }
   </style>
 </head>
@@ -89,7 +101,9 @@
     if (url && /^https:\/\//.test(url)) {
       const link = document.getElementById("link");
       link.href = url;
-      link.textContent = url.replace(/^https:\/\//, "").replace(/\/$/, "");
+      // b = button label: show the link as a big call-to-action that sends traffic to the site
+      link.textContent = q.get("b") ? `${q.get("b")} →` : url.replace(/^https:\/\//, "").replace(/\/$/, "");
+      link.classList.toggle("cta", Boolean(q.get("b")));
       link.hidden = false;
     }
   </script>
