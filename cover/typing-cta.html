@@ -29,16 +29,13 @@
       justify-items: center;
       gap: 2.4cqh;
       padding: 5cqh 7cqh;
-      border: 1px solid rgba(160,225,255,.28);
-      border-radius: 4cqh;
-      background: rgba(5,10,26,.62);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      box-shadow: 0 0 8cqh rgba(127,227,255,.18), 0 3cqh 8cqh rgba(0,0,0,.55);
+      text-shadow: 0 0 2cqh #03060f, 0 0 4cqh #03060f, 0 .4cqh 1cqh rgba(0,0,0,.9);
       text-align: center;
     }
     .kicker { color: var(--cyan); font-size: 2.6cqh; font-weight: 800; letter-spacing: .4em; }
     h1 {
+      text-shadow: none;
+      filter: drop-shadow(0 0 2cqh rgba(3,6,15,.95)) drop-shadow(0 .4cqh 1.2cqh rgba(0,0,0,.9));
       font-size: 10cqh;
       font-weight: 800;
       letter-spacing: -.04em;
@@ -59,6 +56,7 @@
       font-size: 3.8cqh;
       font-weight: 800;
       text-decoration: none;
+      text-shadow: none;
       box-shadow: 0 0 5cqh rgba(127,227,255,.6);
       animation: pulse 2.4s ease-in-out infinite;
     }
@@ -144,12 +142,16 @@
           const d = drops[i];
           if (d.y > h + size) { drops.splice(i, 1); continue; }
           const active = d === target;
+          // Words passing behind the title fade out so the centre stays readable.
+          const box = document.querySelector("main").getBoundingClientRect();
+          const behind = d.y > box.top - size && d.y < box.bottom + size && d.x + d.width > box.left && d.x < box.right;
+          ctx.globalAlpha = behind ? .12 : 1;
           let x = d.x;
           d.chars.forEach((ch, k) => {
             const done = active && k < typed;
             ctx.shadowBlur = done ? 18 : 0;
             ctx.shadowColor = "rgba(127,227,255,.95)";
-            ctx.fillStyle = done ? "#7fe3ff" : active ? "rgba(255,255,255,.95)" : "rgba(220,230,255,.42)";
+            ctx.fillStyle = done ? "#7fe3ff" : active ? "rgba(255,255,255,.95)" : "rgba(220,230,255,.5)";
             ctx.fillText(ch, x, d.y);
             x += ctx.measureText(ch).width;
           });
@@ -160,6 +162,7 @@
           }
         }
         ctx.shadowBlur = 0;
+        ctx.globalAlpha = 1;
 
         for (let i = sparks.length - 1; i >= 0; i--) {
           const s = sparks[i];
