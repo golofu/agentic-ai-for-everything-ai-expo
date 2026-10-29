@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Gen AI Space Typing — Agentic AI for Everything</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700;800&family=Noto+Sans+Thai:wght@500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+  <style>
+    :root { --cyan: #7fe3ff; --ink: #f4f7ff; }
+    * { box-sizing: border-box; margin: 0; }
+    html, body { width: 100%; height: 100%; overflow: hidden; background: #03060f; }
+    body {
+      display: grid;
+      place-items: center;
+      container-type: size;
+      color: var(--ink);
+      font-family: "Manrope", "Noto Sans Thai", sans-serif;
+      background:
+        linear-gradient(180deg, rgba(3,6,15,.55), rgba(3,6,15,.85)),
+        url("assets/space/deep-field.jpg") center / cover,
+        #03060f;
+    }
+    #rain { position: fixed; inset: 0; width: 100%; height: 100%; display: block; }
+    main {
+      position: relative;
+      display: grid;
+      justify-items: center;
+      gap: 2.4cqh;
+      padding: 5cqh 7cqh;
+      border: 1px solid rgba(160,225,255,.28);
+      border-radius: 4cqh;
+      background: rgba(5,10,26,.62);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      box-shadow: 0 0 8cqh rgba(127,227,255,.18), 0 3cqh 8cqh rgba(0,0,0,.55);
+      text-align: center;
+    }
+    .kicker { color: var(--cyan); font-size: 2.6cqh; font-weight: 800; letter-spacing: .4em; }
+    h1 {
+      font-size: 10cqh;
+      font-weight: 800;
+      letter-spacing: -.04em;
+      line-height: 1.08;
+      padding-bottom: .1em;
+      background: linear-gradient(90deg, #b9adff, #7fe3ff 55%, #ffb8cf);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    p { max-width: 30em; color: #d5def3; font-size: 3.2cqh; font-weight: 600; line-height: 1.5; }
+    a {
+      margin-top: 1.5cqh;
+      padding: 2.2cqh 6cqh;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #7fe3ff, #b9adff);
+      color: #071027;
+      font-size: 3.8cqh;
+      font-weight: 800;
+      text-decoration: none;
+      box-shadow: 0 0 5cqh rgba(127,227,255,.6);
+      animation: pulse 2.4s ease-in-out infinite;
+    }
+    a:hover, a:focus-visible { filter: brightness(1.12); outline: 3px solid rgba(255,255,255,.7); outline-offset: 4px; }
+    @keyframes pulse { 50% { box-shadow: 0 0 9cqh rgba(127,227,255,.9); transform: scale(1.03); } }
+    .url { color: #9fb1d6; font-size: 2.2cqh; font-weight: 600; }
+    @media (prefers-reduced-motion: reduce) { a { animation: none; } }
+  </style>
+</head>
+<body>
+  <canvas id="rain" aria-hidden="true"></canvas>
+  <main>
+    <div class="kicker">PLAY</div>
+    <h1>Gen AI Space Typing</h1>
+    <p>ฝึกพิมพ์ไทย-อังกฤษให้ไว เพื่อสั่งงาน AI ได้คล่องขึ้น · ไม่ต้องสมัครบัญชี</p>
+    <a href="https://gen-ai-space-typing.netlify.app/" target="_blank" rel="noopener noreferrer">ไปเล่นเลย →</a>
+    <div class="url">gen-ai-space-typing.netlify.app</div>
+  </main>
+  <script>
+    // Background: AI words rain down; an unseen typist types the lowest word letter by letter, then it bursts away.
+    (() => {
+      const canvas = document.getElementById("rain");
+      const ctx = canvas.getContext("2d");
+      const words = [
+        "prompt", "agent", "skill", "context", "Claude", "ChatGPT", "workflow", "MCP", "sub-agent", "deploy",
+        "สรุปประชุม", "เขียนอีเมล", "ทำสไลด์", "วิเคราะห์ข้อมูล", "ตอบลูกค้า", "รายงาน", "โฆษณา", "แคปชัน",
+        "ทำเว็บ", "ตั้งเวลา", "ค้นข้อมูล", "แปลภาษา", "Gen AI Space", "vibe code"
+      ];
+      const graphemes = typeof Intl.Segmenter === "function"
+        ? text => [...new Intl.Segmenter("th", { granularity: "grapheme" }).segment(text)].map(s => s.segment)
+        : text => [...text];
+      let w = 0, h = 0, size = 24;
+      const drops = [], sparks = [];
+      let target = null, typed = 0, nextKey = 0;
+
+      function resize() {
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        w = window.innerWidth; h = window.innerHeight;
+        canvas.width = w * dpr; canvas.height = h * dpr;
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        size = Math.max(16, Math.min(34, h * .036));
+      }
+
+      function spawn(y = -size) {
+        const text = words[Math.floor(Math.random() * words.length)];
+        drops.push({ text, chars: graphemes(text), x: 40 + Math.random() * Math.max(1, w - 260), y, speed: h * (.035 + Math.random() * .045) });
+      }
+
+      function burst(d) {
+        for (let i = 0; i < 26; i++) {
+          const a = Math.random() * Math.PI * 2, v = 60 + Math.random() * 180;
+          sparks.push({ x: d.x + d.width / 2, y: d.y, vx: Math.cos(a) * v, vy: Math.sin(a) * v - 40, life: 1 });
+        }
+      }
+
+      let last = performance.now();
+      function frame(now) {
+        const dt = Math.min(.05, (now - last) / 1000);
+        last = now;
+        ctx.clearRect(0, 0, w, h);
+        ctx.font = `600 ${size}px "IBM Plex Mono", "Noto Sans Thai", monospace`;
+        ctx.textBaseline = "middle";
+
+        while (drops.length < Math.max(8, Math.round(w / 140))) spawn(-Math.random() * h * .6);
+        for (const d of drops) { d.y += d.speed * dt; d.width = ctx.measureText(d.text).width; }
+
+        // The typist always works on the lowest word on screen.
+        if (!target || !drops.includes(target)) {
+          target = drops.filter(d => d.y > size).sort((a, b) => b.y - a.y)[0] || null;
+          typed = 0; nextKey = now + 250;
+        }
+        if (target && now >= nextKey) {
+          typed++;
+          nextKey = now + 70 + Math.random() * 90;
+          if (typed >= target.chars.length) {
+            burst(target);
+            drops.splice(drops.indexOf(target), 1);
+            target = null;
+          }
+        }
+
+        for (let i = drops.length - 1; i >= 0; i--) {
+          const d = drops[i];
+          if (d.y > h + size) { drops.splice(i, 1); continue; }
+          const active = d === target;
+          let x = d.x;
+          d.chars.forEach((ch, k) => {
+            const done = active && k < typed;
+            ctx.shadowBlur = done ? 18 : 0;
+            ctx.shadowColor = "rgba(127,227,255,.95)";
+            ctx.fillStyle = done ? "#7fe3ff" : active ? "rgba(255,255,255,.95)" : "rgba(220,230,255,.42)";
+            ctx.fillText(ch, x, d.y);
+            x += ctx.measureText(ch).width;
+          });
+          if (active) {
+            // caret after the last typed letter
+            const caretX = d.x + ctx.measureText(d.chars.slice(0, typed).join("")).width + 2;
+            if (Math.floor(now / 380) % 2 === 0) { ctx.shadowBlur = 0; ctx.fillStyle = "#7fe3ff"; ctx.fillRect(caretX, d.y - size * .55, 2, size * 1.1); }
+          }
+        }
+        ctx.shadowBlur = 0;
+
+        for (let i = sparks.length - 1; i >= 0; i--) {
+          const s = sparks[i];
+          s.life -= dt * 1.6;
+          if (s.life <= 0) { sparks.splice(i, 1); continue; }
+          s.vy += 220 * dt; s.x += s.vx * dt; s.y += s.vy * dt;
+          ctx.fillStyle = `rgba(150,235,255,${s.life})`;
+          ctx.fillRect(s.x, s.y, 2.5, 2.5);
+        }
+        requestAnimationFrame(frame);
+      }
+
+      window.addEventListener("resize", resize);
+      resize();
+      // Start with the screen already raining instead of waiting for words to fall in.
+      for (let i = 0; i < Math.max(8, Math.round(w / 140)); i++) spawn(Math.random() * h * .85);
+      document.fonts.ready.then(() => requestAnimationFrame(frame));
+    })();
+  </script>
+</body>
+</html>
