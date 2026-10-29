@@ -2194,8 +2194,11 @@
       "prompt-basics": {
         title: "Prompt",
         motionDir: "prompt",
-        // From Agentic AI for Work, lesson Prompt pages 2, 4, 25-27
-        slides: [55, 57, 256, 257, 255]
+        // From Agentic AI for Work, lesson Prompt pages 2, 4, 25-27, then the Gen AI Space typing game to close
+        pages: [
+          ...[55, 57, 256, 257, 255].map(page => ({ type: "slide", page })),
+          { type: "profile-site", label: "เกมพิมพ์ Prompt · Gen AI Space Typing", href: "https://gen-ai-space-typing.netlify.app/" }
+        ]
       },
       "vibe-basics": {
         title: "Claude Code / Codex คืออะไร",
