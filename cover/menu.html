@@ -1700,12 +1700,17 @@
       background: rgba(127,227,255,.2);
       outline: 2px solid rgba(127,227,255,.45);
     }
+    /* Slides keep their own light colours; they float in space as glowing screens. */
     .slide-frame {
-      border-color: rgba(127,227,255,.25);
-      background: #0b1124;
-      box-shadow: 0 0 0 1px rgba(127,227,255,.08), 0 0 60px rgba(127,227,255,.12), 0 24px 70px rgba(0,0,0,.6);
+      border: 1px solid rgba(160,225,255,.55);
+      background: #ffffff;
+      box-shadow:
+        0 0 0 4px rgba(127,227,255,.08),
+        0 0 40px rgba(127,227,255,.35),
+        0 0 120px rgba(90,150,255,.22),
+        0 30px 80px rgba(0,0,0,.65);
     }
-    .thumb { background: #10182e; }
+    .thumb { background: #ffffff; }
     .thumb-label, .slide-picker-item-label {
       color: #cfeeff;
       background: linear-gradient(145deg, #121c38, #0a1022);
@@ -1714,12 +1719,11 @@
     .slide-picker { background: rgba(2,4,10,.78); }
     .slide-picker-panel { background: #0a1022; border-color: var(--line); }
     .slide-picker-close { border-color: #cfeeff; color: #cfeeff; }
-    .slide-picker-item { border-color: rgba(127,227,255,.2); background: #10182e; }
+    .slide-picker-item { border-color: rgba(127,227,255,.2); background: #ffffff; }
     .slide-picker-item.active { border-color: var(--cyan); }
     .profile-site-open { background: rgba(16,26,52,.9); color: #dfe6f7; }
     .viewer:fullscreen { background: #03060f; }
     @media (prefers-reduced-motion: reduce) { body::before { animation: none; } }
-    .thumb img, .slide-picker-item img { filter: invert(1) hue-rotate(180deg); background: #000; }
   </style>
   <style id="space-float">
     /* Floating-in-space contents page: see-through glass cards drifting over a real deep field. */

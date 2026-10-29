@@ -1,37 +1,10 @@
-<!doctype html><html lang="th"><head><!-- space-skin --><script>// Space skin: turns a light course slide into the dark space theme of the talk cover.
-// Inlined into each copied slide (scripts/apply-space-skin.py), so it also works in pages that use <base href>.
+<!doctype html><html lang="th"><head><!-- space-skin --><script>// Inlined into each copied slide (scripts/apply-space-skin.py).
+// Slides keep their original light course colours for readability; the space theme lives in the viewer around them.
+// Copied pages keep a <base href> to their source site, so URL updates there would throw: swallow those.
 (() => {
   for (const name of ["replaceState", "pushState"]) {
     const original = history[name].bind(history);
-    // Copied pages keep a <base href> to their source site, so URL updates there would throw.
     history[name] = (...args) => { try { return original(...args); } catch (error) { return undefined; } };
   }
-  const css = `
-    html, body { background: #000 !important; }
-    /* Filter the top-level children, not body: a filtered body would become the containing block of fixed viewers. */
-    body > * { filter: invert(1) hue-rotate(180deg); }
-    body img, body video, body iframe, body picture, body svg image,
-    body .bgi, body [style*="background-image"], body [style*="url("] { filter: invert(1) hue-rotate(180deg) !important; }
-    /* Media inside an already re-inverted box would flip back to a negative. */
-    :is(body .bgi, body [style*="background-image"], body [style*="url("]) :is(img, video, iframe, picture, svg image) { filter: none !important; }
-    #space-skin-tint {
-      position: fixed; inset: 0; z-index: 2147483647; pointer-events: none; mix-blend-mode: screen;
-      background:
-        radial-gradient(ellipse at 50% 45%, rgba(0,0,0,.55), rgba(0,0,0,.15) 75%),
-        url("https://agentic-ai-for-everything.vercel.app/assets/space/deep-field.jpg") center / cover;
-      opacity: .5;
-    }`;
-  const style = document.createElement("style");
-  style.id = "space-skin";
-  style.textContent = css;
-  document.head.append(style);
-  const addTint = () => {
-    if (document.getElementById("space-skin-tint")) return;
-    const tint = document.createElement("div");
-    tint.id = "space-skin-tint";
-    document.documentElement.append(tint);
-  };
-  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", addTint, { once: true });
-  else addTint();
 })();
 </script><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>สรุปการสั่งงาน Agent: บอกงาน ให้ทำ แล้วมนุษย์ตรวจ</title><link rel="stylesheet" href="summary.css"></head><body><main id="stage" class="centered-summary"><h1 style="font-size:67px">บอกให้ชัดว่าอยากได้อะไร<br><em>ให้ Agent ไปทำ แล้วเราตรวจงาน</em></h1><p class="lead" style="font-size:32px">การสั่งงาน AI Agent คือการบอกสิ่งที่เราต้องการ และผลลัพธ์ที่อยากได้<br>แล้วกด Enter ให้เขาหาทางทำมาให้ได้</p><div class="cards" style="grid-template-columns:repeat(4,1fr);gap:22px"><section class="card" style="padding:28px 25px"><b style="font-size:32px">1 · บอกงานให้ชัด</b><p style="font-size:28px">อยากให้อะไรเสร็จ<br>ต้องได้ผลงานแบบไหน</p></section><section class="card" style="padding:28px 25px"><b style="font-size:32px">2 · ให้ Agent ไปทำ</b><p style="font-size:28px">กด Enter แล้วให้เขา<br>หาวิธีและลงมือทำ<br>ให้ได้ตามที่เราต้องการ</p></section><section class="card" style="padding:28px 25px"><b style="font-size:32px">3 · มนุษย์ตรวจเสมอ</b><p style="font-size:28px">ตรวจข้อมูล ความครบถ้วน<br>และดูว่าใช้ได้จริงไหม<br>อย่าเชื่อแค่งานดูสวย</p></section><section class="card" style="padding:28px 25px"><b style="font-size:32px">4 · ได้ก็ใช้ ไม่ได้ก็แก้</b><p style="font-size:28px">ถ้าได้ ก็นำไปใช้<br>ถ้ายังไม่ได้ บอกเหตุผล<br>สั่งแก้ แล้วตรวจซ้ำ</p></section></div><p class="closing">ถ้ายังไม่ได้ อย่าสั่งแค่ว่า “แก้ใหม่”<br>บอกว่าไม่ได้เพราะอะไร แล้วให้ Agent แก้จนตรง ก่อนนำไปใช้</p><footer>GEN AI SPACE</footer></main><script>function fit(){document.getElementById('stage').style.transform='translate(-50%,-50%) scale('+Math.min(innerWidth/1920,innerHeight/1080)+')'}addEventListener('resize',fit);fit();</script></body></html>
