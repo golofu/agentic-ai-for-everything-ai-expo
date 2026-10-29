@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Data Insight Summarizer · ตัวอย่างใช้งานจริง</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Itim&family=Manrope:wght@400;600;700;800&family=Noto+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--paper:#fbfcff;--ink:#1d2230;--muted:#656d7f;--violet:#8d80ca;--vd:#5d518e;--lav:#eeeaff;--blush:#ffeaf0;--mint:#e7f8f0;--sky:#e8f4ff;--or:#f05a28}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;overflow:hidden;background:var(--paper)}
+body{font-family:'Noto Sans Thai','Manrope',sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased}
+#stage{position:absolute;left:50%;top:50%;width:1920px;height:1080px;transform-origin:50% 50%;transform:translate(-50%,-50%);overflow:hidden;
+  background:radial-gradient(ellipse at 30% 20%,rgba(255,250,240,.7),transparent 60%),repeating-linear-gradient(180deg,transparent 0 58px,rgba(141,128,202,.13) 58px 60px),var(--paper)}
+.margin{position:absolute;top:0;bottom:0;left:126px;width:7px;border-left:2px solid rgba(240,90,40,.22);border-right:1.5px solid rgba(240,90,40,.13)}
+.hole{position:absolute;left:44px;width:26px;height:26px;border-radius:50%;background:#e4e1ec;box-shadow:inset 2px 3px 4px rgba(40,30,80,.22),0 1px 0 rgba(255,255,255,.9)}
+/* header */
+.num{position:absolute;left:180px;top:36px;font:800 34px Manrope,sans-serif;color:#fff;background:var(--vd);border-radius:12px;padding:2px 16px}
+h1{position:absolute;left:270px;top:26px;font:800 50px/1.3 Manrope,'Noto Sans Thai',sans-serif;white-space:nowrap}
+.sub{position:absolute;left:180px;top:98px;font-size:26px;color:var(--muted)}
+/* steps rail */
+.rail{position:absolute;left:180px;top:150px;width:470px;display:flex;flex-direction:column;gap:14px}
+.step{display:grid;grid-template-columns:52px 1fr;gap:14px;align-items:start;padding:14px 18px;border-radius:18px;background:#fff;border:2px solid #e6e2f3;opacity:.35;transform:translateX(-10px);transition:opacity .35s,transform .45s cubic-bezier(.22,1,.36,1),border-color .3s,box-shadow .3s}
+.step.on{opacity:1;transform:none}
+.step.now{border-color:var(--or);box-shadow:0 0 0 6px rgba(240,90,40,.12)}
+.step i{font-style:normal;width:52px;height:52px;border-radius:50%;background:var(--lav);color:var(--vd);display:flex;align-items:center;justify-content:center;font:800 26px Manrope,sans-serif}
+.step b{display:block;font-size:26px;line-height:1.35}
+.step span{display:block;font-size:21px;color:var(--muted);line-height:1.45;margin-top:2px}
+.step code{font-family:'Noto Sans Thai',sans-serif;font-size:21px;background:var(--lav);color:var(--vd);border-radius:8px;padding:1px 8px}
+/* screen */
+.screen{position:absolute;left:690px;top:160px;width:1110px;height:562px;border-radius:18px;background:#fff;border:2px solid #ded9ef;box-shadow:0 18px 40px rgba(40,30,80,.14);overflow:hidden}
+.bar{height:34px;background:#f1eff8;display:flex;align-items:center;gap:8px;padding-left:14px;font:600 16px Manrope,sans-serif;color:var(--muted)}
+.bar i{width:11px;height:11px;border-radius:50%;background:#d9d5e8;display:inline-block}
+.view{position:absolute;left:0;top:34px;right:0;bottom:0;overflow:hidden;background:#fff}
+#frames{position:absolute;inset:0;transform-origin:0 0;transition:transform 1s cubic-bezier(.4,0,.2,1)}
+.fr{position:absolute;left:0;top:0;width:100%;height:100%;object-fit:contain;object-position:center top;opacity:0;transition:opacity .45s}
+.fr.on{opacity:1}
+.speed{position:absolute;right:14px;top:44px;z-index:3;font:700 18px Manrope,'Noto Sans Thai',sans-serif;color:#fff;background:rgba(29,34,48,.72);border-radius:20px;padding:4px 14px;opacity:0;transition:opacity .3s}
+.speed.on{opacity:1}
+.call{position:absolute;z-index:4;font:700 24px/1.35 'Noto Sans Thai',sans-serif;color:#fff;background:var(--or);border-radius:14px;padding:8px 18px;box-shadow:0 8px 18px rgba(240,90,40,.3);opacity:0;transform:scale(.7);transition:opacity .25s,transform .35s cubic-bezier(.22,1,.36,1);max-width:520px}
+.call.on{opacity:1;transform:none}
+.ring{position:absolute;z-index:4;border:5px solid var(--or);border-radius:16px;box-shadow:0 0 0 8px rgba(240,90,40,.14);opacity:0;transition:opacity .25s}
+.ring.on{opacity:1}
+/* prompt strip */
+.prompt{position:absolute;left:690px;top:750px;width:1110px;display:grid;grid-template-columns:auto 1fr auto;gap:18px;align-items:center;background:#fff;border:2px solid #ded9ef;border-radius:18px;padding:14px 20px}
+.prompt .lab{font:700 20px 'Noto Sans Thai',sans-serif;color:#fff;background:var(--vd);border-radius:10px;padding:4px 12px;white-space:nowrap}
+.prompt p{font-size:26px;line-height:1.5;white-space:pre-wrap;max-height:160px;overflow:hidden}
+.copy{font:600 22px 'Noto Sans Thai',sans-serif;background:#fff;color:var(--vd);border:2px solid #5d518e55;border-radius:12px;padding:10px 20px;cursor:pointer;white-space:nowrap}
+.copy:hover,.copy:focus-visible{background:var(--vd);color:#fff}
+.note{position:absolute;left:690px;top:950px;width:1110px;width:1620px;font-size:19px;color:var(--muted);line-height:1.5}
+#replay{position:absolute;right:38px;bottom:24px;z-index:9;padding:8px 18px;font:20px/1.2 'Itim','Noto Sans Thai',cursive;color:var(--vd);background:rgba(251,252,255,.85);border:2px solid rgba(93,81,142,.55);border-radius:255px 15px 225px 15px/15px 225px 15px 255px;cursor:pointer;opacity:.5}
+#replay:hover,#replay:focus-visible{opacity:1}
+.noanim *{transition:none!important}
+</style>
+</head>
+<body>
+<main id="stage">
+  <div class="margin"></div>
+  <div class="num">04</div>
+  <h1>Data Insight Summarizer</h1>
+  <p class="sub">โยนไฟล์ Excel แล้วได้หน้าสรุป insight พร้อมกราฟ อ่านจบในหน้าเดียว</p>
+  <section class="rail" id="rail"></section>
+  <section class="screen">
+    <div class="bar"><i></i><i></i><i></i>&nbsp;Claude · ภาพจริงจากการใช้งาน</div>
+    <div class="view" id="view">
+      <div id="frames"><img class="fr on" src="media/demo-04-f1.jpg" alt=""><img class="fr" src="media/demo-04-f2.jpg" alt=""><img class="fr" src="media/demo-04-f3.jpg" alt=""><img class="fr" src="media/demo-04-f4.jpg" alt=""></div>
+    </div>
+    <div class="speed" id="speed">AI กำลังทำงาน · ข้ามเวลา ⏩</div>
+  </section>
+  <section class="prompt"><span class="lab">คำสั่งที่พิมพ์</span><p id="prompt-text">Data Insight Summarizer</p><button class="copy" type="button" id="copy">คัดลอก Prompt</button></section>
+  <p class="note">ภาพจริงจากการรันใน Claude · ข้อมูลบริษัทตัวอย่าง “บ้านกาแฟเช้า” · แนบไฟล์ Excel แล้วพิมพ์ชื่อ skill คำเดียวก็พอ</p>
+  <button id="replay" type="button">เล่นใหม่</button>
+</main>
+<script>
+function fit(){document.getElementById('stage').style.transform='translate(-50%,-50%) scale('+Math.min(innerWidth/1920,innerHeight/1080)+')'}addEventListener('resize',fit);fit();
+// CUES: steps = rail cards; events (t in video seconds): {t, step} highlights a step, {t, zoom:[scale,x,y]} zooms the screen
+// (x,y = top-left of the visible area in screen pixels of the 1110x660 view), {t, call:"text", at:[x,y]}, {t, ring:[x,y,w,h]},
+// {t, speed:true|false}, {t, clear:true} removes callouts/rings.
+const CUES={"steps": [{"b": "แนบไฟล์", "s": "ไฟล์ Excel ยอดขาย (ไฟล์ตัวอย่าง)"}, {"b": "พิมพ์คำสั่ง", "s": "พิมพ์ชื่อ skill <code>Data Insight Summarizer</code>"}, {"b": "Claude เรียกใช้ skill", "s": "อ่านไฟล์ ตรวจข้อมูล แล้ววิเคราะห์เอง"}, {"b": "ได้หน้าสรุป Insight", "s": "ตัวเลขเด่น กราฟ และตารางสี"}], "events": [{"t": 0.4, "frame": 0, "step": 0, "ring": [386, 191, 70, 68], "zoom": [2.0, 300, 140]}, {"t": 0.9, "call": "แนบไฟล์ Excel ยอดขาย", "at": [462, 222]}, {"t": 2.6, "clear": true, "step": 1, "type": true, "ring": [386, 260, 110, 24]}, {"t": 3.2, "call": "พิมพ์ชื่อ skill คำเดียว", "at": [386, 292]}, {"t": 6.2, "clear": true, "frame": 1, "step": 2, "speed": true, "ring": [360, 148, 76, 18], "zoom": [2.0, 290, 90]}, {"t": 6.7, "call": "Claude เริ่มอ่านไฟล์และวิเคราะห์เอง", "at": [360, 178]}, {"t": 10.2, "clear": true, "speed": false, "frame": 2, "ring": [79, 174, 395, 28], "zoom": [1.7, 40, 100]}, {"t": 10.7, "call": "สรุป 6 insights ใน 3 กลุ่ม", "at": [79, 208]}, {"t": 14.2, "clear": true, "frame": 3, "step": 3, "ring": [566, 80, 524, 60], "zoom": [1.6, 415, 10]}, {"t": 14.7, "call": "ตัวเลขเด่น 5 ช่อง ดูจบในแวบเดียว", "at": [765, 15]}, {"t": 18.2, "clear": true, "frame": 3, "final": true, "ring": [981, 423, 34, 19], "zoom": [2.0, 553, 229]}, {"t": 18.7, "call": "ตารางสี ชี้สาขาที่ยอดตก", "at": [650, 452], "final": true}]};
+// frames-based timeline: events {t (s), frame:i, zoom:[k,x,y], call:"..", at:[x,y], ring:[x,y,w,h], step:i, speed:bool, clear:true, type:true}
+const $=s=>document.querySelector(s), stage=$('#stage'), view=$('#view'), box=$('#frames'), frames=[...document.querySelectorAll('.fr')];
+const rail=$('#rail');
+CUES.steps.forEach((s,i)=>{const d=document.createElement('div');d.className='step';d.innerHTML='<i>'+(i+1)+'</i><div><b>'+s.b+'</b><span>'+s.s+'</span></div>';rail.appendChild(d)});
+const steps=[...rail.children], ptxt=$('#prompt-text'), FULL=ptxt.textContent;
+let timers=[];
+let cz=[1,0,0];
+function zoom(z){cz=z;const [k,x,y]=z;box.style.transform='translate('+(-x*k)+'px,'+(-y*k)+'px) scale('+k+')';}
+function show(i){frames.forEach((f,j)=>f.classList.toggle('on',j===i));}
+function typeIt(){const g=[...new Intl.Segmenter('th',{granularity:'grapheme'}).segment(FULL)].map(x=>x.segment);ptxt.textContent='';let i=0;const id=setInterval(()=>{ptxt.textContent+=g[i++]||'';if(i>=g.length)clearInterval(id)},Math.max(18,1400/g.length));timers.push(id);}
+function overlay(e){
+  if(e.clear)stage.querySelectorAll('.call,.ring').forEach(n=>n.remove());
+  if(e.frame!==undefined)show(e.frame);
+  if(e.zoom)zoom(e.zoom);
+  if(e.type)typeIt();
+  // call/ring coords are in un-zoomed view pixels; they follow the current zoom
+  if(e.call){const c=document.createElement('div');c.className='call';c.textContent=e.call;const [k,x,y]=cz;c.style.left=Math.max(8,Math.min(1106-300,(e.at[0]-x)*k))+'px';c.style.top=Math.max(8,Math.min(470,(e.at[1]-y)*k))+'px';view.appendChild(c);requestAnimationFrame(()=>c.classList.add('on'));}
+  if(e.ring){const r=document.createElement('div');r.className='ring';Object.assign(r.style,{left:e.ring[0]+'px',top:e.ring[1]+'px',width:e.ring[2]+'px',height:e.ring[3]+'px',borderWidth:(5/cz[0])+'px',borderRadius:(14/cz[0])+'px',boxShadow:'0 0 0 '+(7/cz[0])+'px rgba(240,90,40,.14)'});box.appendChild(r);requestAnimationFrame(()=>r.classList.add('on'));}
+  if(e.speed!==undefined)$('#speed').classList.toggle('on',!!e.speed);
+  if(e.step!==undefined)steps.forEach((s,i)=>{s.classList.toggle('on',i<=e.step);s.classList.toggle('now',i===e.step)});
+}
+function reset(){timers.forEach(t=>{clearTimeout(t);clearInterval(t)});timers=[];stage.querySelectorAll('.call,.ring').forEach(n=>n.remove());zoom([1,0,0]);show(0);steps.forEach(s=>s.classList.remove('on','now'));$('#speed').classList.remove('on');ptxt.textContent=FULL;}
+function play(){reset();CUES.events.forEach(e=>timers.push(setTimeout(()=>overlay(e),e.t*1000)));}
+const frozen=new URLSearchParams(location.search).has('t');
+if(frozen){document.body.classList.add('noanim');reset();CUES.events.forEach(e=>{if(e.final||e.frame!==undefined||e.zoom||e.step!==undefined){const f={...e};delete f.type;delete f.call;delete f.ring;overlay(f)}});CUES.events.filter(e=>e.final).forEach(overlay);steps.forEach(s=>s.classList.add('on'));$('#speed').classList.remove('on');}
+else{
+  // start only after fonts and every frame image are ready, so rings never land on a blank screen
+  const imgs=frames.map(f=>f.complete?Promise.resolve():new Promise(r=>{f.addEventListener('load',r,{once:true});f.addEventListener('error',r,{once:true})}));
+  Promise.all([document.fonts?document.fonts.ready:Promise.resolve(),...imgs]).then(play);
+}
+$('#replay').addEventListener('click',()=>{document.body.classList.remove('noanim');play()});
+$('#copy').addEventListener('click',async()=>{const text=$('#prompt-text').textContent;let ok=false;try{await navigator.clipboard.writeText(text);ok=true}catch(e){const t=document.createElement('textarea');t.value=text;t.style.cssText='position:fixed;left:-9999px';document.body.append(t);t.select();try{ok=document.execCommand('copy')}catch(_){}t.remove()}$('#copy').textContent=ok?'คัดลอกแล้ว':'คัดลอกไม่สำเร็จ';setTimeout(()=>$('#copy').textContent='คัดลอก Prompt',2200)});
+</script>
+</body>
+</html>

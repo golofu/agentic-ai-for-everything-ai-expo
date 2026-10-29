@@ -1,0 +1,4 @@
+sku,stock,reorder_level,lead_days
+B001,12,20,7
+N001,45,30,5
+P001,8,15,10

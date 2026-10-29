@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>โต๊ะทำงานสำหรับ AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Itim&family=Manrope:wght@400;600;700;800&family=Noto+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--paper:#fbfcff;--ink:#1d2230;--muted:#656d7f;--violet:#8d80ca;--vd:#5d518e;--lav:#eeeaff;--blush:#ffeaf0;--mint:#e7f8f0;--sky:#e8f4ff;--or:#f05a28;--grad:linear-gradient(90deg,#5d518e,#f05a28)}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;overflow:hidden;background:var(--paper)}
+body{font-family:'Manrope','Noto Sans Thai',sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased;background:radial-gradient(ellipse at 50% 50%,transparent 60%,rgba(93,81,142,.06) 100%),repeating-linear-gradient(180deg,transparent 0 46px,rgba(141,128,202,.10) 46px 48px),var(--paper)}
+.th{font-family:'Noto Sans Thai','Manrope',sans-serif;line-height:1.55}
+.hand{font-family:'Itim','Noto Sans Thai',cursive;line-height:1.5}
+#stage{position:absolute;left:50%;top:50%;width:1920px;height:1080px;transform-origin:50% 50%;transform:translate(-50%,-50%);background:var(--paper);overflow:hidden}
+.paper{position:absolute;inset:0;pointer-events:none}
+.paper.base{background:radial-gradient(ellipse at 30% 20%,rgba(255,250,240,.7),transparent 60%),radial-gradient(ellipse at 50% 50%,transparent 62%,rgba(93,81,142,.07) 100%)}
+.paper.lines{top:60px;background:repeating-linear-gradient(180deg,transparent 0 58px,rgba(141,128,202,.13) 58px 60px)}
+.paper.margin{left:126px;width:7px;right:auto;border-left:2px solid rgba(240,90,40,.22);border-right:1.5px solid rgba(240,90,40,.13)}
+.paper.noise{width:100%;height:100%;mix-blend-mode:multiply}
+.hole{position:absolute;left:44px;width:26px;height:26px;border-radius:50%;background:#e4e1ec;box-shadow:inset 2px 3px 4px rgba(40,30,80,.22),0 1px 0 rgba(255,255,255,.9)}
+#scene{position:absolute;inset:0}
+#sk{position:absolute;inset:0;width:1920px;height:1080px;z-index:2;overflow:visible;pointer-events:none}
+.ink{fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1 1;stroke-dashoffset:1;transition:stroke-dashoffset var(--d,0.56s) cubic-bezier(.55,.1,.35,1) var(--dl,0s)}
+.ink.on{stroke-dashoffset:0}
+.t{position:absolute;z-index:3}
+.w{position:absolute;z-index:1}
+.fx{opacity:0;transform:translateY(16px);transition:opacity 0.42s ease,transform 0.49s cubic-bezier(.2,.8,.3,1)}
+.fx.on{opacity:1;transform:none}
+.fl{opacity:0;transition:opacity 0.42s ease}.fl.on{opacity:1}
+.pop{opacity:0;transform:scale(.6) rotate(-4deg);transition:opacity 0.28s,transform 0.42s cubic-bezier(.22,1,.36,1)}
+.pop.on{opacity:1;transform:none}
+.wash{opacity:0;transform:scale(.94) rotate(-.6deg);transition:opacity 0.49s,transform 0.56s cubic-bezier(.2,.8,.3,1);border-radius:18px 26px 16px 30px/26px 16px 30px 18px}
+.wash.on{opacity:1;transform:rotate(-.6deg)}
+.hl{position:relative;z-index:0;white-space:nowrap}
+.hl::before{content:'';position:absolute;left:-.12em;right:-.12em;top:.62em;bottom:.08em;background:rgba(240,90,40,.30);border-radius:3px 12px 5px 14px;transform:scaleX(0) skewX(-10deg);transform-origin:left center;transition:transform 0.49s cubic-bezier(.6,.1,.3,1);z-index:-1}
+.hl.on::before{transform:scaleX(1) skewX(-10deg)}
+.hl.v::before{background:rgba(141,128,202,.32)}
+.photo{position:absolute;z-index:4;padding:12px 12px 14px;background:#fff;box-shadow:0 12px 30px rgba(40,30,80,.16),0 1px 3px rgba(40,30,80,.18);opacity:0;transform:translateY(-46px) rotate(calc(var(--r,0deg) + 6deg)) scale(1.05);transition:opacity 0.35s ease,transform 0.63s cubic-bezier(.22,1,.36,1)}
+.photo.on{opacity:1;transform:rotate(var(--r,0deg))}
+.photo .img{background-repeat:no-repeat}
+.photo .tape{position:absolute;z-index:2;width:150px;height:40px;left:50%;top:-20px;margin-left:-75px;background:rgba(238,234,255,.85);border-left:2px dashed rgba(141,128,202,.4);border-right:2px dashed rgba(141,128,202,.4);transform:rotate(-5deg);box-shadow:0 1px 2px rgba(40,30,80,.12)}
+.photo .tape.b{top:auto;bottom:-18px;left:auto;right:-30px;width:110px;transform:rotate(38deg);background:rgba(255,234,240,.85);border-color:rgba(240,90,40,.25)}
+.photo svg.pframe{position:absolute;left:-14px;top:-14px;overflow:visible;pointer-events:none}
+.cut{position:absolute;z-index:1;mix-blend-mode:multiply;filter:brightness(1.05) contrast(1.06);background-repeat:no-repeat;opacity:0;transform:translateY(60px) scale(.96);transform-origin:50% 100%;transition:opacity 0.42s ease,transform 0.63s cubic-bezier(.22,1,.36,1)}
+.cut.on{opacity:1;transform:none}
+#replay{position:absolute;right:38px;bottom:28px;z-index:9;display:flex;align-items:center;gap:8px;padding:8px 18px 9px;font:20px/1.2 'Itim','Noto Sans Thai',cursive;color:var(--vd);background:rgba(251,252,255,.85);border:2px solid rgba(93,81,142,.55);border-radius:255px 15px 225px 15px/15px 225px 15px 255px;cursor:pointer;opacity:.5;transition:opacity 0.18s,transform 0.18s}
+#replay:hover,#replay:focus-visible{opacity:1;transform:rotate(-2deg)}
+#replay svg{width:20px;height:20px}
+.noanim *,.noanim *::before,.noanim *::after{transition:none!important;animation:none!important}
+
+
+.ttl{left:170px;width:1690px;text-align:center;font:800 88px/1.2 'Manrope',sans-serif;letter-spacing:-.01em}
+.ttl .q{color:var(--vd)}
+.sub{left:170px;width:1690px;text-align:center;font:500 44px/1.5 'Noto Sans Thai','Manrope',sans-serif}
+.num{width:70px;height:70px;display:flex;align-items:center;justify-content:center;font:800 40px/1 'Manrope',sans-serif;color:var(--vd)}
+.dotw{width:70px;height:70px;border-radius:50%}
+
+.ttl{top:6px;font:700 64px/1.5 'Noto Sans Thai','Manrope',sans-serif}
+.sub{top:98px;font:500 32px/1.5 'Noto Sans Thai','Manrope',sans-serif;color:var(--ink)}
+.bh{font:800 46px/1.3 'Manrope',sans-serif}
+.bs{font:700 29px/1.5 'Noto Sans Thai','Manrope',sans-serif}
+.bs.o{color:var(--or);font-size:26px}
+.bt{font:400 25px/1.55 'Noto Sans Thai','Manrope',sans-serif}
+.bt.c{text-align:center}
+ul.bt{list-style:none}
+ul.bt li{position:relative;padding-left:26px}
+ul.bt li::before{content:'';position:absolute;left:4px;top:.68em;width:9px;height:9px;border-radius:50%;background:var(--vd)}
+.pill{font:700 27px/1.5 'Noto Sans Thai','Manrope',sans-serif;white-space:nowrap}
+.ex{width:722px;text-align:center;font:700 34px/1.5 'Noto Sans Thai','Manrope',sans-serif}
+.ec{width:260px;text-align:center;font:600 21px/1.45 'Manrope','Noto Sans Thai',sans-serif}
+.ok{font:700 34px/1.5 'Noto Sans Thai','Manrope',sans-serif}
+.qh{left:900px;width:990px;top:600px;text-align:center;font:700 30px/1.5 'Noto Sans Thai','Manrope',sans-serif;color:var(--or)}
+.lst{left:902px;top:652px;display:grid;grid-template-columns:auto auto;column-gap:22px;font:400 21px/1.5 'Noto Sans Thai','Manrope',sans-serif}
+.lst div{position:relative;padding-left:20px;white-space:nowrap;height:40px}
+.lst div::before{content:'';position:absolute;left:2px;top:.66em;width:8px;height:8px;border-radius:50%;background:var(--or)}
+.oh{left:900px;width:990px;top:860px;text-align:center;font:700 38px/1.5 'Noto Sans Thai','Manrope',sans-serif;color:var(--or)}
+.ot{left:900px;width:990px;top:924px;text-align:center;font:400 24px/1.55 'Noto Sans Thai','Manrope',sans-serif}
+
+</style>
+</head>
+<body>
+<div id="stage" class="noanim">
+  <div class="paper base"></div>
+  <div class="paper lines"></div>
+  <div class="paper margin"></div>
+  <div class="paper" id="holes"></div>
+  <svg class="paper noise" viewBox="0 0 1920 1080" preserveAspectRatio="none" aria-hidden="true"><filter id="pn"><feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="3" stitchTiles="stitch"/><feColorMatrix values="0 0 0 0 .36  0 0 0 0 .32  0 0 0 0 .52  0 0 0 .075 0"/></filter><rect width="1920" height="1080" filter="url(#pn)"/></svg>
+  <div id="scene">
+
+<div class="t ttl th fx" id="title">โต๊ะทำงานสำหรับ <span class="q" style="font-family:'Manrope',sans-serif;font-weight:800">AI</span></div>
+<div class="t sub th fx" id="sub">แยกความรู้ ต้นฉบับ และผลงาน เพื่อทำงานง่ายและลดความผิดพลาด</div>
+<div class="w wash" id="bw1" style="left:156px;top:176px;width:528px;height:408px;background:var(--sky)"></div>
+<div class="w wash" id="bw2" style="left:746px;top:176px;width:528px;height:408px;background:var(--blush)"></div>
+<div class="w wash" id="bw3" style="left:1336px;top:176px;width:528px;height:408px;background:var(--mint)"></div>
+<div class="cut" id="i1" style="left:172px;top:190px;" data-src="../../slides/slide-178.png" data-iw="3000" data-ih="1688" data-r="90,330,293,255" data-w="140"></div>
+<div class="t bh fx" id="h1a" style="left:332px;top:186px">resources/</div>
+<div class="t bs fx" id="h1b" style="left:334px;top:244px">ความรู้ขององค์กร</div>
+<div class="t bt fx" id="h1c" style="left:334px;top:306px;font-size:23px">AI ได้อ้างอิงก่อนทำงาน</div>
+<ul class="t bt fx" id="ul1" style="left:182px;top:352px">
+<li>โปรไฟล์บริษัท, Brand CI</li><li>ราคาและ Package</li><li>รายชื่อคอร์ส</li><li>Templates</li><li>Case Studies และ Testimonials</li></ul>
+<div class="cut" id="i2" style="left:762px;top:186px;" data-src="../../slides/slide-178.png" data-iw="3000" data-ih="1688" data-r="1102,322,255,278" data-w="120"></div>
+<div class="t bh fx" id="h2a" style="left:902px;top:186px">input/</div>
+<div class="t bs o fx" id="h2b" style="left:904px;top:248px">ไฟล์ของงานที่ทำครั้งเดียว</div>
+<div class="t bt c fx" id="t2" style="left:740px;width:540px;top:322px">วาง Brief, PDF, Word หรือ Excel<br>ที่ต้องการสั่งทำงาน</div>
+<div class="cut" id="lk" style="left:790px;top:428px;" data-src="../../slides/slide-178.png" data-iw="3000" data-ih="1688" data-r="1137,750,70,83" data-w="40"></div>
+<div class="t pill fx" id="p2" style="left:846px;top:420px">AI อ่านอย่างเดียว</div>
+<div class="t bt c fx" id="w2t" style="left:740px;width:540px;top:504px;font-size:24px">ห้ามแก้ไข ย้าย หรือลบไฟล์ต้นฉบับ</div>
+<div class="cut" id="i3" style="left:1350px;top:188px;" data-src="../../slides/slide-178.png" data-iw="3000" data-ih="1688" data-r="2092,322,285,263" data-w="130"></div>
+<div class="t bh fx" id="h3a" style="left:1500px;top:186px">output/</div>
+<div class="t bs fx" id="h3b" style="left:1502px;top:244px">ผลงานที่สร้างใหม่</div>
+<div class="t bt c fx" id="t3" style="left:1330px;width:540px;top:336px">งานที่ได้ออกมาจาก Input ตาม Prompt</div>
+<div class="cut" id="ck" style="left:1390px;top:424px;" data-src="../../slides/slide-178.png" data-iw="3000" data-ih="1688" data-r="2137,757,83,83" data-w="44"></div>
+<div class="t pill fx" id="p3" style="left:1450px;top:418px;font-size:30px">บันทึกผลงานที่นี่เท่านั้น</div>
+<div class="t bt c fx" id="w3t" style="left:1330px;width:540px;top:504px;font-size:24px">ห้ามเขียนทับไฟล์เดิมโดยไม่ได้รับอนุญาต</div>
+<div class="t ex fx" id="exh" style="left:150px;top:612px">ตัวอย่างการใช้งาน</div>
+<div class="cut" id="e1" style="left:205px;top:682px;" data-src="../../slides/slide-178.png" data-iw="3000" data-ih="1688" data-r="172,1125,165,203" data-w="100"></div>
+<div class="cut" id="e2" style="left:460px;top:690px;" data-src="../../slides/slide-178.png" data-iw="3000" data-ih="1688" data-r="627,1155,191,180" data-w="120"></div>
+<div class="cut" id="e3" style="left:741px;top:682px;" data-src="../../slides/slide-178.png" data-iw="3000" data-ih="1688" data-r="1100,1132,157,195" data-w="98"></div>
+<div class="t ec fx" id="ec1" style="left:125px;top:818px;color:var(--vd)">input/<br>krungsri-brief.pdf</div>
+<div class="t ec fx" id="ec2" style="left:390px;top:818px"><span class="th">สั่ง: สรุปและทำ</span><br>Proposal</div>
+<div class="t ec fx" id="ec3" style="left:660px;top:818px;color:var(--or)">output/<br>krungsri-proposal.md</div>
+<div class="cut" id="e4" style="left:318px;top:944px;" data-src="../../slides/slide-178.png" data-iw="3000" data-ih="1688" data-r="367,1470,120,98" data-w="76"></div>
+<div class="t ok fx" id="ok" style="left:412px;top:946px">ไฟล์ต้นฉบับยังอยู่ครบ</div>
+<div class="t qh fx" id="qh">“เอกสารอะไรบ้างที่นำมาให้ AI ช่วยทำงานได้”</div>
+<div class="t lst fx" id="lst"><div>Brief จากลูกค้า เช่น PDF รายละเอียดโครงการ</div><div>คำขอ Proposal หรือรายละเอียดงาน</div><div>เอกสารราชการ เช่น รายงาน หนังสือราชการ</div><div>แบบสอบถามและผลประเมิน</div><div>Excel ยอดขาย งบประมาณ หรือรายชื่อลูกค้า</div><div>ใบเสนอราคาและแบบฟอร์ม</div><div>Presentation เช่น PowerPoint หรือไฟล์สไลด์เก่า</div><div>ข้อมูลผลิตภัณฑ์ เช่น Catalogue และราคา</div><div>บันทึกการประชุม เช่น Meeting Notes (Mp3) หรือ Transcript</div><div>TOR หรือเงื่อนไขโครงการ</div></div>
+<div class="t oh fx" id="oh">ตัวอย่างการสั่งงาน</div>
+<div class="t ot fx" id="ot">อ่าน Brief ใน input/ และแม่แบบจาก resources/ แล้วสร้าง Proposal<br>ตรวจความครบและบันทึกไฟล์ใหม่ใน output/</div>
+
+    <svg id="sk" viewBox="0 0 1920 1080" aria-hidden="true"></svg>
+  </div>
+  <button id="replay" type="button" aria-label="เล่นใหม่" style="display:none"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a8 8 0 1 1-2.4-5.7"/><path d="M20 4v5h-5"/></svg>เล่นใหม่</button>
+</div>
+<script>
+const W=1920,H=1080,NS='http://www.w3.org/2000/svg';
+const stage=document.getElementById('stage'),sk=document.getElementById('sk');
+const SPEED=2.4; // owner: faster pacing for live teaching
+const RM=false; // always animate: Windows 'animation effects off' would otherwise skip the motion
+const QT=(()=>{const v=new URLSearchParams(location.search).get('t');return v!==null&&v!==''&&isFinite(+v)?+v:null;})();
+let INSTANT=false;
+function fit(){const s=Math.min(innerWidth/W,innerHeight/H);stage.style.transform='translate(-50%,-50%) scale('+s+')';}
+addEventListener('resize',fit);fit();
+(function(){const h=document.getElementById('holes');for(let i=0;i<9;i++){const d=document.createElement('div');d.className='hole';d.style.top=(78+i*118)+'px';h.appendChild(d);}})();
+let _s=11;function seed(n){_s=n>>>0;}
+function rnd(){_s|=0;_s=_s+0x6D2B79F5|0;let t=Math.imul(_s^_s>>>15,1|_s);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;}
+function jr(a){return(rnd()*2-1)*a;}
+const f1=v=>v.toFixed(1);
+function smooth(p){let d='M'+f1(p[0][0])+' '+f1(p[0][1]);const P=[p[0],...p,p[p.length-1]];
+ for(let i=1;i<P.length-2;i++){const a=P[i-1],b=P[i],c=P[i+1],e=P[i+2];
+  d+=' C'+f1(b[0]+(c[0]-a[0])/6)+' '+f1(b[1]+(c[1]-a[1])/6)+' '+f1(c[0]-(e[0]-b[0])/6)+' '+f1(c[1]-(e[1]-b[1])/6)+' '+f1(c[0])+' '+f1(c[1]);}
+ return d;}
+function lineD(x1,y1,x2,y2,j=1.6,bk=.012){const L=Math.hypot(x2-x1,y2-y1)||1,n=Math.max(2,Math.round(L/70)),nx=-(y2-y1)/L,ny=(x2-x1)/L,bow=jr(L*bk),pts=[];
+ for(let i=0;i<=n;i++){const t=i/n,end=(i==0||i==n),o=bow*Math.sin(Math.PI*t)+(end?0:jr(j*.6));pts.push([x1+(x2-x1)*t+nx*o+(end?jr(j):0),y1+(y2-y1)*t+ny*o+(end?jr(j):0)]);}
+ return smooth(pts);}
+function rectD(x,y,w,h,j=2){const o=7;return[lineD(x-3-jr(o),y+jr(j),x+w+3+jr(o),y+jr(j),j),lineD(x+w+jr(j),y-3-jr(o),x+w+jr(j),y+h+3+jr(o),j),lineD(x+w+3+jr(o),y+h+jr(j),x-3-jr(o),y+h+jr(j),j),lineD(x+jr(j),y+h+3+jr(o),x+jr(j),y-3-jr(o),j)].join(' ');}
+function ellD(cx,cy,rx,ry,turns=1.1,j=.025){const n=Math.round(30*turns),a0=rnd()*6.283,pts=[];
+ for(let i=0;i<=n;i++){const a=a0+i/n*turns*6.283,k=1+jr(j)+(i/n-.5)*.05;pts.push([cx+Math.cos(a)*rx*k,cy+Math.sin(a)*ry*k]);}return smooth(pts);}
+function qpts(x1,y1,x2,y2,bend,n){const L=Math.hypot(x2-x1,y2-y1)||1,nx=-(y2-y1)/L,ny=(x2-x1)/L,cx=(x1+x2)/2+nx*bend,cy=(y1+y2)/2+ny*bend,pts=[];
+ for(let i=0;i<=n;i++){const t=i/n;pts.push([(1-t)*(1-t)*x1+2*(1-t)*t*cx+t*t*x2,(1-t)*(1-t)*y1+2*(1-t)*t*cy+t*t*y2]);}return{pts,cx,cy};}
+function headD(x2,y2,fx,fy,head){const tx=x2-fx,ty=y2-fy,tl=Math.hypot(tx,ty)||1,ux=tx/tl,uy=ty/tl,a=.48,ca=Math.cos(a),sa=Math.sin(a);
+ const h1=[x2-head*(ux*ca-uy*sa),y2-head*(uy*ca+ux*sa)],h2=[x2-head*(ux*ca+uy*sa),y2-head*(uy*ca-ux*sa)];
+ return ' M'+f1(h1[0])+' '+f1(h1[1])+' L'+f1(x2+jr(1))+' '+f1(y2+jr(1))+' L'+f1(h2[0])+' '+f1(h2[1]);}
+function arrowD(x1,y1,x2,y2,bend=0,head=18){const L=Math.hypot(x2-x1,y2-y1),n=Math.max(3,Math.round(L/60));const q=qpts(x1,y1,x2,y2,bend,n);
+ const pts=q.pts.map((p,i)=>(i&&i<n)?[p[0]+jr(1.2),p[1]+jr(1.2)]:p);
+ return smooth(pts)+headD(x2,y2,q.cx,q.cy,head);}
+function el(tag,attrs,parent){const e=document.createElementNS(NS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);(parent||sk).appendChild(e);return e;}
+function P(d,o={}){const p=el('path',{d,pathLength:1,class:'ink '+(o.cls||'')},o.g);p.style.stroke=o.c||'#5d518e';p.style.strokeWidth=o.w||3.6;if(o.op)p.style.opacity=o.op;return p;}
+function F(d,o={}){const p=el('path',{d,class:'fl'},o.g);p.style.fill=o.c||'#eeeaff';p.style.stroke='none';if(o.id)p.id=o.id;return p;}
+function G(id,parent){return el('g',id?{id}:{},parent);}
+function sRect(x,y,w,h,o={}){const g=o.g||G(o.id);P(rectD(x,y,w,h),{...o,g});if(!o.single)P(rectD(x+1,y+1,w-2,h-2,2.6),{...o,g,w:(o.w||3.6)*.5,op:.5});return g;}
+function sEll(cx,cy,rx,ry,o={}){const g=o.g||G(o.id);P(ellD(cx,cy,rx,ry,o.turns||1.12),{...o,g});return g;}
+function sArrow(x1,y1,x2,y2,o={}){const g=o.g||G(o.id);P(arrowD(x1,y1,x2,y2,o.bend||0,o.head||18),{...o,g});return g;}
+function sLine(x1,y1,x2,y2,o={}){const g=o.g||G(o.id);P(lineD(x1,y1,x2,y2,o.j||1.6,o.bk??.012),{...o,g});return g;}
+function starPts(cx,cy,r){const p=[];for(let i=0;i<=10;i++){const a=-Math.PI/2+i*Math.PI/5,rr=i%2?r*.42:r;p.push([cx+Math.cos(a)*rr+jr(1.2),cy+Math.sin(a)*rr+jr(1.2)]);}return p;}
+function polyD(p){return 'M'+p.map(q=>f1(q[0])+' '+f1(q[1])).join(' L')+' Z';}
+function $(s){return typeof s=='string'?[...stage.querySelectorAll(s)]:(Array.isArray(s)?s:[s]);}
+function on(s){$(s).forEach(e=>e&&e.classList.add('on'));}
+function draw(s,dur=.8){const paths=[];$(s).forEach(e=>{if(!e)return;if(e.tagName=='path')paths.push(e);else paths.push(...e.querySelectorAll('path.ink'));});
+ let tot=0;const L=paths.map(p=>{let l=1;try{l=Math.max(20,p.getTotalLength());}catch(_){}tot+=l;return l;});let acc=0;
+ paths.forEach((p,i)=>{const d=dur*L[i]/tot;p.style.setProperty('--d',(d/SPEED).toFixed(3)+'s');p.style.setProperty('--dl',(dur*acc/tot/SPEED).toFixed(3)+'s');acc+=L[i];p.classList.add('on');});}
+const TL=[],hooks=[];let timers=[];
+function at(t,f){TL.push([t,f]);}
+function onReset(f){hooks.push(f);}
+function every(f,ms){const id=setInterval(f,ms);timers.push(id);return id;}
+function resetAll(){timers.forEach(id=>{clearTimeout(id);clearInterval(id);});timers=[];stage.classList.add('noanim');
+ stage.querySelectorAll('.on').forEach(e=>e.classList.remove('on'));hooks.forEach(f=>f());void stage.offsetWidth;}
+/* plays once, then holds the final state (no loop) */
+function play(freezeAt){resetAll();
+ if(freezeAt!=null){INSTANT=true;TL.slice().sort((a,b)=>a[0]-b[0]).forEach(([t,f])=>{if(t<=freezeAt)f();});return;}
+ INSTANT=false;
+ requestAnimationFrame(()=>requestAnimationFrame(()=>{stage.classList.remove('noanim');
+  TL.forEach(([t,f])=>timers.push(setTimeout(f,t*1000/SPEED)));}));}
+const graph=s=>[...new Intl.Segmenter('th',{granularity:'grapheme'}).segment(s)].map(x=>x.segment);
+function typeSeq(segs,dur){const all=[];segs.forEach(([e,txt])=>{e.textContent='';graph(txt).forEach(g=>all.push([e,g]));});
+ if(INSTANT||!all.length){segs.forEach(([e,txt])=>e.textContent=txt);return;}
+ let i=0;const id=every(()=>{const[e,g]=all[i++];e.textContent+=g;if(i>=all.length)clearInterval(id);},dur*1000/SPEED/all.length);}
+function bx(e){const s=stage.getBoundingClientRect(),r=e.getBoundingClientRect(),k=s.width/W;return{x:(r.left-s.left)/k,y:(r.top-s.top)/k,w:r.width/k,h:r.height/k};}
+/* photo crops taken from the original slide PNG */
+function setupCuts(){stage.querySelectorAll(".cut").forEach(c=>{const [x,y,w,h]=c.dataset.r.split(",").map(Number),iw=+c.dataset.iw,ih=+c.dataset.ih,dw=+c.dataset.w,k=dw/w;
+ c.style.width=dw+"px";c.style.height=Math.round(h*k)+"px";c.style.backgroundImage='url("'+c.dataset.src+'")';
+ c.style.backgroundSize=(iw*k).toFixed(1)+"px "+(ih*k).toFixed(1)+"px";c.style.backgroundPosition=(-x*k).toFixed(1)+"px "+(-y*k).toFixed(1)+"px";});}
+function setupPhotos(){stage.querySelectorAll('.photo').forEach((ph,i)=>{const [x,y,w,h]=ph.dataset.r.split(',').map(Number),iw=+ph.dataset.iw,ih=+ph.dataset.ih,dw=+ph.dataset.w,k=dw/w;
+ const im=ph.querySelector('.img');im.style.width=dw+'px';im.style.height=Math.round(h*k)+'px';im.style.backgroundImage='url("'+ph.dataset.src+'")';
+ im.style.backgroundSize=(iw*k).toFixed(1)+'px '+(ih*k).toFixed(1)+'px';im.style.backgroundPosition=(-x*k).toFixed(1)+'px '+(-y*k).toFixed(1)+'px';
+ const fw=dw+24,fh=Math.round(h*k)+26,sv=el('svg',{class:'pframe',width:fw+28,height:fh+28,viewBox:'0 0 '+(fw+28)+' '+(fh+28)},ph);ph.insertBefore(sv,ph.firstChild);
+ seed(90+i);P(rectD(6,6,fw+16,fh+16,2.2),{g:sv,w:3,c:'#5d518e'});P(rectD(8,8,fw+12,fh+12,2.6),{g:sv,w:1.6,c:'#8d80ca',op:.6});});}
+document.getElementById('replay').addEventListener('click',()=>play(null));
+function start(){const go=()=>{if(start.done)return;start.done=1;setupPhotos();setupCuts();build();play(RM?1e9:QT);};(document.fonts&&document.fonts.ready?document.fonts.ready:Promise.resolve()).then(go);setTimeout(go,2500);}
+
+function dashLine(x1,y1,x2,y2,o={}){const g=o.g||G(o.id);const L=Math.hypot(x2-x1,y2-y1),ux=(x2-x1)/L,uy=(y2-y1)/L,seg=o.seg||22,gap=o.gap||14,end=L-(o.head?34:0);let s=0;
+ while(s<end-4){const e=Math.min(s+seg,end);P(lineD(x1+ux*s,y1+uy*s,x1+ux*e,y1+uy*e,.5,0),{...o,g});s+=seg+gap;}
+ if(o.head)P(lineD(x2-ux*30,y2-uy*30,x2,y2,.5,0)+headD(x2,y2,x2-ux*10,y2-uy*10,o.head),{...o,g});return g;}
+function ring(id,cx,cy,r,c){const g=G(id);P(ellD(cx,cy,r,r,1.15),{g,c:c||'#5d518e',w:3.2});return g;}
+
+/* ---------- scene ---------- */
+
+function build(){
+
+ seed(21);
+ sRect(150,170,540,420,{id:'b1',c:'#5d518e',w:3.4});sRect(740,170,540,420,{id:'b2',c:'#f05a28',w:3.4});sRect(1330,170,540,420,{id:'b3',c:'#8d80ca',w:3.4});
+ sLine(334,298,670,298,{id:'l1',w:2.6,c:'#5d518e'});sLine(904,298,1262,298,{id:'l2',w:2.6,c:'#f05a28'});sLine(1502,298,1850,298,{id:'l3',w:2.6,c:'#8d80ca'});
+ sRect(772,414,476,64,{id:'pb2',c:'#f05a28',w:2.8,single:1});sRect(1362,410,476,72,{id:'pb3',c:'#5d518e',w:2.8,single:1});
+ sArrow(694,380,736,380,{id:'a1',w:6,head:16,c:'#5d518e'});sArrow(1284,380,1326,380,{id:'a2',w:6,head:16,c:'#5d518e'});
+ sRect(150,604,722,462,{id:'eb',c:'#8d80ca',w:3});
+ sLine(175,646,352,646,{id:'el1',w:2.4,c:'#8d80ca'});sLine(680,646,850,646,{id:'el2',w:2.4,c:'#8d80ca'});
+ sArrow(318,744,438,744,{id:'ea1',w:5,head:18,c:'#5d518e'});sArrow(592,744,722,744,{id:'ea2',w:5,head:18,c:'#5d518e'});
+ const g=G('dbx');[[280,932,800,932],[800,932,800,1040],[800,1040,280,1040],[280,1040,280,932]].forEach(s=>dashLine(...s,{g,c:'#5d518e',w:2.8,seg:16,gap:11}));
+
+}
+
+at(.3,()=>on('#title'));at(.9,()=>on('#sub'));
+at(1.4,()=>{on('#bw1,#i1,#h1a');draw('#b1',.7);});at(1.7,()=>{on('#h1b,#h1c');draw('#l1',.4);});at(2.0,()=>on('#ul1'));
+at(2.5,()=>draw('#a1',.3));
+at(2.8,()=>{on('#bw2,#i2,#h2a');draw('#b2',.7);});at(3.1,()=>{on('#h2b,#t2');draw('#l2',.4);});at(3.4,()=>{draw('#pb2',.4);on('#lk,#p2,#w2t');});
+at(3.9,()=>draw('#a2',.3));
+at(4.2,()=>{on('#bw3,#i3,#h3a');draw('#b3',.7);});at(4.5,()=>{on('#h3b,#t3');draw('#l3',.4);});at(4.8,()=>{draw('#pb3',.4);on('#ck,#p3,#w3t');});
+at(5.4,()=>{draw('#eb,#el1,#el2',.8);on('#exh');});
+at(5.8,()=>on('#e1,#ec1'));at(6.1,()=>draw('#ea1',.3));at(6.3,()=>on('#e2,#ec2'));at(6.6,()=>draw('#ea2',.3));at(6.8,()=>on('#e3,#ec3'));
+at(7.2,()=>{draw('#dbx',.6);on('#e4,#ok');});
+at(6.0,()=>on('#qh'));at(6.6,()=>on('#lst'));at(7.6,()=>on('#oh'));at(8.0,()=>on('#ot'));
+
+
+start();
+</script>
+<script>/* thai-letter-spacing-guard */
+(() => {
+  const thai = /[\u0E00-\u0E7F]/;
+  for (const el of document.querySelectorAll("body *")) {
+    const ownText = [...el.childNodes].filter(n => n.nodeType === 3).map(n => n.textContent).join("");
+    if (!thai.test(ownText)) continue;
+    if (parseFloat(getComputedStyle(el).letterSpacing) > 0) el.style.letterSpacing = "normal";
+  }
+})();
+</script>
+</body>
+</html>

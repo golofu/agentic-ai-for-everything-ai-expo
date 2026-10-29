@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>งานชิ้นแรกใน 5 นาที</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Itim&family=Manrope:wght@400;600;700;800&family=Noto+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--paper:#fbfcff;--ink:#1d2230;--muted:#656d7f;--violet:#8d80ca;--vd:#5d518e;--lav:#eeeaff;--blush:#ffeaf0;--mint:#e7f8f0;--sky:#e8f4ff;--or:#f05a28;--grad:linear-gradient(90deg,#5d518e,#f05a28)}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;overflow:hidden;background:var(--paper)}
+body{font-family:'Manrope','Noto Sans Thai',sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased}
+.th{font-family:'Noto Sans Thai','Manrope',sans-serif;line-height:1.55}
+#stage{position:absolute;left:50%;top:50%;width:1920px;height:1080px;transform-origin:50% 50%;transform:translate(-50%,-50%);background:var(--paper);overflow:hidden}
+.paper{position:absolute;inset:0;pointer-events:none}
+.paper.base{background:radial-gradient(ellipse at 30% 20%,rgba(255,250,240,.7),transparent 60%)}
+.paper.lines{top:150px;background:repeating-linear-gradient(180deg,transparent 0 58px,rgba(141,128,202,.13) 58px 60px)}
+.paper.margin{left:126px;width:7px;right:auto;border-left:2px solid rgba(240,90,40,.22);border-right:1.5px solid rgba(240,90,40,.13)}
+.paper.noise{width:100%;height:100%;mix-blend-mode:multiply}
+.hole{position:absolute;left:44px;width:26px;height:26px;border-radius:50%;background:#e4e1ec;box-shadow:inset 2px 3px 4px rgba(40,30,80,.22),0 1px 0 rgba(255,255,255,.9)}
+#scene{position:absolute;inset:0}
+#sk{position:absolute;inset:0;width:1920px;height:1080px;z-index:4;overflow:visible;pointer-events:none}
+.ink{fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1 1;stroke-dashoffset:1;transition:stroke-dashoffset var(--d,0.56s) cubic-bezier(.55,.1,.35,1) var(--dl,0s)}
+.ink.on{stroke-dashoffset:0}
+.t{position:absolute;z-index:3}
+.fx{opacity:0;transform:translateY(16px);transition:opacity 0.42s ease,transform 0.49s cubic-bezier(.2,.8,.3,1)}
+.fx.on{opacity:1;transform:none}
+.fl{opacity:0;transition:opacity 0.42s ease}.fl.on{opacity:1}
+#replay{position:absolute;right:38px;bottom:28px;z-index:9;display:flex;align-items:center;gap:8px;padding:8px 18px 9px;font:20px/1.2 'Itim','Noto Sans Thai',cursive;color:var(--vd);background:rgba(251,252,255,.85);border:2px solid rgba(93,81,142,.55);border-radius:255px 15px 225px 15px/15px 225px 15px 255px;cursor:pointer;opacity:.45;transition:opacity 0.18s,transform 0.18s}
+#replay:hover,#replay:focus-visible{opacity:1;transform:rotate(-2deg)}
+#replay svg{width:20px;height:20px}
+.noanim *,.noanim *::before,.noanim *::after{transition:none!important;animation:none!important}
+
+.ttl{left:168px;top:66px;width:1650px;white-space:nowrap;font:700 62px/1.5 'Noto Sans Thai','Manrope',sans-serif;color:var(--ink)}
+.ttl .q{color:var(--vd)}
+.sub{left:170px;top:190px;white-space:nowrap;font:500 30px/1.5 'Noto Sans Thai','Manrope',sans-serif;color:var(--muted)}
+.sub b{color:var(--or);font-weight:700}
+.foot{right:110px;bottom:30px;font:600 22px/1.5 'Manrope',sans-serif;letter-spacing:.06em;color:var(--muted)}
+
+/* three steps */
+.step{position:absolute;z-index:3;width:560px}
+.sh{display:flex;align-items:center;gap:14px;margin-bottom:14px}
+.sh b{flex:none;display:grid;place-items:center;width:52px;height:52px;border-radius:50%;background:var(--or);color:#fff;font:800 28px/1 'Manrope',sans-serif}
+.sh span{font:700 31px/1.3 'Noto Sans Thai','Manrope',sans-serif;color:var(--ink);white-space:nowrap}
+.sh span code{font:800 29px/1 'Manrope',sans-serif;color:var(--vd)}
+.photo{position:relative;padding:10px 10px 12px;background:#fff;box-shadow:0 12px 30px rgba(40,30,80,.16),0 1px 3px rgba(40,30,80,.18);transform:rotate(var(--r,0deg))}
+.photo .img{display:block;width:540px;height:160px;background-repeat:no-repeat;background-size:540px 160px;background-position:0 0}
+.photo .tape{position:absolute;z-index:2;width:120px;height:34px;left:50%;top:-17px;margin-left:-60px;background:rgba(238,234,255,.85);border-left:2px dashed rgba(141,128,202,.4);border-right:2px dashed rgba(141,128,202,.4);transform:rotate(-5deg);box-shadow:0 1px 2px rgba(40,30,80,.12)}
+.photo .mark{position:absolute;left:20px;right:150px;height:36px;border:3px solid var(--or);border-radius:8px;background:rgba(240,90,40,.12)}
+.cap{margin-top:14px;font:400 23px/1.45 'Noto Sans Thai','Manrope',sans-serif;color:#3a3f4f}
+.cap b{color:var(--or);font-weight:700}
+.bubble{position:relative;background:#fff;border:2px solid rgba(141,128,202,.5);border-radius:22px;padding:22px 26px 20px;box-shadow:0 12px 30px rgba(40,30,80,.12)}
+.bubble::after{content:'';position:absolute;right:-18px;top:70px;border:16px solid transparent;border-left-color:#fff;border-right:0}
+.bubble .who{font:700 18px/1 'Manrope',sans-serif;letter-spacing:.08em;color:var(--muted);margin-bottom:12px}
+.bubble p{font:600 30px/1.45 'Noto Sans Thai','Manrope',sans-serif;color:var(--ink)}
+.bubble p code{font:700 27px/1 'Manrope',sans-serif;color:var(--vd);background:var(--lav);padding:2px 10px;border-radius:8px}
+.bubble p em{font-style:normal;color:var(--or)}
+.bubble .enter{margin-top:14px;display:inline-block;font:700 20px/1 'Manrope',sans-serif;color:var(--vd);border:2px solid rgba(93,81,142,.4);border-radius:10px;padding:8px 14px;background:var(--lav)}
+
+/* formula */
+.rule{position:absolute;z-index:3;left:170px;width:1600px;top:706px}
+.rh{font:700 25px/1 'Noto Sans Thai','Manrope',sans-serif;color:var(--or);letter-spacing:.02em;margin-bottom:14px}
+.fm{display:flex;align-items:center;gap:14px;flex-wrap:nowrap;white-space:nowrap;font:600 33px/1.4 'Noto Sans Thai','Manrope',sans-serif;color:var(--ink)}
+.slot{border:2px dashed rgba(93,81,142,.55);border-radius:14px;padding:6px 18px;background:rgba(238,234,255,.6);color:var(--vd)}
+.chips{display:inline-flex;gap:10px}
+.chip{border:2px solid var(--or);border-radius:999px;padding:6px 22px;background:#fff;color:var(--or);cursor:pointer;transition:background .2s,color .2s,transform .2s}
+.chip:hover{transform:translateY(-3px)}
+.ex{margin-top:18px;min-height:52px;font:500 29px/1.5 'Noto Sans Thai','Manrope',sans-serif;color:#3a3f4f}
+.ex b{color:var(--or);font-weight:700;margin-right:10px}
+.ex span{display:none}
+.hint{margin-top:8px;font:400 21px/1.4 'Noto Sans Thai',sans-serif;color:var(--muted)}
+#stage[data-active="sum"] .chip[data-k="sum"],#stage[data-active="convert"] .chip[data-k="convert"],#stage[data-active="compare"] .chip[data-k="compare"],#stage[data-active="draft"] .chip[data-k="draft"]{background:var(--or);color:#fff}
+#stage[data-active="sum"] .ex span[data-k="sum"],#stage[data-active="convert"] .ex span[data-k="convert"],#stage[data-active="compare"] .ex span[data-k="compare"],#stage[data-active="draft"] .ex span[data-k="draft"]{display:inline}
+</style>
+</head>
+<body>
+<div id="stage" class="noanim" data-active="sum">
+  <div class="paper base"></div>
+  <div class="paper lines"></div>
+  <div class="paper margin"></div>
+  <div class="paper" id="holes"></div>
+  <svg class="paper noise" viewBox="0 0 1920 1080" preserveAspectRatio="none" aria-hidden="true"><filter id="pn"><feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="3" stitchTiles="stitch"/><feColorMatrix values="0 0 0 0 .36  0 0 0 0 .32  0 0 0 0 .52  0 0 0 .075 0"/></filter><rect width="1920" height="1080" filter="url(#pn)"/></svg>
+  <div id="scene">
+<div class="t ttl fx" id="ttl">งานชิ้นแรก <span class="q">ใน 5 นาที</span> ไม่ต้องคิดว่าจะทำอะไร</div>
+<div class="t sub fl" id="sub">ทุกคนมีไฟล์ประชุม อีเมลยาว หรือ Excel อยู่แล้ว · <b>เอาไฟล์ที่มีอยู่มาให้ AI สรุป แค่นั้นคืองานชิ้นแรก</b></div>
+<div class="t foot fl" id="foot">CHATGPT WORK + CLAUDE · FIRST JOB</div>
+
+<div class="step fx" id="s1" style="left:130px;top:268px">
+  <div class="sh"><b>1</b><span>ลากไฟล์จริง 1 ไฟล์ใส่ <code>input/</code></span></div>
+  <div class="photo" style="--r:-0.8deg"><span class="tape"></span><div class="img" style="background-image:url('media/firstjob-input.png')"></div><i class="mark" style="top:134px"></i></div>
+  <div class="cap">ไฟล์ประชุม Word ที่มีอยู่แล้วในเครื่อง <b>ไม่ต้องสร้างอะไรใหม่</b></div>
+</div>
+
+<div class="step fx" id="s2" style="left:710px;top:268px;width:500px">
+  <div class="sh"><b>2</b><span>พิมพ์สั่ง 1 บรรทัด</span></div>
+  <div class="bubble"><div class="who">ChatGPT Work / Claude</div>
+    <p>สรุปไฟล์ใน <code>input/</code> ให้เหลือ <em>5 บรรทัด</em> พร้อมตาราง <em>ใครทำอะไร เมื่อไร</em> แล้วเก็บไว้ใน <code>output/</code></p>
+    <span class="enter">Enter</span>
+  </div>
+  <div class="cap">บอก 3 อย่าง: ไฟล์ไหน · ได้อะไร · เก็บที่ไหน</div>
+</div>
+
+<div class="step fx" id="s3" style="left:1230px;top:268px">
+  <div class="sh"><b>3</b><span>ไฟล์ใหม่โผล่ใน <code>output/</code></span></div>
+  <div class="photo" style="--r:0.7deg"><span class="tape"></span><div class="img" style="background-image:url('media/firstjob-output.png')"></div><i class="mark" style="top:134px"></i></div>
+  <div class="cap">เปิดอ่านได้ทันที ส่งต่อในไลน์ทีมได้เลย <b>ไฟล์ต้นฉบับยังอยู่ครบ</b></div>
+</div>
+
+<div class="rule fx" id="rule">
+  <div class="rh">สูตรคิดงานชิ้นต่อไปเอง (ลองเอาเมาส์วางที่กริยา)</div>
+  <div class="fm">เอา <span class="slot">ไฟล์ที่มีอยู่แล้ว</span> มา
+    <span class="chips"><span class="chip" data-k="sum">สรุป</span><span class="chip" data-k="convert">แปลง</span><span class="chip" data-k="compare">เทียบ</span><span class="chip" data-k="draft">ร่างต่อ</span></span>
+    ให้ได้ <span class="slot">ของที่ส่งต่อให้คนอื่นได้</span></div>
+  <div class="ex">
+    <span data-k="sum"><b>สรุป</b>อีเมลลูกค้ายาว 2 หน้า → 5 บรรทัด + สิ่งที่ต้องตอบกลับ</span>
+    <span data-k="convert"><b>แปลง</b>Excel ยอดขายทั้งเดือน → สรุปผู้บริหาร 1 หน้า พร้อมตัวเลขสำคัญ</span>
+    <span data-k="compare"><b>เทียบ</b>สัญญาเวอร์ชันเก่ากับใหม่ → ตารางจุดที่เปลี่ยนและความเสี่ยง</span>
+    <span data-k="draft"><b>ร่างต่อ</b>Brief จากลูกค้า → ร่าง Proposal ตาม Template ใน resources/</span>
+  </div>
+  <div class="hint">ไฟล์ตั้งต้นต้องเป็นของจริงของเราเสมอ · ผลลัพธ์ต้องเป็นไฟล์ที่ส่งให้ใครสักคนได้ ไม่ใช่แค่คำตอบในแชต</div>
+</div>
+
+    <svg id="sk" viewBox="0 0 1920 1080" aria-hidden="true"></svg>
+  </div>
+  <button id="replay" type="button" aria-label="เล่นใหม่" style="display:none"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a8 8 0 1 1-2.4-5.7"/><path d="M20 4v5h-5"/></svg>เล่นใหม่</button>
+</div>
+<script>
+const W=1920,H=1080,NS='http://www.w3.org/2000/svg';
+const stage=document.getElementById('stage'),sk=document.getElementById('sk');
+const SPEED=2.4; // owner: faster pacing for live teaching
+const RM=false;
+const QT=(()=>{const v=new URLSearchParams(location.search).get('t');return v!==null&&v!==''&&isFinite(+v)?+v:null;})();
+let INSTANT=false;
+function fit(){const s=Math.min(innerWidth/W,innerHeight/H);stage.style.transform='translate(-50%,-50%) scale('+s+')';}
+addEventListener('resize',fit);fit();
+(function(){const h=document.getElementById('holes');for(let i=0;i<9;i++){const d=document.createElement('div');d.className='hole';d.style.top=(78+i*118)+'px';h.appendChild(d);}})();
+let _s=11;function seed(n){_s=n>>>0;}
+function rnd(){_s|=0;_s=_s+0x6D2B79F5|0;let t=Math.imul(_s^_s>>>15,1|_s);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;}
+function jr(a){return(rnd()*2-1)*a;}
+const f1=v=>v.toFixed(1);
+function smooth(p){let d='M'+f1(p[0][0])+' '+f1(p[0][1]);const P=[p[0],...p,p[p.length-1]];
+ for(let i=1;i<P.length-2;i++){const a=P[i-1],b=P[i],c=P[i+1],e=P[i+2];
+  d+=' C'+f1(b[0]+(c[0]-a[0])/6)+' '+f1(b[1]+(c[1]-a[1])/6)+' '+f1(c[0]-(e[0]-b[0])/6)+' '+f1(c[1]-(e[1]-b[1])/6)+' '+f1(c[0])+' '+f1(c[1]);}
+ return d;}
+function lineD(x1,y1,x2,y2,j=1.6,bk=.012){const L=Math.hypot(x2-x1,y2-y1)||1,n=Math.max(2,Math.round(L/70)),nx=-(y2-y1)/L,ny=(x2-x1)/L,bow=jr(L*bk),pts=[];
+ for(let i=0;i<=n;i++){const t=i/n,end=(i==0||i==n),o=bow*Math.sin(Math.PI*t)+(end?0:jr(j*.6));pts.push([x1+(x2-x1)*t+nx*o+(end?jr(j):0),y1+(y2-y1)*t+ny*o+(end?jr(j):0)]);}
+ return smooth(pts);}
+function qpts(x1,y1,x2,y2,bend,n){const L=Math.hypot(x2-x1,y2-y1)||1,nx=-(y2-y1)/L,ny=(x2-x1)/L,cx=(x1+x2)/2+nx*bend,cy=(y1+y2)/2+ny*bend,pts=[];
+ for(let i=0;i<=n;i++){const t=i/n;pts.push([(1-t)*(1-t)*x1+2*(1-t)*t*cx+t*t*x2,(1-t)*(1-t)*y1+2*(1-t)*t*cy+t*t*y2]);}return{pts,cx,cy};}
+function headD(x2,y2,fx,fy,head){const tx=x2-fx,ty=y2-fy,tl=Math.hypot(tx,ty)||1,ux=tx/tl,uy=ty/tl,a=.48,ca=Math.cos(a),sa=Math.sin(a);
+ const h1=[x2-head*(ux*ca-uy*sa),y2-head*(uy*ca+ux*sa)],h2=[x2-head*(ux*ca+uy*sa),y2-head*(uy*ca-ux*sa)];
+ return ' M'+f1(h1[0])+' '+f1(h1[1])+' L'+f1(x2+jr(1))+' '+f1(y2+jr(1))+' L'+f1(h2[0])+' '+f1(h2[1]);}
+function arrowD(x1,y1,x2,y2,bend=0,head=18){const L=Math.hypot(x2-x1,y2-y1),n=Math.max(3,Math.round(L/60));const q=qpts(x1,y1,x2,y2,bend,n);
+ const pts=q.pts.map((p,i)=>(i&&i<n)?[p[0]+jr(1.2),p[1]+jr(1.2)]:p);
+ return smooth(pts)+headD(x2,y2,q.cx,q.cy,head);}
+function el(tag,attrs,parent){const e=document.createElementNS(NS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);(parent||sk).appendChild(e);return e;}
+function P(d,o={}){const p=el('path',{d,pathLength:1,class:'ink '+(o.cls||'')},o.g);p.style.stroke=o.c||'#5d518e';p.style.strokeWidth=o.w||3.6;if(o.op)p.style.opacity=o.op;return p;}
+function G(id,parent){return el('g',id?{id}:{},parent);}
+function sArrow(x1,y1,x2,y2,o={}){const g=o.g||G(o.id);P(arrowD(x1,y1,x2,y2,o.bend||0,o.head||18),{...o,g});return g;}
+function $(s){return typeof s=='string'?[...stage.querySelectorAll(s)]:(Array.isArray(s)?s:[s]);}
+function on(s){$(s).forEach(e=>e&&e.classList.add('on'));}
+function draw(s,dur=.8){const paths=[];$(s).forEach(e=>{if(!e)return;if(e.tagName=='path')paths.push(e);else paths.push(...e.querySelectorAll('path.ink'));});
+ let tot=0;const L=paths.map(p=>{let l=1;try{l=Math.max(20,p.getTotalLength());}catch(_){}tot+=l;return l;});let acc=0;
+ paths.forEach((p,i)=>{const d=dur*L[i]/tot;p.style.setProperty('--d',(d/SPEED).toFixed(3)+'s');p.style.setProperty('--dl',(dur*acc/tot/SPEED).toFixed(3)+'s');acc+=L[i];p.classList.add('on');});}
+const TL=[],hooks=[];let timers=[];
+function at(t,f){TL.push([t,f]);}
+function resetAll(){timers.forEach(id=>{clearTimeout(id);clearInterval(id);});timers=[];stage.classList.add('noanim');
+ stage.querySelectorAll('.on').forEach(e=>e.classList.remove('on'));hooks.forEach(f=>f());void stage.offsetWidth;}
+function play(freezeAt){resetAll();
+ if(freezeAt!=null){INSTANT=true;TL.slice().sort((a,b)=>a[0]-b[0]).forEach(([t,f])=>{if(t<=freezeAt)f();});return;}
+ INSTANT=false;
+ requestAnimationFrame(()=>requestAnimationFrame(()=>{stage.classList.remove('noanim');
+  TL.forEach(([t,f])=>timers.push(setTimeout(f,t*1000/SPEED)));}));}
+document.getElementById('replay').addEventListener('click',()=>play(null));
+function start(){const go=()=>{if(start.done)return;start.done=1;build();play(RM?1e9:QT);};(document.fonts&&document.fonts.ready?document.fonts.ready:Promise.resolve()).then(go);setTimeout(go,2500);}
+function head(){G('uline');P(lineD(164,176,1120,182,2,.004),{g:document.getElementById('uline'),c:'#f05a28',w:6});}
+function build(){seed(233);head();
+ sArrow(700,470,712,470,{id:'a1',c:'#f05a28',w:5,head:22});   // step1 -> step2 (short, between columns)
+ sArrow(1190,470,1232,470,{id:'a2',c:'#f05a28',w:5,head:22}); // step2 -> step3
+}
+/* verb chips: hover or tap swaps the example line */
+(function(){const set=k=>{if(k)stage.dataset.active=k;};
+ stage.querySelectorAll('.chip').forEach(c=>{c.addEventListener('mouseenter',()=>set(c.dataset.k));c.addEventListener('click',()=>set(c.dataset.k));});})();
+
+at(0,()=>on('#ttl'));at(.7,()=>draw('#uline',.7));at(1.1,()=>{on('#sub');on('#foot');});
+at(1.6,()=>on('#s1'));at(2.5,()=>{draw('#a1',.3);on('#s2');});at(3.6,()=>{draw('#a2',.3);on('#s3');});
+at(4.8,()=>on('#rule'));
+
+start();
+</script>
+<script>/* thai-letter-spacing-guard */
+(() => {
+  const thai = /[฀-๿]/;
+  for (const el of document.querySelectorAll("body *")) {
+    const ownText = [...el.childNodes].filter(n => n.nodeType === 3).map(n => n.textContent).join("");
+    if (!thai.test(ownText)) continue;
+    if (parseFloat(getComputedStyle(el).letterSpacing) > 0) el.style.letterSpacing = "normal";
+  }
+})();
+</script>
+</body>
+</html>

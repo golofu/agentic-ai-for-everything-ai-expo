@@ -1,0 +1,576 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Agentic AI for Everything — Gen AI Space</title>
+  <meta name="description" content="Generative AI Tools 2027 · Agentic AI for Everything: From Prompt to Production · AI Expo Thailand 2026">
+  <meta name="theme-color" content="#03060f">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Noto+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      color-scheme: dark;
+      --space: #03060f;
+      --ink: #f4f7ff;
+      --muted: #a9b3cc;
+      --line: rgba(190, 210, 255, .16);
+      --cyan: #7fe3ff;
+      --violet: #b9adff;
+      --blush: #ffb8cf;
+      --display: "Manrope", "Noto Sans Thai", sans-serif;
+      --body: "Noto Sans Thai", Tahoma, sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { min-height: 100%; }
+
+    body {
+      margin: 0;
+      overflow-x: hidden;
+      background: var(--space);
+      color: var(--ink);
+      font-family: var(--body);
+      font-size: 16px;
+      line-height: 1.55;
+    }
+
+    button, a { font: inherit; }
+    button { cursor: pointer; }
+
+    #globe {
+      position: fixed;
+      inset: 0;
+      z-index: -3;
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .wash {
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      pointer-events: none;
+      background: linear-gradient(90deg, rgba(3,6,15,.86) 0%, rgba(3,6,15,.55) 34%, rgba(3,6,15,0) 58%);
+    }
+
+    .globe-word {
+      position: fixed;
+      z-index: -1;
+      left: 0;
+      top: 0;
+      transform: translate(-50%, -50%);
+      margin: 0;
+      pointer-events: none;
+      color: #fff;
+      font-family: var(--display);
+      font-size: var(--word-size, 64px);
+      font-weight: 800;
+      letter-spacing: -.04em;
+      line-height: 1;
+      white-space: nowrap;
+      text-shadow: 0 0 24px rgba(127,227,255,.75), 0 0 64px rgba(127,227,255,.35), 0 3px 0 rgba(0,0,0,.4);
+      opacity: 0;
+      transition: opacity 1.2s ease;
+    }
+
+    .globe-word.ready { opacity: 1; }
+
+    .page {
+      width: min(1500px, 100%);
+      min-height: 100svh;
+      margin: 0 auto;
+      padding: max(24px, env(safe-area-inset-top)) clamp(22px, 4.8vw, 74px) max(26px, env(safe-area-inset-bottom));
+      display: grid;
+      grid-template-rows: auto minmax(0, 1fr) auto;
+      gap: clamp(18px, 2.8vh, 28px);
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 22px;
+      animation: reveal .7s both;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      color: var(--ink);
+      text-decoration: none;
+    }
+
+    .brand-logo {
+      width: 44px;
+      height: 44px;
+      border: 1px solid rgba(255,255,255,.4);
+      border-radius: 14px;
+      object-fit: cover;
+    }
+
+    .brand-copy { display: grid; gap: 2px; }
+
+    .brand-name {
+      font-family: var(--display);
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: -.03em;
+      line-height: 1.1;
+    }
+
+    .brand-tagline {
+      color: var(--muted);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: .08em;
+      line-height: 1.2;
+      text-transform: uppercase;
+    }
+
+    .event-label {
+      display: grid;
+      justify-items: end;
+      gap: 2px;
+      padding: 8px 16px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: rgba(10,16,34,.55);
+      backdrop-filter: blur(14px);
+      font-family: var(--display);
+      text-align: right;
+    }
+
+    .event-label strong {
+      color: var(--cyan);
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+    }
+
+    .event-label span { color: var(--muted); font-size: 11px; font-weight: 600; }
+
+    .hero {
+      display: grid;
+      align-items: center;
+      padding: clamp(20px, 4.8vh, 58px) 0;
+    }
+
+    .hero-copy { max-width: 760px; }
+
+    .eyebrow {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      margin: 0 0 22px;
+      color: var(--cyan);
+      font-family: var(--display);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      animation: rise .72s .08s both;
+    }
+
+    .eyebrow::before {
+      width: 34px;
+      height: 2px;
+      background: var(--cyan);
+      content: "";
+    }
+
+    h1 {
+      margin: 0;
+      font-family: var(--display);
+      font-size: clamp(3.4rem, 6.6vw, 7rem);
+      font-weight: 800;
+      letter-spacing: -.07em;
+      line-height: .84;
+      animation: rise .82s .15s both;
+    }
+
+    h1 span { display: block; }
+
+    h1 .agentic {
+      font-size: .52em;
+      line-height: 1.12;
+      letter-spacing: -.045em;
+      background: linear-gradient(90deg, var(--violet), var(--blush));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      width: fit-content;
+      padding-bottom: .02em;
+    }
+
+    h1 .soft {
+      width: fit-content;
+      margin-left: clamp(20px, 5vw, 80px);
+      color: transparent;
+      -webkit-text-stroke: 2px rgba(220, 235, 255, .9);
+      text-shadow: 8px 10px 0 rgba(127,227,255,.22);
+    }
+
+    .thai-title {
+      max-width: 600px;
+      margin: clamp(26px, 3.6vw, 42px) 0 0;
+      color: #dfe6f7;
+      font-size: clamp(1.12rem, 1.9vw, 1.5rem);
+      font-weight: 600;
+      line-height: 1.42;
+      text-wrap: balance;
+      animation: rise .75s .26s both;
+    }
+
+    .thai-title strong { color: var(--cyan); }
+
+    .learning-path {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      column-gap: 26px;
+      max-width: 620px;
+      margin: 26px 0 0;
+      padding: 0;
+      list-style: none;
+      counter-reset: path;
+      animation: rise .75s .32s both;
+    }
+
+    .learning-path li {
+      display: grid;
+      grid-template-columns: 30px 1fr;
+      align-items: center;
+      gap: 10px;
+      min-height: 42px;
+      border-top: 1px solid var(--line);
+      color: #cdd5ea;
+      font-size: 14px;
+      font-weight: 600;
+      counter-increment: path;
+    }
+
+    .learning-path li::before {
+      color: var(--cyan);
+      content: "0" counter(path);
+      font-family: var(--display);
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 14px;
+      margin-top: 30px;
+      animation: rise .75s .4s both;
+    }
+
+    .start-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 52px;
+      padding: 12px 26px;
+      border-radius: 999px;
+      background: var(--ink);
+      color: #0a1022;
+      font-weight: 700;
+      text-decoration: none;
+      box-shadow: 0 0 0 1px rgba(255,255,255,.3), 0 12px 34px rgba(127,227,255,.22);
+      transition: transform .2s ease, background .2s ease;
+    }
+
+    .start-button:hover,
+    .start-button:focus-visible {
+      transform: translateY(-3px) rotate(-1deg);
+      background: var(--cyan);
+      outline: 4px solid rgba(127,227,255,.28);
+    }
+
+    .speaker {
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    .speaker strong { color: var(--ink); font-weight: 700; }
+
+    .footer {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 24px;
+      animation: reveal .8s .48s both;
+    }
+
+    .credit {
+      margin: 0;
+      color: #8892ad;
+      font-family: var(--display);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+    }
+
+    .motion-control {
+      min-height: 34px;
+      padding: 7px 12px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(10,16,34,.55);
+      color: #cdd5ea;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .motion-control:hover, .motion-control:focus-visible { background: rgba(127,227,255,.16); outline: 3px solid rgba(127,227,255,.25); }
+
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(22px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes reveal {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @media (max-width: 980px) {
+      .wash { background: linear-gradient(180deg, rgba(3,6,15,0) 0%, rgba(3,6,15,.35) 38%, rgba(3,6,15,.9) 62%); }
+      .hero { align-items: end; padding-top: 46vh; }
+    }
+
+    @media (max-width: 640px) {
+      .page { padding-left: 16px; padding-right: 16px; gap: 18px; }
+      .brand-tagline, .event-label span { display: none; }
+      h1 { font-size: clamp(3.3rem, 17vw, 5rem); }
+      h1 .soft { margin-left: 4px; -webkit-text-stroke-width: 1.5px; }
+      .learning-path { grid-template-columns: 1fr; }
+      .start-button { width: 100%; }
+      .footer { flex-direction: column; align-items: center; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation: none !important; transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="globe" aria-hidden="true"></canvas>
+  <div class="wash" aria-hidden="true"></div>
+  <p class="globe-word" id="globeWord" aria-hidden="true">Gen AI Space</p>
+
+  <div class="page">
+    <header class="topbar">
+      <a class="brand" href="https://genaispace.net/" aria-label="ไปที่เว็บไซต์ Gen AI Space">
+        <img class="brand-logo" src="assets/gen-ai-space-logo.png" alt="โลโก้ Gen AI Space">
+        <span class="brand-copy">
+          <span class="brand-name">Gen AI Space</span>
+          <span class="brand-tagline">A space to learn AI together</span>
+        </span>
+      </a>
+
+      <div class="event-label">
+        <strong>AI Expo Thailand 2026 · Builder Stage</strong>
+        <span>6 November 2026 · 10:30–11:35 · Challenger Hall เมืองทองธานี</span>
+      </div>
+    </header>
+
+    <main class="hero">
+      <section class="hero-copy" aria-labelledby="courseTitle">
+        <p class="eyebrow">Generative AI Tools 2027</p>
+        <h1 id="courseTitle">
+          <span class="agentic">Agentic</span>
+          <span>AI for</span>
+          <span class="soft">EVERYTHING</span>
+        </h1>
+        <p class="thai-title"><strong>From Prompt to Production</strong> ใช้ Agentic AI อย่างไร ให้ทำงานได้ในทุกบริบท</p>
+
+        <ol class="learning-path">
+          <li>พื้นฐาน Agentic AI</li>
+          <li>ติดตั้ง Desktop + Skill</li>
+          <li>Agentic AI for Work</li>
+          <li>Agentic AI for Creative Work</li>
+          <li>Vibe Code</li>
+          <li>แจก Skill + VaroCoin</li>
+        </ol>
+
+        <div class="actions">
+          <a class="start-button" href="menu.html">เริ่ม</a>
+          <span class="speaker">วิทยากร <strong>ปัญจพัฒน์ เกรียงวีระยุทธ</strong> · Gen AI Space</span>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <p class="credit">Agentic AI for Everything · Gen AI Space · 2026</p>
+      <button class="motion-control" id="motionControl" type="button" aria-pressed="false">หยุดโลกหมุน</button>
+    </footer>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script>
+    (() => {
+      const canvas = document.getElementById("globe");
+      const word = document.getElementById("globeWord");
+      const motionControl = document.getElementById("motionControl");
+      if (!window.THREE) return;
+
+      const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false });
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer.setClearColor(0x03060f, 1);
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(35, 1, .1, 1000);
+      camera.position.set(0, 0, 9);
+
+      const loader = new THREE.TextureLoader();
+      const tex = name => loader.load(`assets/earth/${name}`);
+
+      const earthGroup = new THREE.Group();
+      earthGroup.rotation.z = -23.4 * Math.PI / 180;
+      scene.add(earthGroup);
+
+      const earth = new THREE.Mesh(
+        new THREE.SphereGeometry(2, 96, 96),
+        new THREE.MeshPhongMaterial({
+          map: tex("earth_atmos_2048.jpg"),
+          normalMap: tex("earth_normal_2048.jpg"),
+          normalScale: new THREE.Vector2(.85, .85),
+          specularMap: tex("earth_specular_2048.jpg"),
+          specular: new THREE.Color(0x335577),
+          shininess: 18
+        })
+      );
+      earthGroup.add(earth);
+
+      const lights = new THREE.Mesh(
+        new THREE.SphereGeometry(2.002, 96, 96),
+        new THREE.MeshBasicMaterial({ map: tex("earth_lights_2048.png"), blending: THREE.AdditiveBlending, transparent: true, opacity: .55 })
+      );
+      earthGroup.add(lights);
+
+      const clouds = new THREE.Mesh(
+        new THREE.SphereGeometry(2.025, 96, 96),
+        new THREE.MeshLambertMaterial({ map: tex("earth_clouds_1024.png"), transparent: true, opacity: .75, depthWrite: false })
+      );
+      earthGroup.add(clouds);
+
+      // Latitude / longitude grid like the Gen AI Space logo.
+      const gridRadius = 2.06;
+      const gridPoints = [];
+      for (let lat = -75; lat <= 75; lat += 15) {
+        const phi = lat * Math.PI / 180;
+        for (let i = 0; i < 128; i++) {
+          const a = i / 128 * Math.PI * 2, b = (i + 1) / 128 * Math.PI * 2;
+          gridPoints.push(
+            new THREE.Vector3(Math.cos(phi) * Math.cos(a), Math.sin(phi), Math.cos(phi) * Math.sin(a)).multiplyScalar(gridRadius),
+            new THREE.Vector3(Math.cos(phi) * Math.cos(b), Math.sin(phi), Math.cos(phi) * Math.sin(b)).multiplyScalar(gridRadius)
+          );
+        }
+      }
+      for (let lon = 0; lon < 180; lon += 15) {
+        const t = lon * Math.PI / 180;
+        for (let i = 0; i < 128; i++) {
+          const a = i / 128 * Math.PI * 2, b = (i + 1) / 128 * Math.PI * 2;
+          gridPoints.push(
+            new THREE.Vector3(Math.cos(a) * Math.cos(t), Math.sin(a), Math.cos(a) * Math.sin(t)).multiplyScalar(gridRadius),
+            new THREE.Vector3(Math.cos(b) * Math.cos(t), Math.sin(b), Math.cos(b) * Math.sin(t)).multiplyScalar(gridRadius)
+          );
+        }
+      }
+      const grid = new THREE.LineSegments(
+        new THREE.BufferGeometry().setFromPoints(gridPoints),
+        new THREE.LineBasicMaterial({ color: 0x9feaff, transparent: true, opacity: .32, blending: THREE.AdditiveBlending, depthWrite: false })
+      );
+      earthGroup.add(grid);
+
+      // Atmosphere rim glow.
+      const atmosphere = new THREE.Mesh(
+        new THREE.SphereGeometry(2.32, 64, 64),
+        new THREE.ShaderMaterial({
+          vertexShader: "varying vec3 vN; void main(){ vN = normalize(normalMatrix * normal); gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0); }",
+          fragmentShader: "varying vec3 vN; void main(){ float i = pow(0.68 - dot(vN, vec3(0.0,0.0,1.0)), 3.2); gl_FragColor = vec4(0.45,0.82,1.0,1.0) * i; }",
+          blending: THREE.AdditiveBlending,
+          side: THREE.BackSide,
+          transparent: true,
+          depthWrite: false
+        })
+      );
+      scene.add(atmosphere);
+
+      // Star field.
+      const starCount = 2600;
+      const starPos = new Float32Array(starCount * 3);
+      for (let i = 0; i < starCount; i++) {
+        const r = 120 + Math.random() * 180;
+        const u = Math.random() * 2 - 1, th = Math.random() * Math.PI * 2;
+        const s = Math.sqrt(1 - u * u);
+        starPos.set([r * s * Math.cos(th), r * u, r * s * Math.sin(th)], i * 3);
+      }
+      const starGeo = new THREE.BufferGeometry();
+      starGeo.setAttribute("position", new THREE.BufferAttribute(starPos, 3));
+      const stars = new THREE.Points(starGeo, new THREE.PointsMaterial({ color: 0xffffff, size: .55, sizeAttenuation: true, transparent: true, opacity: .85 }));
+      scene.add(stars);
+
+      scene.add(new THREE.AmbientLight(0x6677aa, .38));
+      const sun = new THREE.DirectionalLight(0xffffff, 1.25);
+      sun.position.set(-6, 2.5, 5);
+      scene.add(sun);
+
+      let globeX = 0, globeY = 0;
+      function layout() {
+        const w = window.innerWidth, h = window.innerHeight;
+        renderer.setSize(w, h, false);
+        camera.aspect = w / h;
+        camera.updateProjectionMatrix();
+        const halfH = Math.tan(camera.fov * Math.PI / 360) * camera.position.z;
+        const halfW = halfH * camera.aspect;
+        const wide = w > 980;
+        const scale = wide ? Math.min(1, halfW * .4 / 2.3, halfH * .78 / 2.3) : Math.min(.9, halfW * .85 / 2.3);
+        globeX = wide ? halfW - 2.3 * scale - halfW * .07 : 0;
+        globeY = wide ? -.05 : halfH * .45;
+        [earthGroup, atmosphere].forEach(o => { o.position.set(globeX, globeY, 0); o.scale.setScalar(scale); });
+        const pxPerUnit = h / (halfH * 2);
+        word.style.setProperty("--word-size", `${Math.round(2 * scale * pxPerUnit * .2)}px`);
+        const v = new THREE.Vector3(globeX, globeY, 0).project(camera);
+        word.style.left = `${(v.x + 1) / 2 * w}px`;
+        word.style.top = `${(1 - v.y) / 2 * h}px`;
+      }
+
+      let running = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      let last = performance.now();
+      function frame(now) {
+        const dt = Math.min(.05, (now - last) / 1000);
+        last = now;
+        if (running) {
+          earth.rotation.y += dt * .09;
+          lights.rotation.y = earth.rotation.y;
+          grid.rotation.y = earth.rotation.y;
+          clouds.rotation.y += dt * .115;
+          stars.rotation.y += dt * .004;
+        }
+        renderer.render(scene, camera);
+        requestAnimationFrame(frame);
+      }
+
+      function syncControl() {
+        motionControl.textContent = running ? "หยุดโลกหมุน" : "ให้โลกหมุน";
+        motionControl.setAttribute("aria-pressed", String(!running));
+      }
+      motionControl.addEventListener("click", () => { running = !running; syncControl(); });
+
+      window.addEventListener("resize", layout);
+      layout();
+      syncControl();
+      requestAnimationFrame(frame);
+      setTimeout(() => word.classList.add("ready"), 500);
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>โฟลเดอร์ตัวอย่างจริงใน Windows หลังรัน Prompt สร้าง Workspace</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Itim&family=Manrope:wght@400;600;700;800&family=Noto+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--paper:#fbfcff;--ink:#1d2230;--muted:#656d7f;--violet:#8d80ca;--vd:#5d518e;--lav:#eeeaff;--blush:#ffeaf0;--mint:#e7f8f0;--sky:#e8f4ff;--or:#f05a28;--grad:linear-gradient(90deg,#5d518e,#f05a28)}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;overflow:hidden;background:var(--paper)}
+body{font-family:'Manrope','Noto Sans Thai',sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased}
+.th{font-family:'Noto Sans Thai','Manrope',sans-serif;line-height:1.55}
+.hand{font-family:'Itim','Noto Sans Thai',cursive;line-height:1.5}
+#stage{position:absolute;left:50%;top:50%;width:1920px;height:1080px;transform-origin:50% 50%;transform:translate(-50%,-50%);background:var(--paper);overflow:hidden}
+.paper{position:absolute;inset:0;pointer-events:none}
+.paper.base{background:radial-gradient(ellipse at 30% 20%,rgba(255,250,240,.7),transparent 60%)}
+.paper.lines{top:150px;background:repeating-linear-gradient(180deg,transparent 0 58px,rgba(141,128,202,.13) 58px 60px)}
+.paper.margin{left:126px;width:7px;right:auto;border-left:2px solid rgba(240,90,40,.22);border-right:1.5px solid rgba(240,90,40,.13)}
+.paper.noise{width:100%;height:100%;mix-blend-mode:multiply}
+.hole{position:absolute;left:44px;width:26px;height:26px;border-radius:50%;background:#e4e1ec;box-shadow:inset 2px 3px 4px rgba(40,30,80,.22),0 1px 0 rgba(255,255,255,.9)}
+#scene{position:absolute;inset:0}
+#sk{position:absolute;inset:0;width:1920px;height:1080px;z-index:4;overflow:visible;pointer-events:none}
+.ink{fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1 1;stroke-dashoffset:1;transition:stroke-dashoffset var(--d,0.56s) cubic-bezier(.55,.1,.35,1) var(--dl,0s)}
+.ink.on{stroke-dashoffset:0}
+.t{position:absolute;z-index:3}
+.fx{opacity:0;transform:translateY(16px);transition:opacity 0.42s ease,transform 0.49s cubic-bezier(.2,.8,.3,1)}
+.fx.on{opacity:1;transform:none}
+.fl{opacity:0;transition:opacity 0.42s ease}.fl.on{opacity:1}
+#replay{position:absolute;right:38px;bottom:28px;z-index:9;display:flex;align-items:center;gap:8px;padding:8px 18px 9px;font:20px/1.2 'Itim','Noto Sans Thai',cursive;color:var(--vd);background:rgba(251,252,255,.85);border:2px solid rgba(93,81,142,.55);border-radius:255px 15px 225px 15px/15px 225px 15px 255px;cursor:pointer;opacity:.45;transition:opacity 0.18s,transform 0.18s}
+#replay:hover,#replay:focus-visible{opacity:1;transform:rotate(-2deg)}
+#replay svg{width:20px;height:20px}
+.noanim *,.noanim *::before,.noanim *::after{transition:none!important;animation:none!important}
+
+.ttl{left:168px;top:66px;width:1650px;white-space:nowrap;font:700 62px/1.5 'Noto Sans Thai','Manrope',sans-serif;color:var(--ink)}
+.ttl .q{color:var(--vd)}
+.sub{left:170px;top:190px;white-space:nowrap;font:500 30px/1.5 'Noto Sans Thai','Manrope',sans-serif;color:var(--muted)}
+.sub b{color:var(--or);font-weight:700}
+.foot{right:110px;bottom:30px;font:600 22px/1.5 'Manrope',sans-serif;letter-spacing:.06em;color:var(--muted)}
+
+/* real Explorer picture (taped photo) with hover hotspots */
+.photo{position:absolute;z-index:3;padding:12px 12px 14px;background:#fff;box-shadow:0 12px 30px rgba(40,30,80,.16),0 1px 3px rgba(40,30,80,.18);opacity:0;transform:translateY(-46px) rotate(calc(var(--r,0deg) + 6deg)) scale(1.05);transition:opacity 0.35s ease,transform 0.63s cubic-bezier(.22,1,.36,1)}
+.photo.on{opacity:1;transform:rotate(var(--r,0deg))}
+.photo .img{position:relative;display:block;width:1000px;height:619px;background:url("media/workspace-explorer-v2.png") no-repeat 0 0/1000px 619px}
+.photo .tape{position:absolute;z-index:2;width:150px;height:40px;left:50%;top:-20px;margin-left:-75px;background:rgba(238,234,255,.85);border-left:2px dashed rgba(141,128,202,.4);border-right:2px dashed rgba(141,128,202,.4);transform:rotate(-5deg);box-shadow:0 1px 2px rgba(40,30,80,.12)}
+.photo svg.pframe{position:absolute;left:-14px;top:-14px;overflow:visible;pointer-events:none}
+.hs{position:absolute;cursor:pointer;border-radius:6px;transition:background .2s,box-shadow .2s}
+.hs:hover{background:rgba(141,128,202,.16)}
+
+/* callouts on the right */
+.co{position:absolute;z-index:3;left:1215px;width:585px;height:94px;padding:12px 20px 12px 22px;border:2px solid rgba(141,128,202,.45);border-left:9px solid var(--violet);border-radius:14px 18px 14px 20px/18px 14px 20px 14px;background:rgba(255,255,255,.82);display:flex;flex-direction:column;justify-content:center;gap:2px;cursor:pointer;transition:background .2s,box-shadow .2s,transform .2s,opacity .2s}
+.co b{font:700 31px/1.3 'Noto Sans Thai','Manrope',sans-serif;color:var(--ink);white-space:nowrap}
+.co b code{font:800 29px/1 'Manrope',sans-serif;color:var(--vd)}
+.co b i{font-style:normal;font:700 17px/1 'Noto Sans Thai',sans-serif;background:var(--or);color:#fff;border-radius:999px;padding:4px 12px 5px;margin-left:10px;vertical-align:middle}
+.co span{font:400 21px/1.35 'Noto Sans Thai','Manrope',sans-serif;color:#3a3f4f}
+.co.star{border-color:var(--or);border-left-color:var(--or);background:rgba(255,234,240,.6)}
+.co.star b code{color:var(--or)}
+
+/* active state: stage[data-active=k] lights every element with the same data-k */
+#stage[data-active] .co{opacity:.4}
+#stage[data-active] #sk g[data-k]{opacity:.18}
+#stage[data-active="path"] [data-k="path"],#stage[data-active="input"] [data-k="input"],#stage[data-active="output"] [data-k="output"],#stage[data-active="res"] [data-k="res"],#stage[data-active="skill"] [data-k="skill"],#stage[data-active="plan"] [data-k="plan"],#stage[data-active="id"] [data-k="id"]{opacity:1}
+#stage[data-active="path"] .co[data-k="path"],#stage[data-active="input"] .co[data-k="input"],#stage[data-active="output"] .co[data-k="output"],#stage[data-active="res"] .co[data-k="res"],#stage[data-active="skill"] .co[data-k="skill"],#stage[data-active="plan"] .co[data-k="plan"],#stage[data-active="id"] .co[data-k="id"]{background:#fff7d6;box-shadow:0 0 0 5px rgba(240,90,40,.28),0 10px 26px rgba(40,30,80,.18);transform:translateX(-8px)}
+#stage[data-active="path"] .hs[data-k="path"],#stage[data-active="input"] .hs[data-k="input"],#stage[data-active="output"] .hs[data-k="output"],#stage[data-active="res"] .hs[data-k="res"],#stage[data-active="skill"] .hs[data-k="skill"],#stage[data-active="plan"] .hs[data-k="plan"],#stage[data-active="id"] .hs[data-k="id"]{background:rgba(240,90,40,.22);box-shadow:inset 0 0 0 3px var(--or)}
+#stage[data-active] #sk g[data-k] path{stroke-width:4.4}
+</style>
+</head>
+<body>
+<div id="stage" class="noanim">
+  <div class="paper base"></div>
+  <div class="paper lines"></div>
+  <div class="paper margin"></div>
+  <div class="paper" id="holes"></div>
+  <svg class="paper noise" viewBox="0 0 1920 1080" preserveAspectRatio="none" aria-hidden="true"><filter id="pn"><feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="3" stitchTiles="stitch"/><feColorMatrix values="0 0 0 0 .36  0 0 0 0 .32  0 0 0 0 .52  0 0 0 .075 0"/></filter><rect width="1920" height="1080" filter="url(#pn)"/></svg>
+  <div id="scene">
+<div class="t ttl fx" id="ttl">โฟลเดอร์ตัวอย่างจริง <span class="q">หลังรัน Prompt สร้าง Workspace</span></div>
+<div class="t sub fl" id="sub">ภาพหน้าจอ Windows Explorer จริง · องค์กรตัวอย่าง Gen AI Space · <b>ชี้แต่ละรายการเพื่อดูคำอธิบาย</b></div>
+<div class="t foot fl" id="foot">CODEX + CLAUDE · WORKSPACE</div>
+
+<div class="photo" id="ph" style="left:130px;top:250px;--r:-0.6deg">
+  <span class="tape"></span>
+  <div class="img" id="img" role="img" aria-label="ภาพหน้าจอ Windows Explorer จริง: input output resources skill AGENTS.md CLAUDE.md และ START-HERE.md">
+    <i class="hs" data-k="path" style="left:0px;top:5px;width:960px;height:50px"></i>
+    <i class="hs" data-k="input" style="left:15px;top:206px;width:960px;height:35px"></i>
+    <i class="hs" data-k="output" style="left:15px;top:244px;width:960px;height:35px"></i>
+    <i class="hs" data-k="res" style="left:15px;top:281px;width:960px;height:35px"></i>
+    <i class="hs" data-k="skill" style="left:15px;top:319px;width:960px;height:35px"></i>
+    <i class="hs" data-k="plan" style="left:15px;top:356px;width:960px;height:35px"></i>
+    <i class="hs" data-k="id" style="left:15px;top:394px;width:960px;height:35px"></i>
+    <i class="hs" data-k="id" style="left:15px;top:431px;width:960px;height:35px"></i>
+  </div>
+</div>
+
+<div class="co fx" data-k="path" id="c1" style="top:236px"><b>โต๊ะอยู่ที่ไหน <i>ดูตรงนี้</i></b><span>ตั้งชื่อตามองค์กร แผนก หรือโครงการ · เปิดโฟลเดอร์นี้ในเครื่องมือ AI ที่อ่านไฟล์ได้</span></div>
+<div class="co fx" data-k="input" id="c2" style="top:340px"><b>ลิ้นชัก <code>input/</code> ไฟล์ต้นฉบับของงานครั้งนี้</b><span>วาง Brief, PDF, Word, Excel ที่จะสั่งทำ · AI อ่านอย่างเดียว ห้ามแก้ ย้าย หรือลบ</span></div>
+<div class="co fx" data-k="output" id="c3" style="top:444px"><b>ลิ้นชัก <code>output/</code> ผลงานใหม่ทั้งหมด</b><span>เก็บผลงานใหม่ ไม่เขียนทับชื่อเดิม · ตรวจเนื้อหาและรูปแบบก่อนส่ง</span></div>
+<div class="co fx" data-k="res" id="c4" style="top:548px"><b>ลิ้นชัก <code>resources/</code> คลังความรู้องค์กร</b><span>Company Profile, Brand, ราคา, Template, Case Study · ใช้ซ้ำได้ทุกงาน ไม่ต้องแนบใหม่</span></div>
+<div class="co fx" data-k="skill" id="c5" style="top:652px"><b>ลิ้นชัก <code>skill/</code> Local Skill ของเรา</b><span>มีแค่ README รอผู้เรียนใส่ Skill เอง · เรียกโดยสั่งให้อ่านไฟล์ตาม path</span></div>
+<div class="co fx star" data-k="plan" id="c6" style="top:756px"><b><code>AGENTS.md</code> <i>อ่านก่อนทุกครั้ง</i></b><span>กติกากลางที่เดียว · งาน ข้อมูล ผลงาน วิธีตอบ และขอบเขตการอนุญาต</span></div>
+<div class="co fx" data-k="id" id="c7" style="top:860px"><b>START-HERE.md + CLAUDE.md</b><span>คู่มือแรกสำหรับคน · CLAUDE.md มี @AGENTS.md เพื่ออ่านกติกาเดียวกัน</span></div>
+
+    <svg id="sk" viewBox="0 0 1920 1080" aria-hidden="true"></svg>
+  </div>
+  <button id="replay" type="button" aria-label="เล่นใหม่" style="display:none"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a8 8 0 1 1-2.4-5.7"/><path d="M20 4v5h-5"/></svg>เล่นใหม่</button>
+</div>
+<script>
+const W=1920,H=1080,NS='http://www.w3.org/2000/svg';
+const stage=document.getElementById('stage'),sk=document.getElementById('sk');
+const SPEED=2.4; // owner: faster pacing for live teaching
+const RM=false; // always animate: Windows 'animation effects off' would otherwise skip the motion
+const QT=(()=>{const v=new URLSearchParams(location.search).get('t');return v!==null&&v!==''&&isFinite(+v)?+v:null;})();
+let INSTANT=false;
+function fit(){const s=Math.min(innerWidth/W,innerHeight/H);stage.style.transform='translate(-50%,-50%) scale('+s+')';}
+addEventListener('resize',fit);fit();
+(function(){const h=document.getElementById('holes');for(let i=0;i<9;i++){const d=document.createElement('div');d.className='hole';d.style.top=(78+i*118)+'px';h.appendChild(d);}})();
+let _s=11;function seed(n){_s=n>>>0;}
+function rnd(){_s|=0;_s=_s+0x6D2B79F5|0;let t=Math.imul(_s^_s>>>15,1|_s);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;}
+function jr(a){return(rnd()*2-1)*a;}
+const f1=v=>v.toFixed(1);
+function smooth(p){let d='M'+f1(p[0][0])+' '+f1(p[0][1]);const P=[p[0],...p,p[p.length-1]];
+ for(let i=1;i<P.length-2;i++){const a=P[i-1],b=P[i],c=P[i+1],e=P[i+2];
+  d+=' C'+f1(b[0]+(c[0]-a[0])/6)+' '+f1(b[1]+(c[1]-a[1])/6)+' '+f1(c[0]-(e[0]-b[0])/6)+' '+f1(c[1]-(e[1]-b[1])/6)+' '+f1(c[0])+' '+f1(c[1]);}
+ return d;}
+function lineD(x1,y1,x2,y2,j=1.6,bk=.012){const L=Math.hypot(x2-x1,y2-y1)||1,n=Math.max(2,Math.round(L/70)),nx=-(y2-y1)/L,ny=(x2-x1)/L,bow=jr(L*bk),pts=[];
+ for(let i=0;i<=n;i++){const t=i/n,end=(i==0||i==n),o=bow*Math.sin(Math.PI*t)+(end?0:jr(j*.6));pts.push([x1+(x2-x1)*t+nx*o+(end?jr(j):0),y1+(y2-y1)*t+ny*o+(end?jr(j):0)]);}
+ return smooth(pts);}
+function rectD(x,y,w,h,j=2){const o=7;return[lineD(x-3-jr(o),y+jr(j),x+w+3+jr(o),y+jr(j),j),lineD(x+w+jr(j),y-3-jr(o),x+w+jr(j),y+h+3+jr(o),j),lineD(x+w+3+jr(o),y+h+jr(j),x-3-jr(o),y+h+jr(j),j),lineD(x+jr(j),y+h+3+jr(o),x+jr(j),y-3-jr(o),j)].join(' ');}
+function qpts(x1,y1,x2,y2,bend,n){const L=Math.hypot(x2-x1,y2-y1)||1,nx=-(y2-y1)/L,ny=(x2-x1)/L,cx=(x1+x2)/2+nx*bend,cy=(y1+y2)/2+ny*bend,pts=[];
+ for(let i=0;i<=n;i++){const t=i/n;pts.push([(1-t)*(1-t)*x1+2*(1-t)*t*cx+t*t*x2,(1-t)*(1-t)*y1+2*(1-t)*t*cy+t*t*y2]);}return{pts,cx,cy};}
+function headD(x2,y2,fx,fy,head){const tx=x2-fx,ty=y2-fy,tl=Math.hypot(tx,ty)||1,ux=tx/tl,uy=ty/tl,a=.48,ca=Math.cos(a),sa=Math.sin(a);
+ const h1=[x2-head*(ux*ca-uy*sa),y2-head*(uy*ca+ux*sa)],h2=[x2-head*(ux*ca+uy*sa),y2-head*(uy*ca-ux*sa)];
+ return ' M'+f1(h1[0])+' '+f1(h1[1])+' L'+f1(x2+jr(1))+' '+f1(y2+jr(1))+' L'+f1(h2[0])+' '+f1(h2[1]);}
+function arrowD(x1,y1,x2,y2,bend=0,head=18){const L=Math.hypot(x2-x1,y2-y1),n=Math.max(3,Math.round(L/60));const q=qpts(x1,y1,x2,y2,bend,n);
+ const pts=q.pts.map((p,i)=>(i&&i<n)?[p[0]+jr(1.2),p[1]+jr(1.2)]:p);
+ return smooth(pts)+headD(x2,y2,q.cx,q.cy,head);}
+function el(tag,attrs,parent){const e=document.createElementNS(NS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);(parent||sk).appendChild(e);return e;}
+function P(d,o={}){const p=el('path',{d,pathLength:1,class:'ink '+(o.cls||'')},o.g);p.style.stroke=o.c||'#5d518e';p.style.strokeWidth=o.w||3.6;if(o.op)p.style.opacity=o.op;return p;}
+function G(id,parent){return el('g',id?{id}:{},parent);}
+function sArrow(x1,y1,x2,y2,o={}){const g=o.g||G(o.id);P(arrowD(x1,y1,x2,y2,o.bend||0,o.head||18),{...o,g});return g;}
+function $(s){return typeof s=='string'?[...stage.querySelectorAll(s)]:(Array.isArray(s)?s:[s]);}
+function on(s){$(s).forEach(e=>e&&e.classList.add('on'));}
+function draw(s,dur=.8){const paths=[];$(s).forEach(e=>{if(!e)return;if(e.tagName=='path')paths.push(e);else paths.push(...e.querySelectorAll('path.ink'));});
+ let tot=0;const L=paths.map(p=>{let l=1;try{l=Math.max(20,p.getTotalLength());}catch(_){}tot+=l;return l;});let acc=0;
+ paths.forEach((p,i)=>{const d=dur*L[i]/tot;p.style.setProperty('--d',(d/SPEED).toFixed(3)+'s');p.style.setProperty('--dl',(dur*acc/tot/SPEED).toFixed(3)+'s');acc+=L[i];p.classList.add('on');});}
+const TL=[],hooks=[];let timers=[];
+function at(t,f){TL.push([t,f]);}
+function every(f,ms){const id=setInterval(f,ms);timers.push(id);return id;}
+function resetAll(){timers.forEach(id=>{clearTimeout(id);clearInterval(id);});timers=[];stage.classList.add('noanim');
+ stage.querySelectorAll('.on').forEach(e=>e.classList.remove('on'));hooks.forEach(f=>f());void stage.offsetWidth;}
+/* plays once, then holds the final state (no loop). ?t=N freezes at second N for thumbnails */
+function play(freezeAt){resetAll();
+ if(freezeAt!=null){INSTANT=true;TL.slice().sort((a,b)=>a[0]-b[0]).forEach(([t,f])=>{if(t<=freezeAt)f();});return;}
+ INSTANT=false;
+ requestAnimationFrame(()=>requestAnimationFrame(()=>{stage.classList.remove('noanim');
+  TL.forEach(([t,f])=>timers.push(setTimeout(f,t*1000/SPEED)));}));}
+function setupPhoto(){const ph=document.getElementById('ph'),fw=1000+24,fh=619+26;
+ const sv=el('svg',{class:'pframe',width:fw+28,height:fh+28,viewBox:'0 0 '+(fw+28)+' '+(fh+28)},ph);ph.insertBefore(sv,ph.firstChild);
+ seed(90);P(rectD(6,6,fw+16,fh+16,2.2),{g:sv,w:3,c:'#5d518e'});P(rectD(8,8,fw+12,fh+12,2.6),{g:sv,w:1.6,c:'#8d80ca',op:.6});}
+document.getElementById('replay').addEventListener('click',()=>play(null));
+function start(){const go=()=>{if(start.done)return;start.done=1;setupPhoto();build();play(RM?1e9:QT);};(document.fonts&&document.fonts.ready?document.fonts.ready:Promise.resolve()).then(go);setTimeout(go,2500);}
+function head(){G('uline');P(lineD(164,176,1120,182,2,.004),{g:document.getElementById('uline'),c:'#f05a28',w:6});}
+
+/* Actual Explorer capture region: 750x465 scaled to 1000x619; navigation pane excluded. */
+const OX=142,OY=262;
+const ARROWS=[
+ ['path',1205,283,1100,292],
+ ['input',1205,387,1100,485],
+ ['output',1205,491,1100,524],
+ ['res',1205,595,1100,561],
+ ['skill',1205,699,1100,599],
+ ['plan',1205,803,1100,636],
+ ['id',1205,907,1100,674],
+ ['id',1205,907,1100,711]
+];
+function build(){seed(232);head();
+ ARROWS.forEach(([k,x1,y1,x2,y2],i)=>{const g=sArrow(x1,y1,x2+8,y2,{id:'ar-'+k+'-'+i,c:k==='plan'?'#f05a28':'#5d518e',w:3.2,head:16,bend:(y1-y2)*.18});g.setAttribute('data-k',k);g.style.transition='opacity .2s';});
+}
+/* hover or tap: light the callout, the Explorer row and the arrow that share one data-k */
+(function(){const keyed=[...stage.querySelectorAll('.co[data-k],.hs[data-k]')];
+ const set=k=>{if(k)stage.dataset.active=k;else delete stage.dataset.active;};
+ keyed.forEach(e=>{e.addEventListener('mouseenter',()=>set(e.dataset.k));e.addEventListener('mouseleave',()=>set(null));
+  e.addEventListener('click',ev=>{ev.preventDefault();set(stage.dataset.active===e.dataset.k?null:e.dataset.k);});});
+ stage.addEventListener('click',ev=>{if(!ev.target.closest('[data-k]'))set(null);});})();
+
+at(0,()=>on('#ttl'));at(.7,()=>draw('#uline',.7));at(1.1,()=>{on('#sub');on('#foot');});
+at(1.5,()=>on('#ph'));
+const CARDS=['path','input','output','res','skill','plan','id'];
+CARDS.forEach((k,i)=>{at(2.3+i*.4,()=>{on('#c'+(i+1));draw('#sk g[data-k="'+k+'"]',.5);});});
+
+start();
+</script>
+<script>/* thai-letter-spacing-guard */
+(() => {
+  const thai = /[฀-๿]/;
+  for (const el of document.querySelectorAll("body *")) {
+    const ownText = [...el.childNodes].filter(n => n.nodeType === 3).map(n => n.textContent).join("");
+    if (!thai.test(ownText)) continue;
+    if (parseFloat(getComputedStyle(el).letterSpacing) > 0) el.style.letterSpacing = "normal";
+  }
+})();
+</script>
+</body>
+</html>
