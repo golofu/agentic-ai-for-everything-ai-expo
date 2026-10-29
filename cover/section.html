@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Section — Agentic AI for Everything</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700;800&family=Noto+Sans+Thai:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root { --cyan: #7fe3ff; --ink: #f4f7ff; --muted: #a9b3cc; }
+    * { box-sizing: border-box; margin: 0; }
+    html, body { width: 100%; height: 100%; overflow: hidden; background: #03060f; }
+    body {
+      display: grid;
+      place-items: center;
+      container-type: size;
+      color: var(--ink);
+      font-family: "Manrope", "Noto Sans Thai", sans-serif;
+      background:
+        radial-gradient(ellipse at 82% 0%, rgba(40,100,210,.34), transparent 55%),
+        radial-gradient(ellipse at 0% 100%, rgba(120,90,220,.22), transparent 55%),
+        #03060f;
+    }
+    body::before {
+      position: fixed;
+      inset: 0;
+      content: "";
+      background-image:
+        radial-gradient(1px 1px at 20px 30px, #fff, transparent),
+        radial-gradient(1px 1px at 90px 140px, rgba(255,255,255,.8), transparent),
+        radial-gradient(1.5px 1.5px at 160px 60px, #fff, transparent),
+        radial-gradient(1px 1px at 230px 190px, rgba(255,255,255,.6), transparent),
+        radial-gradient(1px 1px at 300px 110px, rgba(190,230,255,.9), transparent);
+      background-size: 400px 300px;
+    }
+    .orb {
+      position: absolute;
+      right: -12cqw;
+      top: 50%;
+      width: 58cqh;
+      aspect-ratio: 1;
+      transform: translateY(-50%);
+      border-radius: 50%;
+      background:
+        repeating-linear-gradient(0deg, transparent 0 calc(12.5% - 1px), rgba(159,234,255,.28) calc(12.5% - 1px) 12.5%),
+        radial-gradient(circle at 35% 35%, #2a6fd0, #0b2a66 60%, #05112e);
+      box-shadow: 0 0 8cqh rgba(127,227,255,.35), inset -4cqh -3cqh 8cqh rgba(0,0,0,.55);
+      opacity: .85;
+    }
+    main { position: relative; width: 84cqw; }
+    .num {
+      color: var(--cyan);
+      font-size: 3cqh;
+      font-weight: 800;
+      letter-spacing: .3em;
+    }
+    h1 {
+      margin-top: 2cqh;
+      max-width: 14em;
+      font-size: 11cqh;
+      font-weight: 800;
+      letter-spacing: -.04em;
+      line-height: 1.08;
+      padding-bottom: .12em;
+      background: linear-gradient(90deg, #b9adff, #7fe3ff 55%, #ffb8cf);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    p { margin-top: 3cqh; max-width: 34em; color: #cdd5ea; font-size: 3.4cqh; font-weight: 600; line-height: 1.5; }
+    a { display: inline-block; margin-top: 5cqh; color: var(--cyan); font-size: 2.6cqh; font-weight: 700; text-decoration: none; border-bottom: 2px solid rgba(127,227,255,.4); }
+  </style>
+</head>
+<body>
+  <div class="orb" aria-hidden="true"></div>
+  <main>
+    <div class="num" id="num"></div>
+    <h1 id="title"></h1>
+    <p id="lead"></p>
+    <a id="link" target="_blank" rel="noopener noreferrer" hidden></a>
+  </main>
+  <script>
+    const q = new URLSearchParams(location.search);
+    document.getElementById("num").textContent = q.get("n") || "";
+    document.getElementById("title").textContent = q.get("t") || "";
+    document.getElementById("lead").textContent = q.get("d") || "";
+    document.title = `${q.get("t") || "Section"} — Agentic AI for Everything`;
+    const url = q.get("u");
+    if (url && /^https:\/\//.test(url)) {
+      const link = document.getElementById("link");
+      link.href = url;
+      link.textContent = url.replace(/^https:\/\//, "").replace(/\/$/, "");
+      link.hidden = false;
+    }
+  </script>
+</body>
+</html>

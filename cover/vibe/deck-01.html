@@ -1,0 +1,395 @@
+<!doctype html>
+<html lang="th">
+<head><base href="https://vibe-code-weblink.vercel.app/decks/"><!-- space-skin --><script>// Space skin: turns a light course slide into the dark space theme of the talk cover.
+// Inlined into each copied slide (scripts/apply-space-skin.py), so it also works in pages that use <base href>.
+(() => {
+  for (const name of ["replaceState", "pushState"]) {
+    const original = history[name].bind(history);
+    // Copied pages keep a <base href> to their source site, so URL updates there would throw.
+    history[name] = (...args) => { try { return original(...args); } catch (error) { return undefined; } };
+  }
+  const css = `
+    html, body { background: #000 !important; }
+    /* Filter the top-level children, not body: a filtered body would become the containing block of fixed viewers. */
+    body > * { filter: invert(1) hue-rotate(180deg); }
+    body img, body video, body iframe, body picture, body svg image,
+    body .bgi, body [style*="background-image"], body [style*="url("] { filter: invert(1) hue-rotate(180deg) !important; }
+    /* Media inside an already re-inverted box would flip back to a negative. */
+    :is(body .bgi, body [style*="background-image"], body [style*="url("]) :is(img, video, iframe, picture, svg image) { filter: none !important; }
+    #space-skin-tint {
+      position: fixed; inset: 0; z-index: 2147483647; pointer-events: none; mix-blend-mode: screen;
+      background:
+        radial-gradient(ellipse at 82% 0%, rgba(40,100,210,.34), transparent 55%),
+        radial-gradient(ellipse at 0% 100%, rgba(120,90,220,.22), transparent 55%),
+        linear-gradient(#081236, #040919);
+    }`;
+  const style = document.createElement("style");
+  style.id = "space-skin";
+  style.textContent = css;
+  document.head.append(style);
+  const addTint = () => {
+    if (document.getElementById("space-skin-tint")) return;
+    const tint = document.createElement("div");
+    tint.id = "space-skin-tint";
+    document.documentElement.append(tint);
+  };
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", addTint, { once: true });
+  else addTint();
+})();
+</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vibe Code บท 01</title>
+<style>html.embed .nav{display:none}html.thumb #dust,html.thumb .nav,html.thumb .bar{display:none}html.thumb *{transition:none!important;animation-delay:0s!important}</style><script>if(/[?&]thumb/.test(location.search))document.documentElement.classList.add("thumb")</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anuphan:wght@400;600;700&family=Inter:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Montserrat:wght@300;400;500;600&family=IBM+Plex+Sans+Thai:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style id="font-set">:root{--fh:"Montserrat","IBM Plex Sans Thai",sans-serif;--fb:"IBM Plex Sans Thai",sans-serif;--fk:"Montserrat",sans-serif}h2,.lab{font-weight:400!important}</style>
+<style>
+:root{--bg:#faf6ee;--g1:#8a601d;--g2:#cfa650;--gold:#a27628;--ink:#2b2219;--muted:#76684f;--line:rgba(162,118,40,.28);--card:rgba(255,255,255,.62)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#faf6ee}}
+:root[data-theme="dark"]{--bg:#faf6ee}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{background:#efe6d3;color:var(--ink);font-family:var(--fb);overflow:hidden;display:grid;place-items:center}
+.stage{position:relative;width:min(100vw,177.78vh);aspect-ratio:16/9;background:radial-gradient(ellipse at 50% 40%,#fffdf8,var(--bg) 72%);container-type:inline-size;overflow:hidden}
+canvas#dust{position:absolute;inset:0;width:100%;height:100%;z-index:0}
+.slide{position:absolute;inset:0;z-index:1;padding:5cqw 6cqw;opacity:0;pointer-events:none;transition:opacity .6s}
+.slide.on{opacity:1;pointer-events:auto}
+.slide .r{opacity:0;transform:translateY(1.4cqw);transition:opacity .8s,transform .8s cubic-bezier(.2,.8,.2,1);transition-delay:calc(var(--d,0) * 1s)}
+.slide.on .r{opacity:1;transform:none}
+.abs{position:absolute}
+.kick{font:600 1.1cqw var(--fk);letter-spacing:.32em;color:var(--gold);text-transform:uppercase}
+h2{font:600 3.5cqw/1.3 var(--fh);margin-top:.6cqw;max-width:86cqw}
+.th{font-family:var(--fb);letter-spacing:0;font-weight:500}
+em,.gold{font-style:normal;background:linear-gradient(100deg,var(--g1),var(--g2) 50%,#9c6f24);-webkit-background-clip:text;background-clip:text;color:transparent}
+p{font:400 1.65cqw/1.6 var(--fb);color:var(--muted)}
+.lab{font:500 1.6cqw/1.35 var(--fb);color:#3a2e20;text-align:center}
+.lab small{display:block;font:400 1.15cqw/1.5 var(--fb);color:#86755a;margin-top:.3cqw}
+.card{border:1px solid var(--line);background:var(--card);border-radius:.8cqw;padding:1.4cqw 1.6cqw}
+.tag{font:500 1.05cqw "JetBrains Mono";color:#8a601d;text-align:center}
+.foot{position:absolute;left:6cqw;right:6cqw;bottom:2.4cqw;display:flex;justify-content:space-between;font:400 .9cqw var(--fk);letter-spacing:.2em;color:#a3926f;z-index:2;pointer-events:none}
+.bar{position:absolute;left:0;bottom:0;height:.22cqw;background:linear-gradient(90deg,var(--g1),var(--g2));z-index:3;transition:width .5s}
+.nav{position:fixed;right:16px;top:12px;display:flex;gap:8px;z-index:5;opacity:.2;transition:opacity .3s}
+.nav:hover{opacity:1}
+.nav button{font:500 14px var(--fb);background:#fffaf0;color:#a27628;border:1px solid #e3d3ae;border-radius:999px;padding:6px 14px;cursor:pointer}
+table{width:100%;border-collapse:collapse;font-size:1.55cqw}
+th,td{padding:1cqw 1.4cqw;text-align:left;border-bottom:1px solid var(--line)}
+th{font:600 1.7cqw var(--fb);color:var(--gold)}
+td:first-child{color:var(--muted)}
+tr.hi td{background:rgba(162,118,40,.1);color:#7a5418;font-weight:600}
+ul.b{list-style:none;display:grid;gap:.7cqw}
+.shot{border:1px solid var(--line);border-radius:.8cqw;overflow:hidden;background:#000}
+.shot img{display:block;width:100%;height:auto}
+.shotcap{margin-top:.5cqw;font:500 1.15cqw/1.35 var(--fb);color:#86755a;text-align:center}
+.cap{margin:.7cqw 0 .5cqw;font:500 1.35cqw/1.4 var(--fb);color:#3a2e20}
+.cap b{color:var(--gold);font-weight:600}
+ul.b.sm li{font-size:1.1cqw;line-height:1.45;padding-left:1.4cqw}
+ul.b.sm li::before{top:.55cqw;width:.45cqw;height:.45cqw}
+
+ul.b li{padding-left:1.8cqw;position:relative;font-size:1.45cqw;line-height:1.5;color:#3a2e20}
+ul.b li::before{content:"";position:absolute;left:0;top:.75cqw;width:.6cqw;height:.6cqw;border-radius:50%;background:var(--gold)}
+
+</style>
+<style>
+.lst{list-style:none;display:grid;gap:1.1cqw}
+.lst li{padding-left:2cqw;position:relative;font:400 1.75cqw/1.55 var(--fb);color:#3a2e20}
+.lst li::before{content:"";position:absolute;left:0;top:1cqw;width:.6cqw;height:.6cqw;border-radius:50%;background:var(--gold)}
+.lst li b{color:var(--ink);font-weight:600}
+.ft{font:400 1.45cqw/1.55 var(--fb);color:var(--muted)}
+.tbl td,.tbl th{font-size:1.32cqw;padding:.7cqw 1.1cqw;line-height:1.45}
+.tbl th{font-size:1.45cqw}
+.code{font:500 1.2cqw "JetBrains Mono";color:#8a601d}
+.st{display:grid;grid-template-columns:1fr 1.05fr;gap:3cqw;position:absolute;left:6cqw;right:6cqw;top:17cqw}
+.st dl{display:grid;gap:1.6cqw}
+.st dt{font:600 1.35cqw var(--fb);color:var(--gold)}
+.st dd{font:400 1.75cqw/1.5 var(--fb);color:#3a2e20;margin-top:.2cqw}
+.say{border-left:.3cqw solid var(--gold);background:rgba(162,118,40,.07);padding:1.3cqw 1.6cqw;border-radius:0 .6cqw .6cqw 0}
+.say small{display:block;font:600 1.35cqw var(--fb);color:var(--gold);margin-bottom:.6cqw}
+.say p{font:500 1.75cqw/1.6 var(--fb);color:#2b2219}
+.warn{margin-top:1.6cqw;font:500 1.6cqw/1.55 var(--fb);color:#7a5418}
+.warn b{color:var(--gold)}
+.lab{font-size:1.55cqw}
+.slide h2{max-width:74cqw}
+.thk{font-family:var(--fb)!important;letter-spacing:.06em!important;text-transform:none!important;font-weight:600}
+.foot .thk{font-weight:400}
+</style>
+<style id="big-text">
+/* ตัวหนังสือใหญ่ขึ้น อ่านง่าย (บท 01) · ต้องอยู่หลัง style อื่นทั้งหมด */
+p{font-size:1.85cqw}
+.lab{font-size:2.05cqw}
+.lab small{font-size:1.6cqw}
+.lst{gap:1.4cqw}
+.lst li{font-size:2.1cqw;padding-left:2.2cqw}
+.lst li::before{top:1.2cqw;width:.7cqw;height:.7cqw}
+.ft{font-size:1.85cqw}
+.tbl td{font-size:1.8cqw;padding:.85cqw 1.1cqw;line-height:1.4}
+.tbl th{font-size:1.95cqw;padding:.85cqw 1.1cqw}
+.tbl.big td{font-size:1.95cqw;padding:.8cqw 1.3cqw}
+.tbl.big th{font-size:2.2cqw}
+ul.b li{font-size:1.75cqw}
+ul.b.sm li{font-size:1.35cqw;padding-left:1.6cqw}
+ul.b.sm li::before{top:.75cqw;width:.5cqw;height:.5cqw}
+.cap{font-size:1.65cqw}
+.pick{font:600 2.6cqw/1.3 var(--fh);color:var(--ink);margin:.8cqw 0 1cqw}
+.ex2{font-size:1.7cqw;line-height:1.5;color:#3a2e20}
+.card.hl{border-color:var(--gold);background:rgba(162,118,40,.08)}
+.why{font-size:1.8cqw;line-height:1.55;color:#3a2e20}
+.why b{color:var(--gold);font-weight:600;margin-right:.6cqw}
+.split2{display:grid;grid-template-columns:1fr 1fr;gap:1.6cqw}
+.split2>div{border:1px solid var(--line);border-radius:.8cqw;padding:.9cqw 1.4cqw;font:400 1.6cqw/1.4 var(--fb);color:#3a2e20;background:var(--card)}
+.split2>div b{display:block;color:var(--ink);font-weight:600;font-size:1.95cqw;margin-bottom:.2cqw}
+.split2>div span{display:block;font-size:1.5cqw;color:#86755a;margin-top:.2cqw}
+.split2>div.on2{border-color:var(--gold);background:rgba(162,118,40,.08)}
+.split2>div.on2 b{color:var(--gold)}
+.tooltitle{font:600 1.85cqw var(--fb);color:var(--ink)}
+.tools4{display:grid;grid-template-columns:1fr 1fr;gap:1.2cqw 1.6cqw}
+.tcard{border-left:.3cqw solid var(--gold);padding:.4cqw 0 .4cqw 1.2cqw}
+.tcard b{display:block;font:600 1.85cqw var(--fb);color:var(--gold)}
+.tcard p{font-size:1.6cqw;line-height:1.45;color:#3a2e20;margin-top:.3cqw}
+</style>
+</head>
+<body>
+<div class="stage" id="stage">
+  <canvas id="dust"></canvas>
+  <section class="slide" data-dust="num:01">
+    <div class="abs kick r" style="left:6cqw;top:5cqw">Gen AI Space · Vibe Code</div>
+    <div class="abs kick r" style="right:6cqw;top:5cqw">คอร์ส 1 วัน</div>
+    <div class="abs r" style="left:6cqw;bottom:6.5cqw;width:60cqw;--d:.8"><div class="kick">บท 01</div><h2 style="font-size:4cqw">Claude Code / Codex คืออะไร</h2></div>
+  </section>
+
+  <section class="slide" data-dust="corner:monitor">
+    <div class="r" style="--d:0"><div class="kick">01.1 · หน้าตาโปรแกรม</div><h2>วันนี้เราใช้ <em>2 โปรแกรม</em>นี้ หน้าตาจริงเป็นแบบนี้</h2></div>
+    <div class="abs r" style="left:6cqw;width:42.5cqw;top:14cqw;--d:.5">
+      <div class="shot"><img src="media/app-claude-code.jpg" alt="Claude Desktop แท็บ Code"></div>
+      <div class="cap"><b>Claude Desktop</b> → แท็บ <b>Code</b> (ปุ่ม &lt;/&gt; มุมซ้ายบน)</div>
+      <ul class="b sm"><li>แถบล่าง: <b>Local</b> + เลือกโฟลเดอร์งาน</li><li>กล่องพิมพ์ "Describe a task" สั่งเป็นภาษาไทยได้เลย</li><li>มุมขวาล่าง: โมเดล (Opus 5.5) และโหมด (Auto)</li></ul>
+    </div>
+    <div class="abs r" style="left:51.5cqw;width:42.5cqw;top:14cqw;--d:.8">
+      <div class="shot"><img src="media/app-codex.jpg" alt="ChatGPT Desktop Codex"></div>
+      <div class="cap"><b>ChatGPT Desktop</b> → <b>Codex</b> ("What will you build?")</div>
+      <ul class="b sm"><li>ปุ่มโฟลเดอร์ใต้หัวข้อ = เลือกโฟลเดอร์งาน</li><li>กล่องพิมพ์ "Ask Codex anything" พิมพ์ @ เพื่อแนบไฟล์</li><li>แถวล่าง: สิทธิ์ (Full access) และโมเดล</li></ul>
+    </div>
+    <p class="abs r" style="left:6cqw;right:6cqw;bottom:4.2cqw;--d:1.2;font:400 1.05cqw var(--fk);letter-spacing:.06em;color:#a3926f">ภาพซ้าย: หน้าจอจริงจากเครื่องผู้สอน (Windows) · ภาพขวา: ภาพแอป Codex จากเว็บทางการ OpenAI</p>
+  </section>
+  <section class="slide" data-dust="corner:myth">
+    <div class="r" style="--d:0"><div class="kick">01.1</div><h2>Myth <em>vs</em> Reality</h2></div>
+    <table class="tbl big abs r" style="left:6cqw;width:88cqw;top:12.5cqw;--d:.5"><tr><th style="width:27%">ความเชื่อ</th><th>ความจริง</th></tr><tr><td>Claude Code ต้องเขียน code เป็น</td><td>ไม่ต้องเลย สั่งงานด้วยภาษาไทยได้ 100% คำว่า Code ในชื่อหมายถึง AI ทำ code ให้คุณ ไม่ใช่คุณต้องเขียนเอง</td></tr><tr><td>Terminal ยากและน่ากลัว</td><td>Terminal คือแค่กล่องพิมพ์ข้อความ เหมือน chat box แต่คุยกับ AI ที่ทำงานได้จริงบนเครื่องคุณ</td></tr><tr><td>เหมาะกับ Developer เท่านั้น</td><td>ปี 2026 มีหนังสือสำหรับ solopreneurs มีคนสร้าง startup ได้ MVP ใน 48 ชั่วโมง โดยไม่เขียน code สักบรรทัด</td></tr><tr><td>ใช้ ChatGPT หรือ Claude เว็บก็เหมือนกัน</td><td>ต่างกันมาก เว็บคือถาม-ตอบแล้วคุณไปทำเอง Terminal คือมีลูกน้องนั่งอยู่ที่โต๊ะ เปิดไฟล์ ทำงาน และส่งงานให้เสร็จ</td></tr></table>
+    <p class="ft abs r" style="left:6cqw;right:6cqw;bottom:5cqw;--d:1">วันนี้ไม่ต้องเปิด Terminal เลย ใช้แอป Claude Desktop (แท็บ Code) และ ChatGPT Desktop (Codex) แทน</p>
+  </section>
+
+  <section class="slide" data-dust="corner:layers">
+    <div class="r" style="--d:0"><div class="kick">01.2</div><h2>The AI Spectrum: เว็บ / แชทในแอป / <em>Code</em></h2></div>
+    <table class="tbl abs r" style="left:6cqw;width:88cqw;top:12.5cqw;--d:.5"><tr><th style="width:17%"></th><th style="width:20%">01 LLM Web</th><th style="width:29%">02 Claude.ai ในแอป</th><th style="width:34%">03 Claude Code</th></tr><tr><td>บทบาท</td><td>ที่ปรึกษาอยู่อีกห้อง</td><td>เพื่อนร่วมงานบนจอ</td><td>ลูกน้องที่นั่งคุมเครื่องคุณ</td></tr><tr><td>การเข้าถึงไฟล์</td><td>อัปโหลดทีละไฟล์</td><td>ลากวางทีละไฟล์</td><td>อ่านทั้งโฟลเดอร์ หลายร้อยไฟล์พร้อมกัน</td></tr><tr><td>ความจำ</td><td>ลืมทุกครั้งที่เริ่มใหม่</td><td>จำได้แค่ใน session เดียว</td><td>CLAUDE.md ไฟล์ความจำถาวร</td></tr><tr><td>เครื่องมือภายนอก</td><td>อยู่แค่หน้าเว็บ</td><td>มี Connector บางตัว</td><td>MCP เชื่อมต่อทุกอย่าง (Notion, Calendar, Gmail)</td></tr><tr><td>ทำงานอัตโนมัติ</td><td>ทำไม่ได้</td><td>ตั้งเวลาได้แต่ต้องเปิดเครื่องทิ้งไว้</td><td>Routines ทำงานบนคลาวด์ ข้ามคืน</td></tr></table>
+    <p class="ft abs r" style="left:6cqw;right:6cqw;bottom:4.6cqw;--d:1">ตัวตัดสินว่าใครทำงานฉลาด ไม่ได้ขึ้นอยู่แค่ความเก่งของโมเดล<br>แต่ขึ้นอยู่กับความสามารถในการเชื่อมต่อโปรแกรมอื่น ๆ ได้อย่างเนียนกริ๊ป</p>
+  </section>
+
+  <section class="slide" data-dust="none">
+    <div class="r" style="--d:0"><div class="kick">01.2</div><h2><em>Code</em> เหมาะกับงานแบบไหน</h2></div>
+    <div class="abs r split2" style="left:6cqw;right:6cqw;top:12.6cqw;--d:.4">
+      <div><b>Claude.ai + ChatGPT Work</b>เหมาะกับงานของพนักงานออฟฟิศและเจ้าของกิจการทั่วไป</div>
+      <div class="on2"><b>Claude Code + Codex</b>เหมาะกับการสร้างเว็บ แอป และเกมต่าง ๆ</div>
+    </div>
+    <div class="abs r tooltitle" style="left:6cqw;right:6cqw;top:22.4cqw;--d:.7">Claude Code / Codex ทะลุทะลวงกว่า เพราะ<em>AI ลงมือทำงานในคอมเราได้เองแทบทุกขั้น</em> ตั้งแต่สร้างจนใช้งานจริง</div>
+    <div class="abs r tools4" style="left:6cqw;right:6cqw;top:26.4cqw;--d:.9">
+      <div class="tcard"><b>1 · เปิดแอปลองกดได้ทันที</b><p>AI เปิดแอปขึ้นมาเอง ลองกด "บันทึกน้ำหนัก" กรอกเลขจริง เจอปุ่มที่กดไม่ได้ก็แก้เองจนใช้ได้</p></div>
+      <div class="tcard"><b>2 · เซฟจุดย้อนกลับได้</b><p>สั่งเพิ่มหน้ารายงานแล้วแอปพัง พิมพ์ว่า "ย้อนกลับไปจุดเซฟเมื่อกี้" แอปกลับมาใช้ได้เหมือนเดิม</p></div>
+      <div class="tcard"><b>3 · เห็นว่า AI แก้อะไรไปบ้าง</b><p>สั่งเปลี่ยนสีปุ่ม แต่ AI ไปแก้หน้าอื่นด้วย เราเห็นทันทีก่อนกดยอมรับ</p></div>
+      <div class="tcard"><b>4 · สั่งรันคำสั่งในเครื่องได้</b><p>สั่ง "เอาขึ้นเว็บให้หน่อย" AI รันคำสั่งเอง ได้ลิงก์ส่งให้คุณแม่เปิดในมือถือ</p></div>
+    </div>
+    <p class="abs r" style="left:6cqw;right:6cqw;bottom:4.2cqw;--d:1.2;font:400 1.15cqw var(--fk);letter-spacing:.04em;color:#a3926f">ที่มา: Claude Academy (Choosing between Cowork or Chat) · Claude Code Docs (Desktop: Browser pane, Git, diff view, terminal)</p>
+  </section>
+
+  <section class="slide" data-dust="corner:compare">
+    <div class="r" style="--d:0"><div class="kick">01.4 · วิธีแยกงานในคอร์สนี้</div><h2>งานเอกสาร กับ <em>งานสร้าง</em> แยกกันใช้</h2></div>
+    <div class="card abs r" style="left:6cqw;width:42cqw;top:15cqw;height:23cqw;--d:.6">
+      <div class="kick thk" style="letter-spacing:.06em;font-size:1.6cqw">งานเอกสาร</div>
+      <div class="pick">Claude.ai<br>หรือ ChatGPT Work</div>
+      <p class="ex2">สรุปไฟล์ ทำรายงาน อ่าน resume ร่างอีเมล วิเคราะห์ข้อมูล</p>
+    </div>
+    <div class="card abs r hl" style="left:52cqw;width:42cqw;top:15cqw;height:23cqw;--d:.8">
+      <div class="kick thk" style="letter-spacing:.06em;font-size:1.6cqw">งานสร้าง</div>
+      <div class="pick">Claude Code<br>หรือ Codex</div>
+      <p class="ex2">เว็บ แอป เกม แดชบอร์ด เครื่องมือที่กดใช้ซ้ำได้</p>
+    </div>
+    <div class="abs r" style="left:6cqw;right:6cqw;top:40.5cqw;--d:1.2">
+      <p class="why"><b>ทำไมต้องแยก</b> จริง ๆ Claude Code + Codex ก็ทำได้ทุกอย่าง แต่การแยกประเภทการทำงานจะช่วยให้ทำงานได้ง่ายขึ้น โดยแยกโฟลเดอร์และกติกาของงานแต่ละประเภทให้ชัดเจน</p>
+    </div>
+  </section>
+
+  <section class="slide" data-dust="duo:file,plug">
+    <div class="r" style="--d:0"><div class="kick">01.3</div><h2>The Engine: <em>สมอง + มือ</em></h2></div>
+    <div class="abs lab r" style="left:12cqw;width:36cqw;top:37cqw;--d:1.00">CLAUDE.md = สมอง<small>ไฟล์ข้อความในโฟลเดอร์งาน Claude อ่านเองทุก session เหมือนคู่มือพนักงานใหม่ · ระบุธุรกิจ ลูกค้า tone สิ่งที่ห้ามทำ · เขียนครั้งเดียว ใช้ได้ตลอด (วันนี้ prompt บท 02 สร้างให้)</small></div><div class="abs lab r" style="left:52cqw;width:36cqw;top:37cqw;--d:1.20">MCP = มือ<small>เชื่อม Claude Code กับ Notion, Google Calendar, Gmail, Figma, ฐานข้อมูล · สั่งงานข้ามแพลตฟอร์มจากที่เดียว · ไม่ต้องตั้งวันนี้ ค่อยเพิ่มเมื่อเจอปัญหา (ดูคำศัพท์บท 06)</small></div>
+    
+  </section>
+
+  <section class="slide" data-dust="none">
+    <div class="r" style="--d:0"><div class="kick">01.5</div><h2>ตัวจบงานแบบทะลุทะลวง คือ <em>Terminal CLI</em></h2></div>
+    <div class="abs r" style="left:10cqw;width:38cqw;top:13cqw;--d:.6"><div class="shot"><img src="media/cli-claude.jpg" alt="Claude Code ใน Terminal"></div></div>
+    <div class="abs r" style="left:52cqw;width:38cqw;top:13cqw;--d:.8"><div class="shot"><img src="media/cli-codex.jpg" alt="Codex ใน Terminal"></div></div>
+    <div class="abs lab r" style="left:10cqw;width:38cqw;top:36cqw;--d:1.00">Claude Code CLI<small>สั่งงานผ่าน Terminal · อ่านกติกาจาก CLAUDE.md</small></div><div class="abs lab r" style="left:52cqw;width:38cqw;top:36cqw;--d:1.20">Codex CLI<small>สั่งงานผ่าน Terminal · อ่านกติกาจาก AGENTS.md</small></div>
+    <p class="ft abs r" style="left:6cqw;right:6cqw;bottom:4.6cqw;--d:1.8">Terminal CLI คือการสั่งงานผ่านช่องพิมพ์คำสั่ง · สั่งเป็นภาษาคนให้ AI ทำงานกับไฟล์ รันคำสั่ง และแก้ปัญหาต่อจนจบงาน ภายในสิทธิ์ที่เราอนุญาต</p>
+  </section>
+
+  <div class="foot"><span>VIBE CODE · บท 01 Claude Code / Codex คืออะไร</span><span id="pg">01 / 07</span></div>
+  <div class="bar" id="bar"></div>
+</div>
+<div class="nav"><button type="button" id="prev">ก่อนหน้า</button><button type="button" id="next">ถัดไป</button><button type="button" id="fs">เต็มจอ</button></div>
+
+<script>
+(() => {
+  // Thai must never get Latin letter-spacing: wrap Thai runs in .kick / .foot
+  document.querySelectorAll(".kick, .foot span").forEach(el => { if (/[฀-๿]/.test(el.textContent)) el.classList.add("thk"); });
+  const stage = document.getElementById("stage"), cv = document.getElementById("dust"), ctx = cv.getContext("2d");
+  const slides = [...document.querySelectorAll(".slide")];
+  // ---------- dust icon library: each draws centred at (x,y) with size s on a 320x180 canvas ----------
+  const L = (c, pts) => { c.beginPath(); pts.forEach(([x, y], i) => i ? c.lineTo(x, y) : c.moveTo(x, y)); c.stroke(); };
+  const circ = (c, x, y, r, fill) => { c.beginPath(); c.arc(x, y, r, 0, 7); fill ? c.fill() : c.stroke(); };
+  const rr = (c, x, y, w, h, r) => { c.beginPath(); c.roundRect(x, y, w, h, r); c.stroke(); };
+  const txt = (c, t, x, y, px, font = "Inter, Arial, sans-serif", w = 800) => { c.font = `${w} ${px}px ${font}`; c.textAlign = "center"; c.textBaseline = "middle"; c.fillText(t, x, y); };
+  const gearAt = (c, x, y, s) => { c.beginPath(); for (let i = 0; i < 16; i++) { const a = i * Math.PI / 8, r = i % 2 ? s * .8 : s; c.lineTo(x + Math.cos(a) * r, y + Math.sin(a) * r); } c.closePath(); c.stroke(); circ(c, x, y, s * .35); };
+  const I = {
+    folder: (c, x, y, s) => { L(c, [[x - s, y - s * .55], [x - s * .35, y - s * .55], [x - s * .2, y - s * .8], [x + s * .1, y - s * .8], [x + s * .2, y - s * .55], [x + s, y - s * .55], [x + s, y + s * .7], [x - s, y + s * .7], [x - s, y - s * .55]]); },
+    file: (c, x, y, s) => { L(c, [[x - s * .6, y - s], [x + s * .25, y - s], [x + s * .6, y - s * .65], [x + s * .6, y + s], [x - s * .6, y + s], [x - s * .6, y - s]]); [-.3, 0, .3].forEach(k => L(c, [[x - s * .35, y + k * s], [x + s * .35, y + k * s]])); },
+    tree: (c, x, y, s) => { circ(c, x, y - s * .8, s * .22, 1); L(c, [[x, y - s * .6], [x, y - s * .2], [x - s * .8, y - s * .2], [x - s * .8, y + s * .2]]); L(c, [[x, y - s * .2], [x + s * .8, y - s * .2], [x + s * .8, y + s * .2]]); L(c, [[x, y - s * .2], [x, y + s * .2]]); [-.8, 0, .8].forEach(k => c.strokeRect(x + k * s - s * .22, y + s * .25, s * .44, s * .44)); },
+    gear: (c, x, y, s) => gearAt(c, x, y, s),
+    shield: (c, x, y, s) => { L(c, [[x, y - s], [x + s * .8, y - s * .65], [x + s * .7, y + s * .3], [x, y + s], [x - s * .7, y + s * .3], [x - s * .8, y - s * .65], [x, y - s]]); L(c, [[x - s * .3, y], [x - s * .05, y + s * .3], [x + s * .35, y - s * .25]]); },
+    key: (c, x, y, s) => { circ(c, x - s * .5, y, s * .38); L(c, [[x - s * .12, y], [x + s, y], [x + s, y + s * .3]]); L(c, [[x + s * .65, y], [x + s * .65, y + s * .25]]); },
+    lock: (c, x, y, s) => { c.strokeRect(x - s * .7, y - s * .15, s * 1.4, s * 1.05); c.beginPath(); c.arc(x, y - s * .15, s * .45, Math.PI, 0); c.stroke(); circ(c, x, y + s * .35, s * .12, 1); },
+    coin: (c, x, y, s) => { c.beginPath(); c.ellipse(x, y - s * .4, s * .9, s * .35, 0, 0, 7); c.stroke(); L(c, [[x - s * .9, y - s * .4], [x - s * .9, y + s * .4]]); L(c, [[x + s * .9, y - s * .4], [x + s * .9, y + s * .4]]); c.beginPath(); c.ellipse(x, y + s * .4, s * .9, s * .35, 0, 0, Math.PI); c.stroke(); },
+    monitor: (c, x, y, s) => { c.strokeRect(x - s, y - s * .65, s * 2, s * 1.2); L(c, [[x - s * .4, y + s * .85], [x + s * .4, y + s * .85]]); L(c, [[x, y + s * .55], [x, y + s * .85]]); },
+    terminal: (c, x, y, s) => { c.strokeRect(x - s, y - s * .65, s * 2, s * 1.3); L(c, [[x - s * .6, y - s * .2], [x - s * .25, y], [x - s * .6, y + s * .2]]); L(c, [[x - s * .1, y + s * .25], [x + s * .4, y + s * .25]]); },
+    download: (c, x, y, s) => { L(c, [[x, y - s], [x, y + s * .3]]); L(c, [[x - s * .45, y - s * .15], [x, y + s * .3], [x + s * .45, y - s * .15]]); L(c, [[x - s * .9, y + s * .4], [x - s * .9, y + s * .8], [x + s * .9, y + s * .8], [x + s * .9, y + s * .4]]); },
+    git: (c, x, y, s) => { circ(c, x - s * .5, y - s * .7, s * .2); circ(c, x - s * .5, y + s * .7, s * .2); circ(c, x + s * .5, y - s * .1, s * .2); L(c, [[x - s * .5, y - s * .5], [x - s * .5, y + s * .5]]); c.beginPath(); c.moveTo(x + s * .5, y + s * .1); c.quadraticCurveTo(x + s * .5, y + s * .45, x - s * .4, y + s * .55); c.stroke(); },
+    rewind: (c, x, y, s) => { c.beginPath(); c.arc(x, y, s * .8, -Math.PI * .7, Math.PI * .9); c.stroke(); L(c, [[x - s * .75, y - s * .9], [x - s * .5, y - s * .62], [x - s * .9, y - s * .45]]); L(c, [[x, y - s * .4], [x, y], [x + s * .35, y + s * .2]]); },
+    save: (c, x, y, s) => { L(c, [[x - s * .8, y - s * .8], [x + s * .5, y - s * .8], [x + s * .8, y - s * .5], [x + s * .8, y + s * .8], [x - s * .8, y + s * .8], [x - s * .8, y - s * .8]]); c.strokeRect(x - s * .45, y - s * .8, s * .8, s * .5); c.strokeRect(x - s * .5, y + s * .15, s, s * .65); },
+    bubble: (c, x, y, s) => { rr(c, x - s, y - s * .7, s * 2, s * 1.25, s * .25); L(c, [[x - s * .4, y + s * .55], [x - s * .6, y + s * .95], [x - s * .05, y + s * .55]]); },
+    question: (c, x, y, s) => { I.bubble(c, x, y, s); txt(c, "?", x, y - s * .05, s * 1.1); },
+    signpost: (c, x, y, s) => { L(c, [[x, y - s], [x, y + s]]); L(c, [[x - s * .9, y - s * .75], [x + s * .6, y - s * .75], [x + s * .9, y - s * .55], [x + s * .6, y - s * .35], [x - s * .9, y - s * .35], [x - s * .9, y - s * .75]]); L(c, [[x + s * .9, y - s * .1], [x - s * .6, y - s * .1], [x - s * .9, y + s * .1], [x - s * .6, y + s * .3], [x + s * .9, y + s * .3], [x + s * .9, y - s * .1]]); L(c, [[x - s * .5, y + s], [x + s * .5, y + s]]); },
+    network: (c, x, y, s) => { const pts = [[0, -.8], [-.8, .5], [0, .5], [.8, .5]]; pts.slice(1).forEach(([a, b]) => L(c, [[x, y - s * .55], [x + a * s, y + b * s - s * .2]])); circ(c, x, y - s * .8, s * .25, 1); pts.slice(1).forEach(([a, b]) => circ(c, x + a * s, y + b * s, s * .2)); },
+    ten: (c, x, y, s) => { circ(c, x, y, s); txt(c, "10", x, y + s * .05, s * .95); },
+    doc: (c, x, y, s) => { c.strokeRect(x - s * .7, y - s, s * 1.4, s * 2); txt(c, "PRD", x, y - s * .45, s * .45); [.05, .35, .65].forEach(k => L(c, [[x - s * .45, y + k * s], [x + s * .45, y + k * s]])); },
+    bricks: (c, x, y, s) => { const w = s * .9, h = s * .42; [[-1, 1], [0, 1], [-.5, .5 - .02], [.5, .5 - .02], [0, 0]].forEach(([a, b], i) => c.strokeRect(x + a * w - w * .48 + (i < 2 ? w * .5 : 0), y + b * h * 2 - h, w * .94, h * .88)); },
+    check: (c, x, y, s) => { circ(c, x, y, s); L(c, [[x - s * .45, y], [x - s * .1, y + s * .38], [x + s * .5, y - s * .35]]); },
+    test: (c, x, y, s) => { c.strokeRect(x - s * .75, y - s, s * 1.5, s * 2); [-.5, 0, .5].forEach(k => { L(c, [[x - s * .5, y + k * s], [x - s * .32, y + k * s + s * .15], [x - s * .05, y + k * s - s * .15]]); L(c, [[x + s * .1, y + k * s], [x + s * .5, y + k * s]]); }); },
+    magnifier: (c, x, y, s) => { circ(c, x - s * .2, y - s * .2, s * .6); L(c, [[x + s * .23, y + s * .23], [x + s * .8, y + s * .8]]); },
+    bug: (c, x, y, s) => { c.beginPath(); c.ellipse(x, y + s * .1, s * .5, s * .7, 0, 0, 7); c.stroke(); circ(c, x, y - s * .7, s * .25); [-.25, .15, .55].forEach(k => { L(c, [[x - s * .5, y + k * s], [x - s, y + k * s - s * .15]]); L(c, [[x + s * .5, y + k * s], [x + s, y + k * s - s * .15]]); }); L(c, [[x, y - s * .45], [x, y + s * .8]]); },
+    cloudup: (c, x, y, s) => { c.beginPath(); c.arc(x - s * .45, y + s * .1, s * .4, Math.PI * .5, Math.PI * 1.5); c.arc(x, y - s * .25, s * .55, Math.PI, 0); c.arc(x + s * .5, y + s * .1, s * .4, -Math.PI * .5, Math.PI * .5); c.closePath(); c.stroke(); L(c, [[x, y + s * .3], [x, y - s * .2]]); L(c, [[x - s * .22, y], [x, y - s * .22], [x + s * .22, y]]); },
+    globe: (c, x, y, s) => { circ(c, x, y, s); c.beginPath(); c.ellipse(x, y, s * .45, s, 0, 0, 7); c.stroke(); L(c, [[x - s, y], [x + s, y]]); L(c, [[x - s * .85, y - s * .5], [x + s * .85, y - s * .5]]); L(c, [[x - s * .85, y + s * .5], [x + s * .85, y + s * .5]]); },
+    mic: (c, x, y, s) => { rr(c, x - s * .35, y - s, s * .7, s * 1.2, s * .35); c.beginPath(); c.arc(x, y, s * .65, .15, Math.PI - .15); c.stroke(); L(c, [[x, y + s * .65], [x, y + s * .95]]); },
+    layers: (c, x, y, s) => { [-.6, 0, .6].forEach((k, i) => L(c, [[x - s, y + k * s], [x, y + k * s - s * .35], [x + s, y + k * s], [x, y + k * s + s * .35], [x - s, y + k * s]])); },
+    plug: (c, x, y, s) => { rr(c, x - s * .55, y - s * .3, s * 1.1, s * .8, s * .2); L(c, [[x - s * .25, y - s * .3], [x - s * .25, y - s * .8]]); L(c, [[x + s * .25, y - s * .3], [x + s * .25, y - s * .8]]); L(c, [[x, y + s * .5], [x, y + s]]); },
+    compare: (c, x, y, s) => { c.strokeRect(x - s, y - s * .7, s * .85, s * 1.4); c.strokeRect(x + s * .15, y - s * .7, s * .85, s * 1.4); L(c, [[x - s * .15, y], [x + s * .15, y]]); },
+    sliders: (c, x, y, s) => { [-.6, 0, .6].forEach((k, i) => { L(c, [[x - s, y + k * s], [x + s, y + k * s]]); circ(c, x + [-.4, .3, -.1][i] * s, y + k * s, s * .18, 1); }); },
+    eye: (c, x, y, s) => { c.beginPath(); c.moveTo(x - s, y); c.quadraticCurveTo(x, y - s * .9, x + s, y); c.quadraticCurveTo(x, y + s * .9, x - s, y); c.stroke(); circ(c, x, y, s * .3, 1); },
+    sparkle: (c, x, y, s) => { c.beginPath(); for (let i = 0; i < 8; i++) { const a = i * Math.PI / 4, r = i % 2 ? s * .25 : s; c.lineTo(x + Math.cos(a) * r, y + Math.sin(a) * r); } c.closePath(); c.fill(); },
+    brain: (c, x, y, s) => { c.beginPath(); c.arc(x - s * .35, y - s * .2, s * .5, Math.PI * .6, Math.PI * 1.9); c.arc(x + s * .35, y - s * .2, s * .5, Math.PI * 1.1, Math.PI * .4); c.closePath(); c.stroke(); L(c, [[x, y - s * .65], [x, y + s * .45]]); },
+    myth: (c, x, y, s) => { circ(c, x - s * .5, y, s * .45); L(c, [[x - s * .8, y - s * .3], [x - s * .2, y + s * .3]]); L(c, [[x - s * .2, y - s * .3], [x - s * .8, y + s * .3]]); circ(c, x + s * .5, y, s * .45); L(c, [[x + s * .3, y], [x + s * .45, y + s * .18], [x + s * .7, y - s * .2]]); },
+    prompt: (c, x, y, s) => { rr(c, x - s * 1.1, y - s * .45, s * 2.2, s * .9, s * .45); L(c, [[x - s * .75, y - s * .15], [x - s * .5, y], [x - s * .75, y + s * .15]]); L(c, [[x - s * .35, y + s * .15], [x + s * .6, y + s * .15]]); },
+    package: (c, x, y, s) => { L(c, [[x, y - s], [x + s * .9, y - s * .5], [x + s * .9, y + s * .5], [x, y + s], [x - s * .9, y + s * .5], [x - s * .9, y - s * .5], [x, y - s]]); L(c, [[x - s * .9, y - s * .5], [x, y], [x + s * .9, y - s * .5]]); L(c, [[x, y], [x, y + s]]); },
+    book: (c, x, y, s) => { L(c, [[x, y - s * .7], [x - s, y - s * .9], [x - s, y + s * .7], [x, y + s * .9], [x + s, y + s * .7], [x + s, y - s * .9], [x, y - s * .7], [x, y + s * .9]]); }
+  };
+  // kind strings: "num:01" | "word:876" | "right:folder" | "row:a,b,c" | "corner:gear" | "wall" | "bricks" ...
+  const compile = kind => {
+    const [k, arg = ""] = kind.split(":");
+    const lw = c => { c.lineWidth = 180 * .016; c.lineJoin = "round"; };
+    if (k === "num") return (c, W, H) => txt(c, arg, W * .7, H * .45, H * .62);
+    if (k === "word") return (c, W, H) => txt(c, arg, W * .77, H * .5, H * .3);
+    if (k === "right") return (c, W, H) => { lw(c); I[arg](c, W * .78, H * .52, H * .17); };
+    if (k === "corner") return (c, W, H) => { lw(c); c.lineWidth = 180 * .014; I[arg](c, W * .87, H * .18, H * .09); };
+    if (k === "row") return (c, W, H) => { lw(c); const a = arg.split(","), n = a.length; a.forEach((nm, i) => I[nm](c, W * (.06 + .88 * (i + .5) / n), H * .41, H * .1)); };
+    if (k === "row2") return (c, W, H) => { lw(c); const a = arg.split(","), n = a.length; a.forEach((nm, i) => I[nm](c, W * (.06 + .88 * (i + .5) / n), H * .33, H * .07)); };
+    if (k === "duo") return (c, W, H) => { lw(c); const [a, b] = arg.split(","); I[a](c, W * .3, H * .47, H * .13); I[b](c, W * .7, H * .47, H * .13); L(c, [[W * .44, H * .47], [W * .56, H * .47]]); L(c, [[W * .54, H * .44], [W * .56, H * .47], [W * .54, H * .5]]); };
+    if (k === "trio") return (c, W, H) => { lw(c); const a = arg.split(","); [.2, .5, .8].forEach((v, i) => { I[a[i]](c, W * v, H * .45, H * .11); if (i < 2) { L(c, [[W * (v + .1), H * .45], [W * (v + .2), H * .45]]); L(c, [[W * (v + .18), H * .42], [W * (v + .2), H * .45], [W * (v + .18), H * .48]]); } }); };
+    return () => {};
+  };
+  const S = new Proxy({}, { get: (o, k) => o[k] || (o[k] = compile(String(k))) });
+
+  let W = 0, H = 0, cur = 0, kind = "", t0 = 0, pts = [], key = "";
+  const N = 1300, P = Array.from({ length: N }, () => ({ x: Math.random(), y: Math.random(), p: Math.random() * 6.28, s: .6 + Math.random() * 1.2 }));
+  const off = document.createElement("canvas"); off.width = 320; off.height = 180; const oc = off.getContext("2d");
+  const brickPts = (() => { const o = []; let n = 0; for (let r = 0; r < 5; r++) { const cnt = r === 4 ? 2 : r > 2 ? 3 : 4, off = r % 2 ? .05 : 0; for (let k = 0; k < cnt; k++, n++) { const bx = .55 + off + k * .1, by = .78 - r * .1; for (let y = 0; y < 6; y++) for (let x = 0; x < 13; x++) o.push([bx + .092 * (.08 + .84 * (x + .5) / 13), by + .085 * (.12 + .76 * (y + .5) / 6), n]); } } return o; })();
+  const sample = t => {
+    if (kind === "bricks") return brickPts;
+    oc.clearRect(0, 0, 320, 180); oc.fillStyle = oc.strokeStyle = "#fff"; oc.lineCap = "round"; S[kind](oc, 320, 180, t);
+    const d = oc.getImageData(0, 0, 320, 180).data, o = [];
+    for (let y = 0; y < 180; y += 2) for (let x = 0; x < 320; x += 2) if (d[(y * 320 + x) * 4 + 3] > 110) o.push([x / 320, y / 180]);
+    for (let i = o.length - 1; i > 0; i--) { const j = (i * 7919) % (i + 1); [o[i], o[j]] = [o[j], o[i]]; }
+    return o;
+  };
+  const fit = () => { const r = stage.getBoundingClientRect(), d = Math.min(2, devicePixelRatio || 1); W = cv.width = Math.round(r.width * d); H = cv.height = Math.round(r.height * d); };
+  // ดาวประกายทองแซมเงิน (ทอง 5 : เงิน 1) บนพื้นขาวนวล — Boss อนุมัติ 2026-10-15
+  const STAR = (() => {
+    const R = 64, m = R / 2;
+    const cnv = () => { const c = document.createElement("canvas"); c.width = c.height = R; return c; };
+    const arms = [[m * .95, m * .1], [m * .1, m * .95], [m * .42, m * .05], [m * .05, m * .42]];
+    const gold = (() => {
+      const c = cnv(), g = c.getContext("2d"); g.translate(m, m); g.shadowColor = "rgba(90,60,10,.45)"; g.shadowBlur = 3; g.fillStyle = "#86590f";
+      for (const [a, b] of arms) { g.beginPath(); g.ellipse(0, 0, a, b, 0, 0, 6.3); g.fill(); }
+      g.shadowColor = "transparent"; g.fillStyle = "#f1d58a"; g.beginPath(); g.arc(0, 0, m * .14, 0, 6.3); g.fill(); g.fillStyle = "#ffffff"; g.beginPath(); g.arc(0, 0, m * .06, 0, 6.3); g.fill();
+      return c;
+    })();
+    const silver = (() => {
+      const c = cnv(), g = c.getContext("2d"); g.translate(m, m);
+      const rg = g.createRadialGradient(0, 0, 0, 0, 0, m * .95);
+      rg.addColorStop(0, "#ffffff"); rg.addColorStop(.22, "#f2f6fb"); rg.addColorStop(.5, "#b9c3d0"); rg.addColorStop(1, "#7b8696");
+      g.shadowColor = "rgba(60,78,108,.35)"; g.shadowBlur = 3; g.fillStyle = rg;
+      for (const [a, b] of arms) { g.beginPath(); g.ellipse(0, 0, a, b, 0, 0, 6.3); g.fill(); }
+      g.shadowColor = "rgba(255,255,255,.6)"; g.shadowBlur = 4; g.fillStyle = "#ffffff"; g.beginPath(); g.arc(0, 0, m * .15, 0, 6.3); g.fill();
+      return c;
+    })();
+    return {
+      fade: "rgba(250,246,238,.9)", size: 1.9,
+      draw(c, q, x, y, s, tw, now) {
+        const isSilver = (q.p * 1000 | 0) % 6 < 1, gl = isSilver ? silver : gold;
+        if (isSilver) { tw = .5 + .5 * Math.sin(now / 220 + q.p * 7); s *= .75; }
+        if (q.p * 100 % 10 < 3.5) { const k = s * (1.7 + 1.3 * tw); c.drawImage(gl, x - k / 2, y - k / 2, k, k); return; }
+        c.fillStyle = isSilver ? "rgba(120,132,150,.95)" : "rgba(112,76,16,.95)"; c.beginPath(); c.arc(x, y, Math.max(1, s * .27), 0, 6.3); c.fill();
+        if (tw > .85) { const a = (tw - .85) / .15, k = s * (2.4 + 2.2 * a); c.globalAlpha = a; c.drawImage(gl, x - k / 2, y - k / 2, k, k); c.globalAlpha = 1; }
+      }
+    };
+  })();
+  const frame = now => {
+    const t = (now - t0) / 1000, k = kind === "cover" ? Math.floor(t / 4) % 2 : 0, shown = Math.floor(t / .35) + 1;
+    if (k + kind !== key) { key = k + kind; pts = sample(t); if (kind === "cover" && t > 1) P.forEach(q => { q.x += (Math.random() - .5) * .08; q.y += (Math.random() - .5) * .08; }); }
+    ctx.fillStyle = STAR.fade; ctx.fillRect(0, 0, W, H);
+    const n = pts.length, swirl = kind === "bricks" ? 0 : Math.max(0, 1 - t * .9), cap = kind === "bricks" ? 900 : N;
+    for (let i = 0; i < cap && n; i++) {
+      const q = P[i], [tx, ty, bi] = pts[Math.floor(i * n / cap)];
+      if (kind === "bricks" && bi >= shown) { q.x += (tx - q.x) * .01; q.y += (ty - .25 - q.y) * .01; continue; }
+      q.x += (tx - q.x) * .055 * (1 - swirl * .8) + Math.cos(now / 600 + q.p) * swirl * .004;
+      q.y += (ty - q.y) * .055 * (1 - swirl * .8) + Math.sin(now / 600 + q.p) * swirl * .004 * 1.6;
+      const tw = .6 + .4 * Math.sin(now / 500 + q.p * 3), sz = q.s * W / 620 * STAR.size;
+      STAR.draw(ctx, q, q.x * W, q.y * H, sz, tw, now);
+    }
+    requestAnimationFrame(frame);
+  };
+  const go = n => {
+    cur = Math.max(0, Math.min(slides.length - 1, n));
+    slides.forEach((s, i) => s.classList.toggle("on", i === cur));
+    kind = slides[cur].dataset.dust; t0 = performance.now(); key = "";
+    P.forEach(q => { q.x += (Math.random() - .5) * .3; q.y += (Math.random() - .5) * .3; });
+    document.getElementById("pg").textContent = String(cur + 1).padStart(2, "0") + " / " + String(slides.length).padStart(2, "0");
+    document.getElementById("bar").style.width = ((cur + 1) / slides.length * 100) + "%";
+    try { history.replaceState(null, "", "#" + (cur + 1)); } catch (e) {}
+  };
+  const EMBED = new URLSearchParams(location.search).has("embed");
+  if (EMBED) document.documentElement.classList.add("embed");
+  const step = d => { if (EMBED) parent.postMessage({ deckNav: d }, "*"); else go(cur + d); };
+  addEventListener("keydown", e => { if (["ArrowRight", "PageDown", " ", "Enter"].includes(e.key)) { e.preventDefault(); step(1); } if (["ArrowLeft", "PageUp", "Backspace"].includes(e.key)) { e.preventDefault(); step(-1); } if (e.key === "f" && !EMBED) toggleFs(); });
+  stage.addEventListener("click", e => { const r = stage.getBoundingClientRect(); step(e.clientX - r.left > r.width * .3 ? 1 : -1); });
+  const toggleFs = () => { if (!document.fullscreenElement) document.documentElement.requestFullscreen?.(); else document.exitFullscreen?.(); };
+  document.getElementById("prev").onclick = () => go(cur - 1);
+  document.getElementById("next").onclick = () => go(cur + 1);
+  document.getElementById("fs").onclick = toggleFs;
+  addEventListener("resize", fit); fit();
+  const goHash = () => go(Math.max(1, parseInt((location.hash || "#1").slice(1), 10) || 1) - 1);
+  goHash();
+  addEventListener("hashchange", goHash);
+  const ready = document.fonts ? Promise.all([document.fonts.load("700 40px var(--fb)"), document.fonts.load("800 40px var(--fk)")]).catch(() => {}) : Promise.resolve();
+  ready.then(() => { key = ""; });
+  requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>

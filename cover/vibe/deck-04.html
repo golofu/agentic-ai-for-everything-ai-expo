@@ -1,0 +1,693 @@
+<!doctype html>
+<html lang="th">
+<head><base href="https://vibe-code-weblink.vercel.app/decks/"><!-- space-skin --><script>// Space skin: turns a light course slide into the dark space theme of the talk cover.
+// Inlined into each copied slide (scripts/apply-space-skin.py), so it also works in pages that use <base href>.
+(() => {
+  for (const name of ["replaceState", "pushState"]) {
+    const original = history[name].bind(history);
+    // Copied pages keep a <base href> to their source site, so URL updates there would throw.
+    history[name] = (...args) => { try { return original(...args); } catch (error) { return undefined; } };
+  }
+  const css = `
+    html, body { background: #000 !important; }
+    /* Filter the top-level children, not body: a filtered body would become the containing block of fixed viewers. */
+    body > * { filter: invert(1) hue-rotate(180deg); }
+    body img, body video, body iframe, body picture, body svg image,
+    body .bgi, body [style*="background-image"], body [style*="url("] { filter: invert(1) hue-rotate(180deg) !important; }
+    /* Media inside an already re-inverted box would flip back to a negative. */
+    :is(body .bgi, body [style*="background-image"], body [style*="url("]) :is(img, video, iframe, picture, svg image) { filter: none !important; }
+    #space-skin-tint {
+      position: fixed; inset: 0; z-index: 2147483647; pointer-events: none; mix-blend-mode: screen;
+      background:
+        radial-gradient(ellipse at 82% 0%, rgba(40,100,210,.34), transparent 55%),
+        radial-gradient(ellipse at 0% 100%, rgba(120,90,220,.22), transparent 55%),
+        linear-gradient(#081236, #040919);
+    }`;
+  const style = document.createElement("style");
+  style.id = "space-skin";
+  style.textContent = css;
+  document.head.append(style);
+  const addTint = () => {
+    if (document.getElementById("space-skin-tint")) return;
+    const tint = document.createElement("div");
+    tint.id = "space-skin-tint";
+    document.documentElement.append(tint);
+  };
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", addTint, { once: true });
+  else addTint();
+})();
+</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vibe Code บท 04</title>
+<style>html.embed .nav{display:none}html.thumb #dust,html.thumb .nav,html.thumb .bar{display:none}html.thumb *{transition:none!important;animation-delay:0s!important}</style><script>if(/[?&]thumb/.test(location.search))document.documentElement.classList.add("thumb")</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anuphan:wght@400;600;700&family=Inter:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Montserrat:wght@300;400;500;600&family=IBM+Plex+Sans+Thai:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style id="font-set">:root{--fh:"Montserrat","IBM Plex Sans Thai",sans-serif;--fb:"IBM Plex Sans Thai",sans-serif;--fk:"Montserrat",sans-serif}h2,.lab{font-weight:400!important}</style>
+<style>
+:root{--bg:#faf6ee;--g1:#8a601d;--g2:#cfa650;--gold:#a27628;--ink:#2b2219;--muted:#76684f;--line:rgba(162,118,40,.28);--card:rgba(255,255,255,.62)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#faf6ee}}
+:root[data-theme="dark"]{--bg:#faf6ee}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{background:#efe6d3;color:var(--ink);font-family:var(--fb);overflow:hidden;display:grid;place-items:center}
+.stage{position:relative;width:min(100vw,177.78vh);aspect-ratio:16/9;background:radial-gradient(ellipse at 50% 40%,#fffdf8,var(--bg) 72%);container-type:inline-size;overflow:hidden}
+canvas#dust{position:absolute;inset:0;width:100%;height:100%;z-index:0}
+.slide{position:absolute;inset:0;z-index:1;padding:5cqw 6cqw;opacity:0;pointer-events:none;transition:opacity .6s}
+.slide.on{opacity:1;pointer-events:auto}
+.slide .r{opacity:0;transform:translateY(1.4cqw);transition:opacity .8s,transform .8s cubic-bezier(.2,.8,.2,1);transition-delay:calc(var(--d,0) * 1s)}
+.slide.on .r{opacity:1;transform:none}
+.abs{position:absolute}
+.kick{font:600 1.1cqw var(--fk);letter-spacing:.32em;color:var(--gold);text-transform:uppercase}
+h2{font:600 3.5cqw/1.3 var(--fh);margin-top:.6cqw;max-width:86cqw}
+.th{font-family:var(--fb);letter-spacing:0;font-weight:500}
+em,.gold{font-style:normal;background:linear-gradient(100deg,var(--g1),var(--g2) 50%,#9c6f24);-webkit-background-clip:text;background-clip:text;color:transparent}
+p{font:400 1.65cqw/1.6 var(--fb);color:var(--muted)}
+.lab{font:500 1.6cqw/1.35 var(--fb);color:#3a2e20;text-align:center}
+.lab small{display:block;font:400 1.15cqw/1.5 var(--fb);color:#86755a;margin-top:.3cqw}
+.card{border:1px solid var(--line);background:var(--card);border-radius:.8cqw;padding:1.4cqw 1.6cqw}
+.tag{font:500 1.05cqw "JetBrains Mono";color:#8a601d;text-align:center}
+.foot{position:absolute;left:6cqw;right:6cqw;bottom:2.4cqw;display:flex;justify-content:space-between;font:400 .9cqw var(--fk);letter-spacing:.2em;color:#a3926f;z-index:2;pointer-events:none}
+.bar{position:absolute;left:0;bottom:0;height:.22cqw;background:linear-gradient(90deg,var(--g1),var(--g2));z-index:3;transition:width .5s}
+.nav{position:fixed;right:16px;top:12px;display:flex;gap:8px;z-index:5;opacity:.2;transition:opacity .3s}
+.nav:hover{opacity:1}
+.nav button{font:500 14px var(--fb);background:#fffaf0;color:#a27628;border:1px solid #e3d3ae;border-radius:999px;padding:6px 14px;cursor:pointer}
+table{width:100%;border-collapse:collapse;font-size:1.55cqw}
+th,td{padding:1cqw 1.4cqw;text-align:left;border-bottom:1px solid var(--line)}
+th{font:600 1.7cqw var(--fb);color:var(--gold)}
+td:first-child{color:var(--muted)}
+tr.hi td{background:rgba(162,118,40,.1);color:#7a5418;font-weight:600}
+ul.b{list-style:none;display:grid;gap:.7cqw}
+ul.b li{padding-left:1.8cqw;position:relative;font-size:1.45cqw;line-height:1.5;color:#3a2e20}
+ul.b li::before{content:"";position:absolute;left:0;top:.75cqw;width:.6cqw;height:.6cqw;border-radius:50%;background:var(--gold)}
+</style>
+<style>
+.lst{list-style:none;display:grid;gap:1.1cqw}
+.lst li{padding-left:2cqw;position:relative;font:400 1.75cqw/1.55 var(--fb);color:#3a2e20}
+.lst li::before{content:"";position:absolute;left:0;top:1cqw;width:.6cqw;height:.6cqw;border-radius:50%;background:var(--gold)}
+.lst li b{color:var(--ink);font-weight:600}
+.ft{font:400 1.45cqw/1.55 var(--fb);color:var(--muted)}
+.tbl td,.tbl th{font-size:1.32cqw;padding:.7cqw 1.1cqw;line-height:1.45}
+.tbl th{font-size:1.45cqw}
+.code{font:500 1.2cqw "JetBrains Mono";color:#8a601d}
+.st{display:grid;grid-template-columns:1fr 1.05fr;gap:3cqw;position:absolute;left:6cqw;right:6cqw;top:17cqw}
+.st dl{display:grid;gap:1.6cqw}
+.st dt{font:600 1.35cqw var(--fb);color:var(--gold)}
+.st dd{font:400 1.75cqw/1.5 var(--fb);color:#3a2e20;margin-top:.2cqw}
+.say{border-left:.3cqw solid var(--gold);background:rgba(162,118,40,.07);padding:1.3cqw 1.6cqw;border-radius:0 .6cqw .6cqw 0}
+.say small{display:block;font:600 1.35cqw var(--fb);color:var(--gold);margin-bottom:.6cqw}
+.say p{font:500 1.75cqw/1.6 var(--fb);color:#2b2219}
+.warn{margin-top:1.6cqw;font:500 1.6cqw/1.55 var(--fb);color:#7a5418}
+.warn b{color:var(--gold)}
+.lab{font-size:1.55cqw}
+.slide h2{max-width:74cqw}
+.thk{font-family:var(--fb)!important;letter-spacing:.06em!important;text-transform:none!important;font-weight:600}
+.foot .thk{font-weight:400}
+</style>
+<style id="big-text">
+/* ตัวหนังสือใหญ่ขึ้น อ่านง่าย · ต้องอยู่หลัง style อื่นทั้งหมด */
+p{font-size:1.85cqw}
+.lab{font-size:2.05cqw}
+.lab small{font-size:1.6cqw}
+.lst{gap:1.4cqw}
+.lst li{font-size:2.1cqw;padding-left:2.2cqw}
+.lst li::before{top:1.2cqw;width:.7cqw;height:.7cqw}
+.ft{font-size:1.85cqw}
+.tbl td{font-size:1.8cqw;padding:.85cqw 1.1cqw;line-height:1.4}
+.tbl th{font-size:1.95cqw;padding:.85cqw 1.1cqw}
+ul.b li{font-size:1.75cqw}
+.lst.tight{gap:1cqw}
+.lst.tight li{font-size:1.85cqw;line-height:1.45}
+.lst.tight li::before{top:1cqw}
+.tbl.sm td{font-size:1.6cqw;padding:.6cqw 1cqw;line-height:1.35}
+.tbl.sm th{font-size:1.75cqw;padding:.6cqw 1cqw}
+</style>
+<style>
+/* Vibe Code Way motion flow */
+.vtags{display:flex;gap:.6cqw}
+.vtags span,.vn i{font:600 .95cqw var(--fb);border-radius:999px;padding:.15cqw .7cqw;color:#fff}
+.vn.prep i,.vn.start i{background:#8a601d}.vn.plan i{background:#4a6fa5}.vn.check i,.vn.note i{background:#6b4f9e}.vn.build i{background:#2f7d4a}.vn.fix i{background:#b4552f}.vn.ship i{background:#1f6f8b}
+.vn{cursor:pointer;position:absolute;width:15.6cqw;height:9.6cqw;border:1px solid var(--line);border-radius:.8cqw;background:rgba(255,255,255,.78);padding:.7cqw .9cqw .6cqw;display:flex;flex-direction:column;gap:.15cqw;opacity:0;transform:scale(.6);box-shadow:0 .3cqw 1cqw rgba(138,96,29,.08)}
+.vn b{position:absolute;left:-.9cqw;top:-.9cqw;width:2.2cqw;height:2.2cqw;border-radius:50%;background:var(--gold);color:#fffaf0;display:grid;place-items:center;font:600 1.1cqw var(--fk)}
+.vn span{font:600 1.55cqw/1.2 var(--fb);color:var(--ink)}
+.vn small{font:400 1.05cqw/1.35 var(--fb);color:#3a2e20}
+.vn i{position:absolute;right:.6cqw;bottom:.5cqw;font-style:normal;font-size:.85cqw;padding:.08cqw .55cqw}
+.vn.end{border:2px solid var(--gold);background:rgba(162,118,40,.12);justify-content:center}
+.vn.end span{font-size:1.8cqw;color:#7a5418}
+.vsvg{pointer-events:none;overflow:visible}
+.va{fill:none;stroke:#a27628;stroke-width:.22;stroke-linecap:round;marker-end:url(#vah);stroke-dasharray:60;stroke-dashoffset:60;opacity:0}
+.vlight{position:absolute;width:1.6cqw;height:1.6cqw;border-radius:50%;background:radial-gradient(circle,#fff6d6 0%,#cfa650 45%,rgba(207,166,80,0) 72%);box-shadow:0 0 1.2cqw .4cqw rgba(207,166,80,.55);offset-path:path("M0 0");offset-rotate:0deg;opacity:0;pointer-events:none;z-index:2;left:0;top:0;margin:-.8cqw 0 0 -.8cqw}
+.vreplay{position:absolute;right:6cqw;bottom:4.6cqw;font:600 1.1cqw var(--fb);background:#fffaf0;color:#a27628;border:1px solid #e3d3ae;border-radius:999px;padding:.4cqw 1.2cqw;cursor:pointer;z-index:3}
+/* play when slide is on */
+.slide.on .vn{animation:vpop .55s cubic-bezier(.2,.9,.3,1.3) both;animation-delay:calc(.4s + var(--i) * .42s)}
+.slide.on .va{animation:vdraw .5s ease-out both;animation-delay:calc(.75s + var(--i) * .42s)}
+.slide.on .vn:not(.end){animation:vpop .55s cubic-bezier(.2,.9,.3,1.3) both,vpulse 7s ease-in-out 1;animation-delay:calc(.4s + var(--i) * .42s),calc(6.6s + var(--i) * .5s)}
+.slide.on .vlight{animation:vrun 7s linear 6.6s 1 both}
+@keyframes vpop{from{opacity:0;transform:scale(.6)}to{opacity:1;transform:scale(1)}}
+@keyframes vdraw{0%{opacity:0;stroke-dashoffset:60}2%{opacity:1;stroke-dashoffset:60}100%{opacity:1;stroke-dashoffset:0}}
+@keyframes vpulse{0%,6%,100%{box-shadow:0 .3cqw 1cqw rgba(138,96,29,.08);border-color:var(--line)}3%{box-shadow:0 0 0 .35cqw rgba(207,166,80,.45),0 .6cqw 1.6cqw rgba(138,96,29,.2);border-color:var(--gold)}}
+@keyframes vrun{0%{offset-distance:0%;opacity:0}3%{opacity:1}97%{opacity:1}100%{offset-distance:100%;opacity:0}}
+html.thumb .vn{opacity:1;transform:none;animation:none!important}
+html.thumb .va{opacity:1;stroke-dashoffset:0;animation:none!important}
+html.thumb .vlight,html.thumb .vreplay{display:none}
+</style>
+<style>
+/* ch04 step pages: breadcrumb flow + skill download bar */
+.st{top:18.4cqw}
+.flow{position:absolute;left:6cqw;right:6cqw;top:11.4cqw;display:grid;grid-template-columns:1fr auto 1fr;gap:1.2cqw;align-items:center}
+.flow .pv,.flow .nx{font:500 1.15cqw/1.3 var(--fb);color:#3a2e20}
+.flow .nx{text-align:right}
+.flow small{display:block;font:600 .95cqw var(--fb);color:var(--gold);letter-spacing:.04em}
+.flow .pv::before{content:"← ";color:var(--gold)}
+.flow .nx::after{content:" →";color:var(--gold)}
+.flow .dots{display:flex;gap:.35cqw}
+.flow .dots i{width:2cqw;height:2cqw;border-radius:50%;border:1px solid var(--line);display:grid;place-items:center;font:600 .9cqw var(--fk);font-style:normal;color:#a3926f;background:#fffaf0}
+.flow .dots i.done{background:rgba(162,118,40,.18);color:#7a5418;border-color:var(--gold)}
+.flow .dots i.cur{background:var(--gold);color:#fffaf0;border-color:var(--gold);transform:scale(1.25);box-shadow:0 0 0 .3cqw rgba(207,166,80,.35)}
+.skl{position:absolute;left:6cqw;right:6cqw;bottom:4.8cqw;display:flex;align-items:center;gap:1cqw;border:1px solid var(--gold);border-radius:.8cqw;background:rgba(162,118,40,.08);padding:.7cqw 1.2cqw;cursor:auto}
+.skl b{flex:none;font:600 1.25cqw var(--fb);color:var(--gold)}
+.skl code{flex:none;font:600 1.15cqw "JetBrains Mono",monospace;color:#7a5418;background:#fff;border:1px solid var(--line);border-radius:.4cqw;padding:.2cqw .6cqw}
+.skl a.dl{flex:none;font:600 1.1cqw var(--fb);background:linear-gradient(100deg,#8a601d,#7a5418 55%,#9c6f24);color:#fffaf0;border-radius:999px;padding:.4cqw 1.1cqw;text-decoration:none}
+.skl a.dl2{flex:none;font:500 1.05cqw var(--fb);color:#8a601d;text-decoration:underline}
+.skl span{font:400 1cqw/1.35 var(--fb);color:#86755a}
+.skl.uc{flex-wrap:wrap}
+.skl.uc span{flex:1 1 40cqw;font-size:1.1cqw;color:#3a2e20}
+.warn{font-size:1.35cqw;margin-top:1cqw}
+.say p{font-size:1.5cqw}
+.st dd{font-size:1.5cqw}
+html.thumb .flow,html.thumb .skl{opacity:1}
+</style>
+<style>
+.sk7{border:1px solid var(--line);border-radius:.8cqw;background:rgba(255,255,255,.7);padding:1cqw 1.2cqw;display:grid;gap:.35cqw}
+.sk7 .row{display:grid;grid-template-columns:18cqw 9cqw 1fr;gap:.8cqw;align-items:center;padding:.35cqw .4cqw;border-bottom:1px solid rgba(162,118,40,.12)}
+.sk7 .row.h span{font:600 1cqw var(--fb);color:var(--gold);letter-spacing:.06em}
+.sk7 code{font:600 1.15cqw "JetBrains Mono",monospace;color:#7a5418}
+.sk7 .row span{font:400 1.2cqw var(--fb);color:#3a2e20}
+.sk7 a.bigdl{margin-top:.6cqw;display:block;text-align:center;font:700 1.6cqw var(--fb);background:linear-gradient(100deg,#8a601d,#7a5418 55%,#9c6f24);color:#fffaf0;border-radius:999px;padding:.8cqw 1.4cqw;text-decoration:none;box-shadow:0 .4cqw 1.2cqw rgba(138,96,29,.25)}
+.sk7 p.tiny{font:400 1cqw var(--fb);color:#86755a;text-align:center;margin-top:.2cqw}
+.sk7 p.tiny a{color:#8a601d}
+.inst{display:grid;gap:.8cqw}
+.inst>div{border:1px solid var(--line);border-left:.35cqw solid var(--gold);border-radius:.6cqw;background:rgba(255,255,255,.7);padding:.7cqw 1cqw;display:flex;flex-direction:column;gap:.3cqw}
+.inst b{font:600 1.35cqw var(--fb);color:var(--ink);display:flex;align-items:center;gap:.5cqw}
+.inst b i{display:grid;place-items:center;width:1.9cqw;height:1.9cqw;border-radius:50%;background:var(--gold);color:#fffaf0;font:600 1cqw var(--fk);font-style:normal}
+.inst span{font:400 1.1cqw/1.4 var(--fb);color:#3a2e20}
+.inst code{font:600 1cqw "JetBrains Mono",monospace;color:#7a5418;background:#f6efe0;border:1px solid var(--line);border-radius:.4cqw;padding:.2cqw .5cqw}
+.inst p.say2{font:500 1.15cqw/1.4 var(--fb);color:var(--ink);background:rgba(162,118,40,.08);border-radius:.5cqw;padding:.5cqw .8cqw}
+.inst>div.must{border-left-color:#b4552f;background:#fdf1ea}
+.inst .must b{color:#b4552f}
+.skl.dep{flex-wrap:wrap;gap:.5cqw 1cqw;bottom:4.6cqw;padding:.55cqw 1.1cqw}
+.skl.dep .dp{display:flex;align-items:center;gap:.5cqw}
+.skl.dep .dp code{font-size:1.05cqw}
+.skl.dep .dp span{font-size:1.05cqw;color:#3a2e20}
+.skl.dep .dp span b{color:#b4552f}
+.skl.dep span.note{flex:1 1 100%;font-size:1cqw;color:#86755a}
+</style>
+<style>
+/* copy prompt on step pages */
+.say{position:relative}
+.say-cpy{position:absolute;right:1cqw;top:.9cqw;font:600 1.1cqw var(--fb);background:linear-gradient(100deg,#8a601d,#7a5418 55%,#9c6f24);color:#fffaf0;border:0;border-radius:999px;padding:.4cqw 1.1cqw;cursor:pointer}
+.say-cpy.ok{background:#2f5d3a;color:#e9f7ec}
+.say small{padding-right:11cqw}
+html.thumb .say-cpy{display:none}
+</style>
+</head>
+<body>
+<div class="stage" id="stage">
+  <canvas id="dust"></canvas>
+  <section class="slide" data-dust="num:04">
+    <div class="abs kick r" style="left:6cqw;top:5cqw">Gen AI Space · Vibe Code</div>
+    <div class="abs kick r" style="right:6cqw;top:5cqw">คอร์ส 1 วัน</div>
+    <div class="abs r" style="left:6cqw;bottom:6.5cqw;width:60cqw;--d:.8"><div class="kick">บท 04</div><h2 style="font-size:4cqw">Vibe Code Way: จาก Prompt ถึง deploy</h2></div>
+  </section>
+
+
+  <section class="slide" data-dust="none" id="vcw">
+    <div class="r" style="--d:0"><div class="kick">บท 04 · ความหมายในหน้าเดียว · กดที่ขั้นไหนเพื่อเปิดหน้านั้น</div><h2>Vibe Code Way <em>14 ขั้น</em></h2></div>
+        <svg class="abs vsvg" style="left:0;top:0;width:100cqw;height:56.25cqw" viewBox="0 0 100 56.25" preserveAspectRatio="none" aria-hidden="true">
+      <defs><marker id="vah" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="1.4" markerHeight="1.4" orient="auto"><path d="M0 0L10 5L0 10z" fill="#a27628"/></marker></defs>
+      <path class="va" style="--i:0" d="M21.6 18.0 L23.8 18.0"/>
+      <path class="va" style="--i:1" d="M39.7 18.0 L41.9 18.0"/>
+      <path class="va" style="--i:2" d="M57.8 18.0 L60.0 18.0"/>
+      <path class="va" style="--i:3" d="M75.9 18.0 L78.1 18.0"/>
+      <path class="va" style="--i:4" d="M86.2 22.8 L86.2 24.7"/>
+      <path class="va" style="--i:5" d="M78.4 29.8 L76.2 29.8"/>
+      <path class="va" style="--i:6" d="M60.3 29.8 L58.1 29.8"/>
+      <path class="va" style="--i:7" d="M42.2 29.8 L40.0 29.8"/>
+      <path class="va" style="--i:8" d="M24.1 29.8 L21.9 29.8"/>
+      <path class="va" style="--i:9" d="M13.8 34.6 L13.8 36.5"/>
+      <path class="va" style="--i:10" d="M21.6 41.6 L23.8 41.6"/>
+      <path class="va" style="--i:11" d="M39.7 41.6 L41.9 41.6"/>
+      <path class="va" style="--i:12" d="M57.8 41.6 L60.0 41.6"/>
+      <path class="va" style="--i:13" d="M75.9 41.6 L78.1 41.6"/>
+      <path id="vtravel" d="M13.8 18.0 L31.9 18.0 L50.0 18.0 L68.1 18.0 L86.2 18.0 L86.2 29.8 L68.1 29.8 L50.0 29.8 L31.9 29.8 L13.8 29.8 L13.8 41.6 L31.9 41.6 L50.0 41.6 L68.1 41.6 L86.2 41.6" fill="none" stroke="none"/>
+    </svg>
+    <div class="vlight"></div>
+      <div class="vn prep" style="left:6.0cqw;top:13.2cqw;--i:0"><b>1</b><span>install git</span><small>มีจุดเซฟ ย้อนกลับได้ (บท 02)</small><i>เตรียม</i></div>
+      <div class="vn start" style="left:24.1cqw;top:13.2cqw;--i:1"><b>2</b><span>Prompt</span><small>บอกโจทย์เป็นภาษาคน</small><i>เริ่ม</i></div>
+      <div class="vn plan" style="left:42.2cqw;top:13.2cqw;--i:2"><b>3</b><span>grill</span><small>ให้ AI จี้ถามทีละข้อจนโจทย์ชัด</small><i>วางแผน</i></div>
+      <div class="vn plan" style="left:60.3cqw;top:13.2cqw;--i:3"><b>4</b><span>way finder</span><small>ลังเล? ให้ AI สรุป 3 ทางเลือกแล้วเคาะ</small><i>วางแผน</i></div>
+      <div class="vn build" style="left:78.4cqw;top:13.2cqw;--i:4"><b>5</b><span>subagent</span><small>แบ่งงานให้ผู้ช่วยย่อยทำพร้อมกัน</small><i>แบ่งงาน</i></div>
+      <div class="vn plan" style="left:78.4cqw;top:25.0cqw;--i:5"><b>6</b><span>design</span><small>ออกแบบ UX/UI ก่อนสร้าง ได้ DESIGN.md (บท 07)</small><i>ออกแบบ</i></div>
+      <div class="vn note" style="left:60.3cqw;top:25.0cqw;--i:6"><b>7</b><span>PRD</span><small>เขียนสเปกงาน: ทำอะไร ใครใช้ เสร็จคือแบบไหน</small><i>บันทึก</i></div>
+      <div class="vn check" style="left:42.2cqw;top:25.0cqw;--i:7"><b>8</b><span>review 10</span><small>ให้ AI ให้คะแนน PRD เต็ม 10 แก้จนผ่าน</small><i>ตรวจสอบ</i></div>
+      <div class="vn build" style="left:24.1cqw;top:25.0cqw;--i:8"><b>9</b><span>create</span><small>สร้างทีละส่วน Brick by Brick</small><i>สร้าง</i></div>
+      <div class="vn build" style="left:6.0cqw;top:25.0cqw;--i:9"><b>10</b><span>test</span><small>ทดสอบว่าใช้ได้จริง ไม่ใช่แค่สร้างเสร็จ</small><i>ทดลอง</i></div>
+      <div class="vn fix" style="left:6.0cqw;top:36.8cqw;--i:10"><b>11</b><span>scrutinize</span><small>ตรวจจากมุมคนนอก มีทางง่ายกว่านี้ไหม</small><i>ตรวจแก้ bug</i></div>
+      <div class="vn fix" style="left:24.1cqw;top:36.8cqw;--i:11"><b>12</b><span>debug mantra</span><small>เจอบั๊ก แก้ตามลำดับ 4 ข้อ</small><i>ตรวจแก้ bug</i></div>
+      <div class="vn ship" style="left:42.2cqw;top:36.8cqw;--i:12"><b>13</b><span>push github</span><small>เก็บงานขึ้น GitHub เป็นประวัติถาวร</small><i>เซฟ</i></div>
+      <div class="vn ship" style="left:60.3cqw;top:36.8cqw;--i:13"><b>14</b><span>deploy</span><small>เอาขึ้นออนไลน์ ได้ลิงก์ให้คนใช้จริง</small><i>ขึ้นเว็บ</i></div>
+      <div class="vn end" style="left:78.4cqw;top:36.8cqw;width:15.6cqw;--i:14"><span>ได้เว็บที่ใช้ได้จริง</span><small>มีลิงก์ส่งให้คนอื่นใช้ และมีจุดเซฟทุกขั้น</small></div>
+    <p class="ft abs" style="left:6cqw;right:14cqw;bottom:4.8cqw;font-size:1.15cqw;text-align:left;line-height:1.4">ทุกขั้นพิมพ์ภาษาไทยสั่งใน Claude Desktop (แท็บ Code) หรือ ChatGPT Desktop (Codex) ไม่ต้องเปิด Terminal · กติกาใน AGENTS.md พา AI เดินตามลำดับนี้ให้เอง</p>
+    <button type="button" class="vreplay" id="vreplay">เล่นซ้ำ</button>
+  </section>
+
+  <section class="slide" data-dust="none">
+    <div class="r" style="--d:0"><div class="kick">บท 04 · ติดตั้งครั้งเดียว</div><h2>รวม Skill ที่ต้องใช้ <em>โหลดไฟล์เดียว ติดตั้งทีเดียว</em></h2></div>
+    <div class="abs r sk7" style="left:6cqw;top:12.6cqw;width:52cqw;--d:.4">
+      <div class="row h"><span>skill</span><span>ใช้ในขั้น</span><span>ทำอะไร</span></div>
+      <div class="row"><code>grill-with-doc</code><span>3 grill</span><span>จี้ถามทีละข้อจนโจทย์ชัด</span></div>
+      <div class="row"><code>wayfinder-for-web-app-game</code><span>4 way finder</span><span>ลังเล? สรุป 3 ทางเลือกแล้วเคาะ</span></div>
+      <div class="row"><code>agent-to-subagent</code><span>5 subagent</span><span>แบ่งงานให้ทีมผู้ช่วยย่อย ตัวหลักตรวจรวม</span></div>
+      <div class="row"><code>to-prd</code><span>7 PRD</span><span>เขียนสเปกงานจากที่คุยกัน</span></div>
+      <div class="row"><code>self-review-to-10</code><span>8 review 10</span><span>ให้คะแนน PRD เต็ม 10 แก้จนผ่าน</span></div>
+      <div class="row"><code>frontend-design</code><span>9 create</span><span>ออกแบบหน้าเว็บให้สวยใช้ได้จริง</span></div>
+      <div class="row"><code>scrutinize</code><span>11 scrutinize</span><span>ตรวจจากมุมคนนอก 5 มุม</span></div>
+      <div class="row"><code>debug-mantra</code><span>12 debug mantra</span><span>วินัยแก้บั๊ก 4 ข้อ</span></div>
+      <a class="bigdl" href="../assets/skills/vibe-code-skills.zip?v=2" download="vibe-code-skills.zip">ดาวน์โหลดรวม 8 skill (ไฟล์เดียว .zip)</a>
+      <p class="tiny">ไฟล์ต้นทางรายตัวอยู่ที่ <a href="https://genaispace.net/skill-vault/" target="_blank" rel="noopener">genaispace.net/skill-vault</a> · ใช้ได้ทั้ง Claude Code และ Codex</p>
+    </div>
+    <div class="abs r inst" style="left:61cqw;width:33cqw;top:12.6cqw;--d:.7">
+      <div><b><i>1</i>แตก zip</b><span>ได้โฟลเดอร์ 8 โฟลเดอร์ + README.md</span></div>
+      <div><b><i>2</i>ลากทั้ง 8 โฟลเดอร์ไปวางทีเดียว</b><span>วางใน my-vibecode-workspace\skills\ ที่ Prompt บท 02 สร้างไว้ให้แล้ว ใช้ได้ทั้ง Claude และ Codex</span><span class="alt">อยากใช้ทุกโปรเจกต์: วางที่ C:\Users\&lt;ชื่อ&gt;\.claude\skills\ (Claude) หรือ .codex\skills\ (Codex) แทน</span></div>
+      <div><b><i>3</i>สั่งครั้งแรก ให้ AI เรียนรู้</b><p class="say2">"เข้าดูโฟลเดอร์ skills ของคุณ อ่าน README.md และ SKILL.md ของทุก skill แล้วสรุปว่ามีอะไรบ้าง ใช้ตอนไหน"</p></div>
+      <div class="must"><b>ตอนใช้ ต้องบอกชื่อทุกครั้ง</b><span>พิมพ์ "ใช้ skill grill-with-doc: ..." ไม่บอกชื่อ AI จะไม่เรียก skill ให้ (ประโยคในแต่ละขั้นมีชื่อใส่ไว้แล้ว)</span></div>
+    </div>
+  </section>
+  <section class="slide" data-dust="corner:git">
+    <div class="r" style="--d:0"><div class="kick">ขั้น 1 / 14</div><h2><em>install git</em></h2></div>
+    <div class="flow r" style="--d:.25"><span class="pv"><small>จุดเริ่มต้น</small>ทำครั้งเดียวต่อเครื่อง (บท 02)</span><div class="dots"><i class="cur" title="1 install git">1</i><i class="" title="2 Prompt">2</i><i class="" title="3 grill">3</i><i class="" title="4 way finder">4</i><i class="" title="5 subagent">5</i><i class="" title="6 design">6</i><i class="" title="7 PRD">7</i><i class="" title="8 review 10">8</i><i class="" title="9 create">9</i><i class="" title="10 test">10</i><i class="" title="11 scrutinize">11</i><i class="" title="12 debug mantra">12</i><i class="" title="13 push github">13</i><i class="" title="14 deploy">14</i></div><span class="nx"><small>ไปต่อขั้น 2 · Prompt</small>มีจุดเซฟแล้ว ค่อยเริ่มสั่งงาน</span></div>
+    <div class="st r" style="--d:.5">
+      <dl>
+        <div><dt>ความหมาย</dt><dd>ติดตั้ง Git ให้เครื่องเก็บ "จุดเซฟ" ของงานได้ แก้แล้วไม่ชอบก็ย้อนกลับได้</dd></div>
+        <div><dt>ทำตอนไหน</dt><dd>ครั้งเดียวต่อเครื่อง ก่อนเริ่มงานแรก (ทำไปแล้วในบท 02 สไลด์ 8)</dd></div>
+        <div><dt>ผลที่ได้</dt><dd>ทุกขั้นหลังจากนี้มีจุดเซฟรองรับ: create เซฟทุกส่วนที่ใช้ได้, push github ส่งจุดเซฟขึ้นคลาวด์</dd></div>
+      </dl>
+      <div><div class="say"><small>วิธีสั่ง</small><p>วาง Prompt ① "ติดตั้ง Git" แล้ว Prompt ② "เริ่มเก็บจุดเซฟ" จากบท 02 สไลด์ 8<br><br>ระหว่างทำงาน พูดแค่ "เซฟจุดนี้ไว้หน่อย" หรือ "ย้อนกลับไปตอนที่เซฟไว้" ไม่ต้องรู้คำสั่ง Git</p></div>
+        <p class="warn"><b>ข้อควรจำ:</b> โฟลเดอร์งานใหม่นอก my-vibecode-workspace ต้องวาง Prompt ② ใหม่อีกครั้ง ส่วน Prompt ① ไม่ต้องทำซ้ำ</p></div>
+    </div>
+  </section>
+  <section class="slide" data-dust="corner:prompt">
+    <div class="r" style="--d:0"><div class="kick">ขั้น 2 / 14</div><h2><em>Prompt</em></h2></div>
+    <div class="flow r" style="--d:.25"><span class="pv"><small>มาจากขั้น 1 · install git</small>Git พร้อมแล้ว</span><div class="dots"><i class="done" title="1 install git">1</i><i class="cur" title="2 Prompt">2</i><i class="" title="3 grill">3</i><i class="" title="4 way finder">4</i><i class="" title="5 subagent">5</i><i class="" title="6 design">6</i><i class="" title="7 PRD">7</i><i class="" title="8 review 10">8</i><i class="" title="9 create">9</i><i class="" title="10 test">10</i><i class="" title="11 scrutinize">11</i><i class="" title="12 debug mantra">12</i><i class="" title="13 push github">13</i><i class="" title="14 deploy">14</i></div><span class="nx"><small>ไปต่อขั้น 3 · grill</small>โจทย์ยังหยาบ AI จะจี้ถามต่อ</span></div>
+    <div class="skl uc r" style="--d:1.2"><b>ไม่ต้องคิดโจทย์จากศูนย์</b><span>คลัง Use Case ของ Gen AI Space มี prompt เต็มกว่า 800 เคส (Dashboard · ระบบภายใน · เว็บและแอป · เกม) เลือกเคสที่ใกล้งานเรา คัดลอก แก้ [วงเล็บ] แล้ววางในโฟลเดอร์ workspace</span><a class="dl" href="https://genaispace.net/claude-code-usecases/" target="_blank" rel="noopener">เปิดคลัง Use Case · genaispace.net/claude-code-usecases</a></div>
+    <div class="st r" style="--d:.5">
+      <dl>
+        <div><dt>ความหมาย</dt><dd>บอก AI ว่าอยากได้อะไร เป็นภาษาคนธรรมดา</dd></div>
+        <div><dt>ทำตอนไหน</dt><dd>ทุกครั้งที่เริ่มงานใหม่ หลังเปิดโฟลเดอร์ workspace</dd></div>
+        <div><dt>ผลที่ได้</dt><dd>AI มีโจทย์ตั้งต้น แล้วเข้าสู่ขั้น grill ต่อทันที (กติกาใน AGENTS.md พาไปเอง)</dd></div>
+      </dl>
+      <div><div class="say"><small>วิธีสั่ง · ตัวอย่าง</small><p>พูดถึง "ผลลัพธ์ที่อยากเห็น" และ "ใครใช้" ไม่ต้องพูดถึงเทคโนโลยี<br><br>"อยากได้เว็บจองคิวสำหรับร้านตัดผม ลูกค้ากดจองเองจากมือถือ เจ้าของร้านเห็นคิวทั้งวันในหน้าเดียว"</p><button type="button" class="cpy say-cpy" data-text="อยากได้เว็บจองคิวสำหรับร้านตัดผม ลูกค้ากดจองเองจากมือถือ เจ้าของร้านเห็นคิวทั้งวันในหน้าเดียว">คัดลอก Prompt</button></div>
+        <p class="warn"><b>ข้อควรจำ:</b> สั่ง AI แล้วไม่ถูก อาจเพราะเราพูดไม่รู้เรื่อง บริบทที่ให้ไม่พอ "กล่องนี้ใหญ่ไปไหม" ตอบไม่ได้ "เราหากล่องใส่ iPad 2 เครื่อง กล่องนี้ใหญ่ไปไหม" ตอบได้ทันที</p></div>
+    </div>
+  </section>
+
+  <section class="slide" data-dust="corner:question">
+    <div class="r" style="--d:0"><div class="kick">ขั้น 3 / 14</div><h2><em>grill</em></h2></div>
+    <div class="flow r" style="--d:.25"><span class="pv"><small>มาจากขั้น 2 · Prompt</small>มีโจทย์ตั้งต้นจากขั้น 2</span><div class="dots"><i class="done" title="1 install git">1</i><i class="done" title="2 Prompt">2</i><i class="cur" title="3 grill">3</i><i class="" title="4 way finder">4</i><i class="" title="5 subagent">5</i><i class="" title="6 design">6</i><i class="" title="7 PRD">7</i><i class="" title="8 review 10">8</i><i class="" title="9 create">9</i><i class="" title="10 test">10</i><i class="" title="11 scrutinize">11</i><i class="" title="12 debug mantra">12</i><i class="" title="13 push github">13</i><i class="" title="14 deploy">14</i></div><span class="nx"><small>ไปต่อขั้น 4 · way finder</small>ถ้าคุยแล้วยังลังเล ใช้ way finder</span></div>
+    <div class="skl r" style="--d:1.2"><b>ขั้นนี้ใช้ skill</b><code>grill-with-doc</code><a class="dl" href="https://genaispace.net/wp-content/uploads/2026/09/grill-with-doc-1b86576b-public-20260906.zip" target="_blank" rel="noopener">ดาวน์โหลด .zip</a><a class="dl2" href="https://genaispace.net/skill-vault/" target="_blank" rel="noopener">วิธีติดตั้ง + skill อื่นในคลัง Skill</a><span><b style="color:#b4552f">ต้องพิมพ์ "ใช้ skill ชื่อนี้" ในประโยคทุกครั้ง</b> ไม่บอกชื่อ AI จะไม่เรียก skill · ติดตั้งครั้งเดียวที่หน้า 3 (โหลดรวม 8 ตัว)</span></div>
+    <div class="st r" style="--d:.5">
+      <dl>
+        <div><dt>ความหมาย</dt><dd>ให้ AI "ย่าง" เรา คือจี้ถามทีละข้อจนโจทย์ชัด ก่อนเขียนโค้ดแม้แต่บรรทัดเดียว</dd></div>
+        <div><dt>ทำตอนไหน</dt><dd>โปรเจกต์ใหม่ ฟีเจอร์ใหญ่ หรือทุกการตัดสินใจที่แก้คืนยาก</dd></div>
+        <div><dt>ผลที่ได้</dt><dd>คำตอบของเราทั้งหมดกลายเป็นข้อมูลตั้งต้นของ PRD</dd></div>
+      </dl>
+      <div><div class="say"><small>วิธีสั่ง</small><p>"ใช้ skill grill-with-doc: ก่อนสร้าง ช่วย grill ผมก่อน ถามทีละข้อเฉพาะเรื่องที่ทำให้ของที่จะสร้างเปลี่ยนจริง จนกว่าจะชัดว่า ผลลัพธ์คืออะไร ใครใช้ ขอบเขตแค่ไหน อะไรไม่ทำ และแบบไหนเรียกว่าเสร็จ"</p><button type="button" class="cpy say-cpy" data-text="ใช้ skill grill-with-doc: ก่อนสร้าง ช่วย grill ผมก่อน ถามทีละข้อเฉพาะเรื่องที่ทำให้ของที่จะสร้างเปลี่ยนจริง จนกว่าจะชัดว่า ผลลัพธ์คืออะไร ใครใช้ ขอบเขตแค่ไหน อะไรไม่ทำ และแบบไหนเรียกว่าเสร็จ">คัดลอก Prompt</button></div>
+        <p class="warn"><b>ข้อควรจำ:</b> ถ้า AI ถามเรื่องเทคโนโลยี ให้ตอบว่า "เลือกให้เลย อธิบายสั้นๆ ว่าทำไม" ผู้เรียนไม่ต้องเลือก stack เอง</p></div>
+    </div>
+  </section>
+
+  <section class="slide" data-dust="corner:signpost">
+    <div class="r" style="--d:0"><div class="kick">ขั้น 4 / 14</div><h2><em>way finder</em></h2></div>
+    <div class="flow r" style="--d:.25"><span class="pv"><small>มาจากขั้น 3 · grill</small>grill แล้วยังเลือกไม่ถูก</span><div class="dots"><i class="done" title="1 install git">1</i><i class="done" title="2 Prompt">2</i><i class="done" title="3 grill">3</i><i class="cur" title="4 way finder">4</i><i class="" title="5 subagent">5</i><i class="" title="6 design">6</i><i class="" title="7 PRD">7</i><i class="" title="8 review 10">8</i><i class="" title="9 create">9</i><i class="" title="10 test">10</i><i class="" title="11 scrutinize">11</i><i class="" title="12 debug mantra">12</i><i class="" title="13 push github">13</i><i class="" title="14 deploy">14</i></div><span class="nx"><small>ไปต่อขั้น 5 · subagent</small>ตกผลึกแล้ว แบ่งงานได้</span></div>
+    <div class="skl r" style="--d:1.2"><b>ขั้นนี้ใช้ skill</b><code>wayfinder-for-web-app-game</code><a class="dl" href="https://genaispace.net/wp-content/uploads/2026/09/wayfinder-for-web-app-game-491822d1-public-20260906.zip" target="_blank" rel="noopener">ดาวน์โหลด .zip</a><a class="dl2" href="https://genaispace.net/skill-vault/" target="_blank" rel="noopener">วิธีติดตั้ง + skill อื่นในคลัง Skill</a><span><b style="color:#b4552f">ต้องพิมพ์ "ใช้ skill ชื่อนี้" ในประโยคทุกครั้ง</b> ไม่บอกชื่อ AI จะไม่เรียก skill · ติดตั้งครั้งเดียวที่หน้า 3 (โหลดรวม 8 ตัว)</span></div>
+    <div class="st r" style="--d:.5">
+      <dl>
+        <div><dt>ความหมาย</dt><dd>ตัวจบการถกเถียง เมื่อคุยกันหลายรอบแล้วยังไม่ตกผลึก ลังเล วนไปวนมา</dd></div>
+        <div><dt>ทำตอนไหน</dt><dd>หลัง grill แล้วยังเลือกไม่ถูก หรือ AI เสนอหลายทางแล้วเราปวดหัว</dd></div>
+        <div><dt>ผลที่ได้</dt><dd>ทางเลือก 3 ข้อ + คำแนะนำ 1 ข้อ พร้อมเหตุผล เราแค่เคาะ</dd></div>
+      </dl>
+      <div><div class="say"><small>วิธีสั่ง</small><p>"ใช้ skill wayfinder-for-web-app-game: อ่านทุกอย่างที่เราคุยกันมา แล้วสรุปทางเลือกให้ 3 ข้อ บอกว่าควรเลือกข้อไหนและเพราะอะไร ไม่ต้องถามผมเพิ่ม"</p><button type="button" class="cpy say-cpy" data-text="ใช้ skill wayfinder-for-web-app-game: อ่านทุกอย่างที่เราคุยกันมา แล้วสรุปทางเลือกให้ 3 ข้อ บอกว่าควรเลือกข้อไหนและเพราะอะไร ไม่ต้องถามผมเพิ่ม">คัดลอก Prompt</button></div>
+        <p class="warn"><b>ข้อควรจำ:</b> ห้ามใช้ตอนเพิ่งเริ่มคุย ยังไม่มีข้อมูลพอให้สรุป</p></div>
+    </div>
+  </section>
+
+  <section class="slide" data-dust="corner:network">
+    <div class="r" style="--d:0"><div class="kick">ขั้น 5 / 14</div><h2><em>subagent</em></h2></div>
+    <div class="flow r" style="--d:.25"><span class="pv"><small>มาจากขั้น 4 · way finder</small>รู้แล้วว่าจะทำอะไร</span><div class="dots"><i class="done" title="1 install git">1</i><i class="done" title="2 Prompt">2</i><i class="done" title="3 grill">3</i><i class="done" title="4 way finder">4</i><i class="cur" title="5 subagent">5</i><i class="" title="6 design">6</i><i class="" title="7 PRD">7</i><i class="" title="8 review 10">8</i><i class="" title="9 create">9</i><i class="" title="10 test">10</i><i class="" title="11 scrutinize">11</i><i class="" title="12 debug mantra">12</i><i class="" title="13 push github">13</i><i class="" title="14 deploy">14</i></div><span class="nx"><small>ไปต่อขั้น 6 · design</small>แบ่งงานแล้ว ออกแบบหน้าตาก่อนเขียนสเปก</span></div>
+    <div class="skl r" style="--d:1.2"><b>ขั้นนี้ใช้ skill</b><code>agent-to-subagent</code><a class="dl" href="https://genaispace.net/wp-content/uploads/2026/09/agent-to-subagent-2.zip" target="_blank" rel="noopener">ดาวน์โหลด .zip</a><a class="dl2" href="https://genaispace.net/skill-vault/" target="_blank" rel="noopener">วิธีติดตั้ง + skill อื่นในคลัง Skill</a><span><b style="color:#b4552f">ต้องพิมพ์ "ใช้ skill ชื่อนี้" ในประโยคทุกครั้ง</b> ไม่บอกชื่อ AI จะไม่เรียก skill · ติดตั้งครั้งเดียวที่หน้า 3 (โหลดรวม 8 ตัว)</span></div>
+    <div class="st r" style="--d:.5">
+      <dl>
+        <div><dt>ความหมาย</dt><dd>AI ตัวหลักเป็น "ผู้กำกับ" วางแผนและตรวจคุณภาพ แล้วกระจายงานให้ AI ตัวเล็กกว่าลงมือทำพร้อมกัน</dd></div>
+        <div><dt>ทำตอนไหน</dt><dd>งานมีหลายส่วนที่ไม่ขึ้นต่อกัน เช่น หน้าเว็บ 3 หน้า, ค้นข้อมูล 3 เรื่อง</dd></div>
+        <div><dt>ผลที่ได้</dt><dd>งานเสร็จเร็วขึ้น และใช้ token น้อยลง เพราะงานย่อยใช้โมเดลเล็ก งานคิดหนักใช้โมเดลใหญ่</dd></div>
+      </dl>
+      <div><div class="say"><small>วิธีสั่ง</small><p>"ใช้ skill agent-to-subagent: แบ่งงานนี้ให้ subagent ทำพร้อมกัน เสนอทีม 3–5 ตัวพร้อมขอบเขตงานของแต่ละตัว ขออนุมัติก่อนแจกงาน แล้วคุณเป็นคนตรวจรวม"</p><button type="button" class="cpy say-cpy" data-text="ใช้ skill agent-to-subagent: แบ่งงานนี้ให้ subagent ทำพร้อมกัน เสนอทีม 3–5 ตัวพร้อมขอบเขตงานของแต่ละตัว ขออนุมัติก่อนแจกงาน แล้วคุณเป็นคนตรวจรวม">คัดลอก Prompt</button></div>
+        <p class="warn"><b>ข้อควรจำ:</b> ห้ามให้หลายตัวแก้ไฟล์เดียวกันพร้อมกัน · เรียนละเอียด + 5 ตัวอย่างเว็บ/เกมในบท 05</p></div>
+    </div>
+  </section>
+
+  <section class="slide" data-dust="corner:layers">
+    <div class="r" style="--d:0"><div class="kick">ขั้น 6 / 14</div><h2><em>design</em></h2></div>
+    <div class="flow r" style="--d:.25"><span class="pv"><small>มาจากขั้น 5 · subagent</small>รู้แล้วว่าจะทำอะไร และแบ่งงานอย่างไร</span><div class="dots"><i class="done" title="1 install git">1</i><i class="done" title="2 Prompt">2</i><i class="done" title="3 grill">3</i><i class="done" title="4 way finder">4</i><i class="done" title="5 subagent">5</i><i class="cur" title="6 design">6</i><i class="" title="7 PRD">7</i><i class="" title="8 review 10">8</i><i class="" title="9 create">9</i><i class="" title="10 test">10</i><i class="" title="11 scrutinize">11</i><i class="" title="12 debug mantra">12</i><i class="" title="13 push github">13</i><i class="" title="14 deploy">14</i></div><span class="nx"><small>ไปต่อขั้น 7 · PRD</small>ได้แบบแล้ว ใส่ลงสเปกงาน</span></div>
+    <div class="st r" style="--d:.5">
+      <dl>
+        <div><dt>ความหมาย</dt><dd>ออกแบบ UX/UI ก่อนสร้าง · UX = คนใช้กดอะไร กี่ขั้นถึงเป้าหมาย · UI = หน้าตา สี ฟอนต์ ปุ่ม เก็บเป็นไฟล์ DESIGN.md ให้ AI ใช้ทุกหน้า</dd></div>
+        <div><dt>ทำตอนไหน</dt><dd>หลังรู้ว่าจะทำอะไร (grill / way finder) ก่อนเขียน PRD</dd></div>
+        <div><dt>ผลที่ได้</dt><dd>DESIGN.md + แบบหน้าแรกจาก Claude Design, Google Stitch หรือ Refero Styles แล้วเอาไปอ้างใน PRD</dd></div>
+      </dl>
+      <div><div class="say"><small>วิธีสั่ง (prompt จริงจากบท 07)</small><p>"อ่านทุกไฟล์ในโฟลเดอร์ resource (โลโก้ ฟอนต์ ข้อมูลแบรนด์) แล้วสร้างไฟล์ DESIGN.md ที่ root ของโปรเจกต์<br>ให้มีหัวข้อ: ภาพรวม / สี / ตัวอักษร / ระยะห่างและ layout / มุมโค้งและเงา / ปุ่มและการ์ด / ควรทำ-ห้ามทำ<br>ใช้ค่าจริงจากไฟล์ใน resource เท่านั้น ห้ามเดาสีหรือฟอนต์เพิ่มเอง เขียนเป็นภาษาไทยอ่านง่าย"</p><button type="button" class="cpy say-cpy" data-text="อ่านทุกไฟล์ในโฟลเดอร์ resource (โลโก้ ฟอนต์ ข้อมูลแบรนด์) แล้วสร้างไฟล์ DESIGN.md ที่ root ของโปรเจกต์&#10;ให้มีหัวข้อ: ภาพรวม / สี / ตัวอักษร / ระยะห่างและ layout / มุมโค้งและเงา / ปุ่มและการ์ด / ควรทำ-ห้ามทำ&#10;ใช้ค่าจริงจากไฟล์ใน resource เท่านั้น ห้ามเดาสีหรือฟอนต์เพิ่มเอง เขียนเป็นภาษาไทยอ่านง่าย">คัดลอก Prompt</button></div>
+        <p class="warn"><b>ข้อควรจำ:</b> ไม่บอกเรื่องหน้าตา AI จะเลือกเองหมด · ขั้นนี้ไม่ต้องใช้ skill วิธีละเอียด เครื่องมือ 3 ตัว และหลัก 8 ข้อ อยู่ในบท 07</p></div>
+    </div>
+  </section>
+
+  <section class="slide" data-dust="corner:doc">
+    <div class="r" style="--d:0"><div class="kick">ขั้น 7 / 14</div><h2><em>PRD</em></h2></div>
+    <div class="flow r" style="--d:.25"><span class="pv"><small>มาจากขั้น 6 · design</small>ได้ DESIGN.md และแบบหน้าแรกแล้ว</span><div class="dots"><i class="done" title="1 install git">1</i><i class="done" title="2 Prompt">2</i><i class="done" title="3 grill">3</i><i class="done" title="4 way finder">4</i><i class="done" title="5 subagent">5</i><i class="done" title="6 design">6</i><i class="cur" title="7 PRD">7</i><i class="" title="8 review 10">8</i><i class="" title="9 create">9</i><i class="" title="10 test">10</i><i class="" title="11 scrutinize">11</i><i class="" title="12 debug mantra">12</i><i class="" title="13 push github">13</i><i class="" title="14 deploy">14</i></div><span class="nx"><small>ไปต่อขั้น 8 · review 10</small>เขียน PRD แล้ว ให้ AI ตรวจให้ได้ 10</span></div>
+    <div class="skl r" style="--d:1.2"><b>ขั้นนี้ใช้ skill</b><code>to-prd</code><a class="dl" href="https://genaispace.net/wp-content/uploads/2026/09/mattpocock-skills-to-prd-b83e7343-public-20260906.zip" target="_blank" rel="noopener">ดาวน์โหลด .zip</a><a class="dl2" href="https://genaispace.net/skill-vault/" target="_blank" rel="noopener">วิธีติดตั้ง + skill อื่นในคลัง Skill</a><span><b style="color:#b4552f">ต้องพิมพ์ "ใช้ skill ชื่อนี้" ในประโยคทุกครั้ง</b> ไม่บอกชื่อ AI จะไม่เรียก skill · ติดตั้งครั้งเดียวที่หน้า 3 (โหลดรวม 8 ตัว)</span></div>
+    <div class="st r" style="--d:.5">
+      <dl>
+        <div><dt>ความหมาย</dt><dd>Product Requirements Document เอกสารสเปกงาน 1 ไฟล์ บอกว่าจะสร้างอะไร ใครใช้ ทำอะไรได้บ้าง อะไรไม่ทำ และแบบไหนเรียกว่าเสร็จ</dd></div>
+        <div><dt>ทำตอนไหน</dt><dd>หลัง grill และ design ก่อน review 10 และ create</dd></div>
+        <div><dt>ผลที่ได้</dt><dd>ไฟล์ที่ AI อ่านซ้ำได้ทุกแชท เปลี่ยนวันหรือเปลี่ยนแอปก็ทำต่อได้ (ใน workspace บท 03 คือ BRIEF.md + SPEC.md)</dd></div>
+      </dl>
+      <div><div class="say"><small>วิธีสั่ง</small><p>"ใช้ skill to-prd: เขียน PRD จากที่คุยกัน บันทึกเป็นไฟล์ในโฟลเดอร์โปรเจกต์ ให้มีหัวข้อ เป้าหมาย ผู้ใช้ สิ่งที่ทำได้ สิ่งที่ไม่ทำ เกณฑ์ว่าเสร็จ และลำดับงาน"</p><button type="button" class="cpy say-cpy" data-text="ใช้ skill to-prd: เขียน PRD จากที่คุยกัน บันทึกเป็นไฟล์ในโฟลเดอร์โปรเจกต์ ให้มีหัวข้อ เป้าหมาย ผู้ใช้ สิ่งที่ทำได้ สิ่งที่ไม่ทำ เกณฑ์ว่าเสร็จ และลำดับงาน">คัดลอก Prompt</button></div>
+        <p class="warn"><b>ข้อควรจำ:</b> ขอให้ AI วางแผนยังไม่ใช่คำสั่งให้สร้าง ต้องบอก "เริ่มสร้าง" เอง</p></div>
+    </div>
+  </section>
+
+  <section class="slide" data-dust="corner:ten">
+    <div class="r" style="--d:0"><div class="kick">ขั้น 8 / 14</div><h2><em>review 10</em></h2></div>
+    <div class="flow r" style="--d:.25"><span class="pv"><small>มาจากขั้น 7 · PRD</small>PRD ที่เขียนเสร็จ</span><div class="dots"><i class="done" title="1 install git">1</i><i class="done" title="2 Prompt">2</i><i class="done" title="3 grill">3</i><i class="done" title="4 way finder">4</i><i class="done" title="5 subagent">5</i><i class="done" title="6 design">6</i><i class="done" title="7 PRD">7</i><i class="cur" title="8 review 10">8</i><i class="" title="9 create">9</i><i class="" title="10 test">10</i><i class="" title="11 scrutinize">11</i><i class="" title="12 debug mantra">12</i><i class="" title="13 push github">13</i><i class="" title="14 deploy">14</i></div><span class="nx"><small>ไปต่อขั้น 9 · create</small>PRD ได้ 10 แล้ว เราสั่ง "เริ่มสร้าง"</span></div>
+    <div class="skl r" style="--d:1.2"><b>ขั้นนี้ใช้ skill</b><code>self-review-to-10</code><a class="dl" href="https://genaispace.net/wp-content/uploads/2026/10/self-review-to-10-v2-20261024.zip" target="_blank" rel="noopener">ดาวน์โหลด .zip</a><a class="dl2" href="https://genaispace.net/skill-vault/" target="_blank" rel="noopener">วิธีติดตั้ง + skill อื่นในคลัง Skill</a><span><b style="color:#b4552f">ต้องพิมพ์ "ใช้ skill ชื่อนี้" ในประโยคทุกครั้ง</b> ไม่บอกชื่อ AI จะไม่เรียก skill · ติดตั้งครั้งเดียวที่หน้า 3 (โหลดรวม 8 ตัว)</span></div>
+    <div class="st r" style="--d:.5">
+      <dl>
+        <div><dt>ความหมาย</dt><dd>ให้ AI ตรวจงานตัวเองเทียบกับข้อกำหนด ให้คะแนนเต็ม 10 ระบุจุดหัก แก้ แล้วตรวจซ้ำ</dd></div>
+        <div><dt>ทำตอนไหน</dt><dd>หลังเขียน PRD ก่อน create (ตรวจแผน) และก่อนส่งงานทุกครั้ง (ตรวจงาน)</dd></div>
+        <div><dt>ผลที่ได้</dt><dd>ตาราง เกณฑ์ / ก่อน / หลัง / เต็ม และรายการที่ยังไม่ผ่าน</dd></div>
+      </dl>
+      <div><div class="say"><small>วิธีสั่ง</small><p>"ใช้ skill self-review-to-10: ตรวจ PRD นี้ให้คะแนนเต็ม 10 จากหลักฐาน บอกว่าหักตรงไหนเพราะอะไร แล้วแก้ให้ได้ 10 โดยไม่เพิ่มฟีเจอร์เกินโจทย์"</p><button type="button" class="cpy say-cpy" data-text="ใช้ skill self-review-to-10: ตรวจ PRD นี้ให้คะแนนเต็ม 10 จากหลักฐาน บอกว่าหักตรงไหนเพราะอะไร แล้วแก้ให้ได้ 10 โดยไม่เพิ่มฟีเจอร์เกินโจทย์">คัดลอก Prompt</button></div>
+        <p class="warn"><b>ข้อควรจำ:</b> 10/10 ต้องมาจากหลักฐานจริง ไม่ใช่คำรับรอง AI ห้ามแต่งผลตรวจเพื่อให้คะแนนสูง</p></div>
+    </div>
+  </section>
+
+  <section class="slide" data-dust="corner:bricks">
+    <div class="r" style="--d:0"><div class="kick">ขั้น 9 / 14</div><h2><em>create</em></h2></div>
+    <div class="flow r" style="--d:.25"><span class="pv"><small>มาจากขั้น 8 · review 10</small>สร้างตาม PRD ที่ได้ 10 ไม่ใช่ตามใจ</span><div class="dots"><i class="done" title="1 install git">1</i><i class="done" title="2 Prompt">2</i><i class="done" title="3 grill">3</i><i class="done" title="4 way finder">4</i><i class="done" title="5 subagent">5</i><i class="done" title="6 design">6</i><i class="done" title="7 PRD">7</i><i class="done" title="8 review 10">8</i><i class="cur" title="9 create">9</i><i class="" title="10 test">10</i><i class="" title="11 scrutinize">11</i><i class="" title="12 debug mantra">12</i><i class="" title="13 push github">13</i><i class="" title="14 deploy">14</i></div><span class="nx"><small>ไปต่อขั้น 10 · test</small>สร้างเสร็จยังไม่ใช่ใช้ได้ ต้อง test</span></div>
+    <div class="skl r" style="--d:1.2"><b>ขั้นนี้ใช้ skill</b><code>frontend-design (สำหรับงานหน้าเว็บ)</code><a class="dl" href="https://genaispace.net/wp-content/uploads/2026/09/frontend-design-1ad80c58-public-20260906.zip" target="_blank" rel="noopener">ดาวน์โหลด .zip</a><a class="dl2" href="https://genaispace.net/skill-vault/" target="_blank" rel="noopener">วิธีติดตั้ง + skill อื่นในคลัง Skill</a><span><b style="color:#b4552f">ต้องพิมพ์ "ใช้ skill ชื่อนี้" ในประโยคทุกครั้ง</b> ไม่บอกชื่อ AI จะไม่เรียก skill · ติดตั้งครั้งเดียวที่หน้า 3 (โหลดรวม 8 ตัว)</span></div>
+    <div class="st r" style="--d:.5">
+      <dl>
+        <div><dt>ความหมาย</dt><dd>สร้างงานจริงตาม PRD ทีละส่วนจากฐาน (Brick by Brick) ไม่สร้างทุกฟีเจอร์พร้อมกัน</dd></div>
+        <div><dt>ทำตอนไหน</dt><dd>เมื่อ PRD ผ่าน review 10 แล้วและเราสั่ง "เริ่มสร้าง"</dd></div>
+        <div><dt>ผลที่ได้</dt><dd>ก้อนแรกที่เปิดใช้ได้ในเครื่อง + จุดเซฟ git · <b style="color:#b4552f">ขั้นนี้ไม่ได้แปลว่าเสร็จ</b> คือเริ่มสร้างแบบ Brick by Brick ก้อนแรก แล้วค่อยต่อก้อนถัดไป</dd></div>
+      </dl>
+      <div><div class="say"><small>วิธีสั่ง</small><p>"ใช้ skill frontend-design สำหรับหน้าเว็บ แล้วเริ่มสร้างตาม PRD เอาเส้นหลักเส้นเดียวให้ใช้ได้ก่อน (กรอกข้อมูล → บันทึก → เห็นผล) แสดงให้ดูแล้วค่อยทำส่วนถัดไป"</p><button type="button" class="cpy say-cpy" data-text="ใช้ skill frontend-design สำหรับหน้าเว็บ แล้วเริ่มสร้างตาม PRD เอาเส้นหลักเส้นเดียวให้ใช้ได้ก่อน (กรอกข้อมูล → บันทึก → เห็นผล) แสดงให้ดูแล้วค่อยทำส่วนถัดไป">คัดลอก Prompt</button></div>
+        <p class="warn"><b>ข้อควรจำ:</b> "สร้างเสร็จ" ของ AI = ก้อนแรกใช้ได้ ยังไม่ใช่งานเสร็จ ต้องไปขั้น test ทุกครั้ง แล้ววนกลับมา create ก้อนถัดไป</p></div>
+    </div>
+  </section>
+
+  <section class="slide" data-dust="corner:test">
+    <div class="r" style="--d:0"><div class="kick">ขั้น 10 / 14</div><h2><em>test</em></h2></div>
+    <div class="flow r" style="--d:.25"><span class="pv"><small>มาจากขั้น 9 · create</small>งานจากขั้น create</span><div class="dots"><i class="done" title="1 install git">1</i><i class="done" title="2 Prompt">2</i><i class="done" title="3 grill">3</i><i class="done" title="4 way finder">4</i><i class="done" title="5 subagent">5</i><i class="done" title="6 design">6</i><i class="done" title="7 PRD">7</i><i class="done" title="8 review 10">8</i><i class="done" title="9 create">9</i><i class="cur" title="10 test">10</i><i class="" title="11 scrutinize">11</i><i class="" title="12 debug mantra">12</i><i class="" title="13 push github">13</i><i class="" title="14 deploy">14</i></div><span class="nx"><small>ไปต่อขั้น 11 · scrutinize</small>test ผ่านแล้ว ให้ AI อีกตัวตรวจละเอียด</span></div>
+    <div class="st r" style="--d:.5">
+      <dl>
+        <div><dt>ความหมาย</dt><dd>พิสูจน์ว่างานใช้ได้จริง ด้วยการใช้จริง ไม่ใช่เชื่อคำว่า "เสร็จแล้ว"</dd></div>
+        <div><dt>ทำตอนไหน</dt><dd>หลัง create ทุกส่วน</dd></div>
+        <div><dt>ผลที่ได้</dt><dd>รายงาน 4 บรรทัด: โค้ด/build · ผลจำลอง · ของจริง · ผู้ใช้ตรวจแล้ว</dd></div>
+      </dl>
+      <div><div class="say"><small>วิธีสั่ง</small><p>"ทดสอบเส้นหลักจริง: เปิดหน้า กรอกข้อมูล กดบันทึก แล้วส่งภาพหน้าจอผลให้ดู แยกให้ชัดว่าอะไรทดสอบของจริง อะไรเป็นผลจำลอง"</p><button type="button" class="cpy say-cpy" data-text="ทดสอบเส้นหลักจริง: เปิดหน้า กรอกข้อมูล กดบันทึก แล้วส่งภาพหน้าจอผลให้ดู แยกให้ชัดว่าอะไรทดสอบของจริง อะไรเป็นผลจำลอง">คัดลอก Prompt</button></div>
+        <p class="warn"><b>ข้อควรจำ:</b> build ผ่าน หรือ mock ผ่าน ไม่ใช่หลักฐานว่าใช้ได้จริง</p></div>
+    </div>
+  </section>
+
+  <section class="slide" data-dust="corner:magnifier">
+    <div class="r" style="--d:0"><div class="kick">ขั้น 11 / 14</div><h2><em>scrutinize</em></h2></div>
+    <div class="flow r" style="--d:.25"><span class="pv"><small>มาจากขั้น 10 · test</small>งานที่ test ผ่านแล้ว</span><div class="dots"><i class="done" title="1 install git">1</i><i class="done" title="2 Prompt">2</i><i class="done" title="3 grill">3</i><i class="done" title="4 way finder">4</i><i class="done" title="5 subagent">5</i><i class="done" title="6 design">6</i><i class="done" title="7 PRD">7</i><i class="done" title="8 review 10">8</i><i class="done" title="9 create">9</i><i class="done" title="10 test">10</i><i class="cur" title="11 scrutinize">11</i><i class="" title="12 debug mantra">12</i><i class="" title="13 push github">13</i><i class="" title="14 deploy">14</i></div><span class="nx"><small>ไปต่อขั้น 12 · debug mantra</small>เจอจุดพัง ส่งต่อให้ debug mantra</span></div>
+    <div class="skl r" style="--d:1.2"><b>ขั้นนี้ใช้ skill</b><code>scrutinize</code><a class="dl" href="https://genaispace.net/wp-content/uploads/2026/09/scrutinize-69c814fa-public-20260906.zip" target="_blank" rel="noopener">ดาวน์โหลด .zip</a><a class="dl2" href="https://genaispace.net/skill-vault/" target="_blank" rel="noopener">วิธีติดตั้ง + skill อื่นในคลัง Skill</a><span><b style="color:#b4552f">ต้องพิมพ์ "ใช้ skill ชื่อนี้" ในประโยคทุกครั้ง</b> ไม่บอกชื่อ AI จะไม่เรียก skill · ติดตั้งครั้งเดียวที่หน้า 3 (โหลดรวม 8 ตัว)</span></div>
+    <div class="st r" style="--d:.5">
+      <dl>
+        <div><dt>ความหมาย</dt><dd>ตรวจละเอียดจากมุม "คนนอก" ตั้งคำถามกับเจตนาก่อน ว่ามีวิธีที่ง่ายกว่าไหม แล้วไล่ดูว่างานทำได้ตามที่อ้างจริงไหม</dd></div>
+        <div><dt>ทำตอนไหน</dt><dd>หลัง test ผ่าน ก่อนส่งตรวจรับหรือขึ้นออนไลน์</dd></div>
+        <div><dt>ผลที่ได้</dt><dd>รายการสิ่งที่ต้องแก้ เรียงตามความรุนแรง</dd></div>
+      </dl>
+      <div><div class="say"><small>วิธีสั่ง · บอกชื่อ skill · ใช้ Codex ตรวจงานที่ Claude สร้าง หรือสลับกัน</small><p>"ใช้ skill scrutinize: ตรวจงานนี้แบบอ่านอย่างเดียว ห้ามแก้ ตรวจ 5 มุม: ตรงโจทย์และกรณีขอบ / ความปลอดภัยและข้อมูลลับ / โครงสร้างและไฟล์ที่เปลี่ยน / หน้าจอและมือถือ / ความพร้อมปล่อยใช้ รายงานเป็นรายการพร้อมระดับความรุนแรงและหลักฐาน"</p><button type="button" class="cpy say-cpy" data-text="ใช้ skill scrutinize: ตรวจงานนี้แบบอ่านอย่างเดียว ห้ามแก้ ตรวจ 5 มุม: ตรงโจทย์และกรณีขอบ / ความปลอดภัยและข้อมูลลับ / โครงสร้างและไฟล์ที่เปลี่ยน / หน้าจอและมือถือ / ความพร้อมปล่อยใช้ รายงานเป็นรายการพร้อมระดับความรุนแรงและหลักฐาน">คัดลอก Prompt</button></div>
+        <p class="warn"><b>ข้อควรจำ:</b> ให้ AI อีกตัวตรวจ จะเจอสิ่งที่ตัวเขียนมองไม่เห็น</p></div>
+    </div>
+  </section>
+
+  <section class="slide" data-dust="corner:bug">
+    <div class="r" style="--d:0"><div class="kick">ขั้น 12 / 14</div><h2><em>debug mantra</em></h2></div>
+    <div class="flow r" style="--d:.25"><span class="pv"><small>มาจากขั้น 11 · scrutinize</small>รายการที่ scrutinize เจอ</span><div class="dots"><i class="done" title="1 install git">1</i><i class="done" title="2 Prompt">2</i><i class="done" title="3 grill">3</i><i class="done" title="4 way finder">4</i><i class="done" title="5 subagent">5</i><i class="done" title="6 design">6</i><i class="done" title="7 PRD">7</i><i class="done" title="8 review 10">8</i><i class="done" title="9 create">9</i><i class="done" title="10 test">10</i><i class="done" title="11 scrutinize">11</i><i class="cur" title="12 debug mantra">12</i><i class="" title="13 push github">13</i><i class="" title="14 deploy">14</i></div><span class="nx"><small>ไปต่อขั้น 13 · push github</small>แก้เสร็จ test ซ้ำ แล้วค่อยเซฟขึ้น GitHub</span></div>
+    <div class="skl r" style="--d:1.2"><b>ขั้นนี้ใช้ skill</b><code>debug-mantra</code><a class="dl" href="https://genaispace.net/wp-content/uploads/2026/09/debug-mantra-dd3904ce-public-20260906.zip" target="_blank" rel="noopener">ดาวน์โหลด .zip</a><a class="dl2" href="https://genaispace.net/skill-vault/" target="_blank" rel="noopener">วิธีติดตั้ง + skill อื่นในคลัง Skill</a><span><b style="color:#b4552f">ต้องพิมพ์ "ใช้ skill ชื่อนี้" ในประโยคทุกครั้ง</b> ไม่บอกชื่อ AI จะไม่เรียก skill · ติดตั้งครั้งเดียวที่หน้า 3 (โหลดรวม 8 ตัว)</span></div>
+    <div class="st r" style="--d:.5">
+      <dl>
+        <div><dt>ความหมาย</dt><dd>วินัยแก้บั๊ก 4 ข้อ ท่องก่อนแก้ทุกครั้ง: ทำให้เกิดซ้ำ → ไล่เส้นทางที่พัง → พิสูจน์สมมติฐานว่าผิดได้ไหม → ตรวจทุกร่องรอยให้ตรงกัน</dd></div>
+        <div><dt>ทำตอนไหน</dt><dd>ทุกครั้งที่มีอะไรพัง หรือ error โผล่</dd></div>
+        <div><dt>ผลที่ได้</dt><dd>แก้ที่สาเหตุ ไม่ใช่กลบอาการ และไม่วนเผา token</dd></div>
+      </dl>
+      <div><div class="say"><small>วิธีสั่ง</small><p>"ใช้ skill debug-mantra: ทำให้บั๊กเกิดซ้ำก่อน หาเส้นทางที่พัง ตั้งสมมติฐานแล้วพิสูจน์ แก้จุดเล็กสุด แล้วทดสอบซ้ำ ถ้า error เดิมซ้ำ 2 รอบโดยไม่มีหลักฐานใหม่ ให้หยุดแล้วรายงาน"</p><button type="button" class="cpy say-cpy" data-text="ใช้ skill debug-mantra: ทำให้บั๊กเกิดซ้ำก่อน หาเส้นทางที่พัง ตั้งสมมติฐานแล้วพิสูจน์ แก้จุดเล็กสุด แล้วทดสอบซ้ำ ถ้า error เดิมซ้ำ 2 รอบโดยไม่มีหลักฐานใหม่ ให้หยุดแล้วรายงาน">คัดลอก Prompt</button></div>
+        <p class="warn"><b>ข้อควรจำ:</b> ก็อป error ไปวางเฉยๆ แบบ vibe coding ปี 2025 ใช้ได้กับงานเล่น ไม่ใช่งานจริง</p></div>
+    </div>
+  </section>
+
+  <section class="slide" data-dust="corner:cloudup">
+    <div class="r" style="--d:0"><div class="kick">ขั้น 13 / 14</div><h2><em>push github</em></h2></div>
+    <div class="flow r" style="--d:.25"><span class="pv"><small>มาจากขั้น 12 · debug mantra</small>งานที่ผ่าน test + scrutinize</span><div class="dots"><i class="done" title="1 install git">1</i><i class="done" title="2 Prompt">2</i><i class="done" title="3 grill">3</i><i class="done" title="4 way finder">4</i><i class="done" title="5 subagent">5</i><i class="done" title="6 design">6</i><i class="done" title="7 PRD">7</i><i class="done" title="8 review 10">8</i><i class="done" title="9 create">9</i><i class="done" title="10 test">10</i><i class="done" title="11 scrutinize">11</i><i class="done" title="12 debug mantra">12</i><i class="cur" title="13 push github">13</i><i class="" title="14 deploy">14</i></div><span class="nx"><small>ไปต่อขั้น 14 · deploy</small>push แล้วยังไม่ออนไลน์ ต้อง deploy</span></div>
+    <div class="st r" style="--d:.5">
+      <dl>
+        <div><dt>ความหมาย</dt><dd>ส่งจุดเซฟ (commit) จากเครื่องเราขึ้น GitHub เป็นประวัติถาวรที่เปิดจากเครื่องไหนก็ได้ และแชร์ให้คนอื่นได้</dd></div>
+        <div><dt>ทำตอนไหน</dt><dd>เมื่องานผ่าน test และ scrutinize แล้ว</dd></div>
+        <div><dt>ผลที่ได้</dt><dd>ลิงก์ GitHub ของงาน</dd></div>
+      </dl>
+      <div><div class="say"><small>วิธีสั่ง</small><p>"สร้าง repository บน GitHub แบบ private ชื่อ [ชื่องาน] แล้ว push งานทั้งหมดขึ้นไป ตรวจก่อนว่าไม่มีไฟล์ .env หรือรหัสลับติดไป แล้วส่งลิงก์ repo ให้ผม"</p><button type="button" class="cpy say-cpy" data-text="สร้าง repository บน GitHub แบบ private ชื่อ [ชื่องาน] แล้ว push งานทั้งหมดขึ้นไป ตรวจก่อนว่าไม่มีไฟล์ .env หรือรหัสลับติดไป แล้วส่งลิงก์ repo ให้ผม">คัดลอก Prompt</button></div>
+        <p class="warn"><b>ข้อควรจำ:</b> git = ในเครื่อง, GitHub = บนคลาวด์; private/public เลือกเอง; push ไม่ได้ทำให้เว็บขึ้นออนไลน์เอง</p></div>
+    </div>
+  </section>
+
+  <section class="slide" data-dust="corner:globe">
+    <div class="r" style="--d:0"><div class="kick">ขั้น 14 / 14</div><h2><em>deploy</em></h2></div>
+    <div class="flow r" style="--d:.25"><span class="pv"><small>มาจากขั้น 13 · push github</small>งานอยู่บน GitHub แล้ว</span><div class="dots"><i class="done" title="1 install git">1</i><i class="done" title="2 Prompt">2</i><i class="done" title="3 grill">3</i><i class="done" title="4 way finder">4</i><i class="done" title="5 subagent">5</i><i class="done" title="6 design">6</i><i class="done" title="7 PRD">7</i><i class="done" title="8 review 10">8</i><i class="done" title="9 create">9</i><i class="done" title="10 test">10</i><i class="done" title="11 scrutinize">11</i><i class="done" title="12 debug mantra">12</i><i class="done" title="13 push github">13</i><i class="cur" title="14 deploy">14</i></div><span class="nx"><small>จบ 14 ขั้น</small>ได้ลิงก์ให้คนใช้จริง</span></div>
+    <div class="skl dep r" style="--d:1.2"><b>deploy ไปได้ที่ไหนบ้าง</b>
+      <div class="dp"><code>Vercel</code><span>เว็บทั่วไป ฟรี เร็วสุด <b>คอร์สนี้ใช้ตัวนี้</b></span></div>
+      <div class="dp"><code>GitHub Pages</code><span>เว็บนิ่งๆ ไม่มีฐานข้อมูล ฟรี อยู่ที่เดียวกับ repo</span></div>
+      <div class="dp"><code>Netlify · Cloudflare Pages</code><span>เว็บนิ่ง + ฟอร์ม ฟรี ทางเลือกแทน Vercel</span></div>
+      <div class="dp"><code>Render · Railway</code><span>เว็บที่มีระบบหลังบ้าน/ฐานข้อมูล ฟรีแบบจำกัด</span></div>
+      <div class="dp"><code>itch.io</code><span>เกมบนเว็บ แจกหรือขายได้</span></div>
+      <span class="note">บอก AI ว่าจะขึ้นที่ไหน ถ้าไม่บอก AI เลือก Vercel ตามกติกา · ทุกที่ต้องมีบัญชีก่อน AI จะบอกว่าต้องกดอนุญาตตรงไหน</span>
+    </div>
+    <div class="st r" style="--d:.5">
+      <dl>
+        <div><dt>ความหมาย</dt><dd>เอางานขึ้นออนไลน์ให้คนอื่นเปิดใช้ผ่านลิงก์จริง</dd></div>
+        <div><dt>ทำตอนไหน</dt><dd>หลัง push GitHub และเราอนุมัติให้เผยแพร่</dd></div>
+        <div><dt>ผลที่ได้</dt><dd>ลิงก์ https ที่ส่งให้ลูกค้าหรือทีมใช้ได้ทันที</dd></div>
+      </dl>
+      <div><div class="say"><small>วิธีสั่ง</small><p>"deploy ขึ้น Vercel จาก repo นี้ ให้ได้ลิงก์ที่เปิดได้โดยไม่ต้องล็อกอิน แล้วเปิดลิงก์ตรวจจริงก่อนรายงานผม"</p><button type="button" class="cpy say-cpy" data-text="deploy ขึ้น Vercel จาก repo นี้ ให้ได้ลิงก์ที่เปิดได้โดยไม่ต้องล็อกอิน แล้วเปิดลิงก์ตรวจจริงก่อนรายงานผม">คัดลอก Prompt</button></div>
+        <p class="warn"><b>ข้อควรจำ:</b> ตรวจรับแล้วไม่ได้แปลว่าอนุมัติเผยแพร่ ต้องสั่ง deploy เอง และขึ้นเว็บสาธารณะแล้วทุกคนเห็น</p></div>
+    </div>
+  </section>
+
+  <div class="foot"><span>VIBE CODE · บท 04 Vibe Code Way: จาก Prompt ถึง deploy</span><span id="pg">01 / 16</span></div>
+  <div class="bar" id="bar"></div>
+</div>
+<div class="nav"><button type="button" id="prev">ก่อนหน้า</button><button type="button" id="next">ถัดไป</button><button type="button" id="fs">เต็มจอ</button></div>
+
+<script>
+(() => {
+  // Thai must never get Latin letter-spacing: wrap Thai runs in .kick / .foot
+  document.querySelectorAll(".kick, .foot span").forEach(el => { if (/[฀-๿]/.test(el.textContent)) el.classList.add("thk"); });
+  const stage = document.getElementById("stage"), cv = document.getElementById("dust"), ctx = cv.getContext("2d");
+  const slides = [...document.querySelectorAll(".slide")];
+  // ---------- dust icon library: each draws centred at (x,y) with size s on a 320x180 canvas ----------
+  const L = (c, pts) => { c.beginPath(); pts.forEach(([x, y], i) => i ? c.lineTo(x, y) : c.moveTo(x, y)); c.stroke(); };
+  const circ = (c, x, y, r, fill) => { c.beginPath(); c.arc(x, y, r, 0, 7); fill ? c.fill() : c.stroke(); };
+  const rr = (c, x, y, w, h, r) => { c.beginPath(); c.roundRect(x, y, w, h, r); c.stroke(); };
+  const txt = (c, t, x, y, px, font = "Inter, Arial, sans-serif", w = 800) => { c.font = `${w} ${px}px ${font}`; c.textAlign = "center"; c.textBaseline = "middle"; c.fillText(t, x, y); };
+  const gearAt = (c, x, y, s) => { c.beginPath(); for (let i = 0; i < 16; i++) { const a = i * Math.PI / 8, r = i % 2 ? s * .8 : s; c.lineTo(x + Math.cos(a) * r, y + Math.sin(a) * r); } c.closePath(); c.stroke(); circ(c, x, y, s * .35); };
+  const I = {
+    folder: (c, x, y, s) => { L(c, [[x - s, y - s * .55], [x - s * .35, y - s * .55], [x - s * .2, y - s * .8], [x + s * .1, y - s * .8], [x + s * .2, y - s * .55], [x + s, y - s * .55], [x + s, y + s * .7], [x - s, y + s * .7], [x - s, y - s * .55]]); },
+    file: (c, x, y, s) => { L(c, [[x - s * .6, y - s], [x + s * .25, y - s], [x + s * .6, y - s * .65], [x + s * .6, y + s], [x - s * .6, y + s], [x - s * .6, y - s]]); [-.3, 0, .3].forEach(k => L(c, [[x - s * .35, y + k * s], [x + s * .35, y + k * s]])); },
+    tree: (c, x, y, s) => { circ(c, x, y - s * .8, s * .22, 1); L(c, [[x, y - s * .6], [x, y - s * .2], [x - s * .8, y - s * .2], [x - s * .8, y + s * .2]]); L(c, [[x, y - s * .2], [x + s * .8, y - s * .2], [x + s * .8, y + s * .2]]); L(c, [[x, y - s * .2], [x, y + s * .2]]); [-.8, 0, .8].forEach(k => c.strokeRect(x + k * s - s * .22, y + s * .25, s * .44, s * .44)); },
+    gear: (c, x, y, s) => gearAt(c, x, y, s),
+    shield: (c, x, y, s) => { L(c, [[x, y - s], [x + s * .8, y - s * .65], [x + s * .7, y + s * .3], [x, y + s], [x - s * .7, y + s * .3], [x - s * .8, y - s * .65], [x, y - s]]); L(c, [[x - s * .3, y], [x - s * .05, y + s * .3], [x + s * .35, y - s * .25]]); },
+    key: (c, x, y, s) => { circ(c, x - s * .5, y, s * .38); L(c, [[x - s * .12, y], [x + s, y], [x + s, y + s * .3]]); L(c, [[x + s * .65, y], [x + s * .65, y + s * .25]]); },
+    lock: (c, x, y, s) => { c.strokeRect(x - s * .7, y - s * .15, s * 1.4, s * 1.05); c.beginPath(); c.arc(x, y - s * .15, s * .45, Math.PI, 0); c.stroke(); circ(c, x, y + s * .35, s * .12, 1); },
+    coin: (c, x, y, s) => { c.beginPath(); c.ellipse(x, y - s * .4, s * .9, s * .35, 0, 0, 7); c.stroke(); L(c, [[x - s * .9, y - s * .4], [x - s * .9, y + s * .4]]); L(c, [[x + s * .9, y - s * .4], [x + s * .9, y + s * .4]]); c.beginPath(); c.ellipse(x, y + s * .4, s * .9, s * .35, 0, 0, Math.PI); c.stroke(); },
+    monitor: (c, x, y, s) => { c.strokeRect(x - s, y - s * .65, s * 2, s * 1.2); L(c, [[x - s * .4, y + s * .85], [x + s * .4, y + s * .85]]); L(c, [[x, y + s * .55], [x, y + s * .85]]); },
+    terminal: (c, x, y, s) => { c.strokeRect(x - s, y - s * .65, s * 2, s * 1.3); L(c, [[x - s * .6, y - s * .2], [x - s * .25, y], [x - s * .6, y + s * .2]]); L(c, [[x - s * .1, y + s * .25], [x + s * .4, y + s * .25]]); },
+    download: (c, x, y, s) => { L(c, [[x, y - s], [x, y + s * .3]]); L(c, [[x - s * .45, y - s * .15], [x, y + s * .3], [x + s * .45, y - s * .15]]); L(c, [[x - s * .9, y + s * .4], [x - s * .9, y + s * .8], [x + s * .9, y + s * .8], [x + s * .9, y + s * .4]]); },
+    git: (c, x, y, s) => { circ(c, x - s * .5, y - s * .7, s * .2); circ(c, x - s * .5, y + s * .7, s * .2); circ(c, x + s * .5, y - s * .1, s * .2); L(c, [[x - s * .5, y - s * .5], [x - s * .5, y + s * .5]]); c.beginPath(); c.moveTo(x + s * .5, y + s * .1); c.quadraticCurveTo(x + s * .5, y + s * .45, x - s * .4, y + s * .55); c.stroke(); },
+    rewind: (c, x, y, s) => { c.beginPath(); c.arc(x, y, s * .8, -Math.PI * .7, Math.PI * .9); c.stroke(); L(c, [[x - s * .75, y - s * .9], [x - s * .5, y - s * .62], [x - s * .9, y - s * .45]]); L(c, [[x, y - s * .4], [x, y], [x + s * .35, y + s * .2]]); },
+    save: (c, x, y, s) => { L(c, [[x - s * .8, y - s * .8], [x + s * .5, y - s * .8], [x + s * .8, y - s * .5], [x + s * .8, y + s * .8], [x - s * .8, y + s * .8], [x - s * .8, y - s * .8]]); c.strokeRect(x - s * .45, y - s * .8, s * .8, s * .5); c.strokeRect(x - s * .5, y + s * .15, s, s * .65); },
+    bubble: (c, x, y, s) => { rr(c, x - s, y - s * .7, s * 2, s * 1.25, s * .25); L(c, [[x - s * .4, y + s * .55], [x - s * .6, y + s * .95], [x - s * .05, y + s * .55]]); },
+    question: (c, x, y, s) => { I.bubble(c, x, y, s); txt(c, "?", x, y - s * .05, s * 1.1); },
+    signpost: (c, x, y, s) => { L(c, [[x, y - s], [x, y + s]]); L(c, [[x - s * .9, y - s * .75], [x + s * .6, y - s * .75], [x + s * .9, y - s * .55], [x + s * .6, y - s * .35], [x - s * .9, y - s * .35], [x - s * .9, y - s * .75]]); L(c, [[x + s * .9, y - s * .1], [x - s * .6, y - s * .1], [x - s * .9, y + s * .1], [x - s * .6, y + s * .3], [x + s * .9, y + s * .3], [x + s * .9, y - s * .1]]); L(c, [[x - s * .5, y + s], [x + s * .5, y + s]]); },
+    network: (c, x, y, s) => { const pts = [[0, -.8], [-.8, .5], [0, .5], [.8, .5]]; pts.slice(1).forEach(([a, b]) => L(c, [[x, y - s * .55], [x + a * s, y + b * s - s * .2]])); circ(c, x, y - s * .8, s * .25, 1); pts.slice(1).forEach(([a, b]) => circ(c, x + a * s, y + b * s, s * .2)); },
+    ten: (c, x, y, s) => { circ(c, x, y, s); txt(c, "10", x, y + s * .05, s * .95); },
+    doc: (c, x, y, s) => { c.strokeRect(x - s * .7, y - s, s * 1.4, s * 2); txt(c, "PRD", x, y - s * .45, s * .45); [.05, .35, .65].forEach(k => L(c, [[x - s * .45, y + k * s], [x + s * .45, y + k * s]])); },
+    bricks: (c, x, y, s) => { const w = s * .9, h = s * .42; [[-1, 1], [0, 1], [-.5, .5 - .02], [.5, .5 - .02], [0, 0]].forEach(([a, b], i) => c.strokeRect(x + a * w - w * .48 + (i < 2 ? w * .5 : 0), y + b * h * 2 - h, w * .94, h * .88)); },
+    check: (c, x, y, s) => { circ(c, x, y, s); L(c, [[x - s * .45, y], [x - s * .1, y + s * .38], [x + s * .5, y - s * .35]]); },
+    test: (c, x, y, s) => { c.strokeRect(x - s * .75, y - s, s * 1.5, s * 2); [-.5, 0, .5].forEach(k => { L(c, [[x - s * .5, y + k * s], [x - s * .32, y + k * s + s * .15], [x - s * .05, y + k * s - s * .15]]); L(c, [[x + s * .1, y + k * s], [x + s * .5, y + k * s]]); }); },
+    magnifier: (c, x, y, s) => { circ(c, x - s * .2, y - s * .2, s * .6); L(c, [[x + s * .23, y + s * .23], [x + s * .8, y + s * .8]]); },
+    bug: (c, x, y, s) => { c.beginPath(); c.ellipse(x, y + s * .1, s * .5, s * .7, 0, 0, 7); c.stroke(); circ(c, x, y - s * .7, s * .25); [-.25, .15, .55].forEach(k => { L(c, [[x - s * .5, y + k * s], [x - s, y + k * s - s * .15]]); L(c, [[x + s * .5, y + k * s], [x + s, y + k * s - s * .15]]); }); L(c, [[x, y - s * .45], [x, y + s * .8]]); },
+    cloudup: (c, x, y, s) => { c.beginPath(); c.arc(x - s * .45, y + s * .1, s * .4, Math.PI * .5, Math.PI * 1.5); c.arc(x, y - s * .25, s * .55, Math.PI, 0); c.arc(x + s * .5, y + s * .1, s * .4, -Math.PI * .5, Math.PI * .5); c.closePath(); c.stroke(); L(c, [[x, y + s * .3], [x, y - s * .2]]); L(c, [[x - s * .22, y], [x, y - s * .22], [x + s * .22, y]]); },
+    globe: (c, x, y, s) => { circ(c, x, y, s); c.beginPath(); c.ellipse(x, y, s * .45, s, 0, 0, 7); c.stroke(); L(c, [[x - s, y], [x + s, y]]); L(c, [[x - s * .85, y - s * .5], [x + s * .85, y - s * .5]]); L(c, [[x - s * .85, y + s * .5], [x + s * .85, y + s * .5]]); },
+    mic: (c, x, y, s) => { rr(c, x - s * .35, y - s, s * .7, s * 1.2, s * .35); c.beginPath(); c.arc(x, y, s * .65, .15, Math.PI - .15); c.stroke(); L(c, [[x, y + s * .65], [x, y + s * .95]]); },
+    layers: (c, x, y, s) => { [-.6, 0, .6].forEach((k, i) => L(c, [[x - s, y + k * s], [x, y + k * s - s * .35], [x + s, y + k * s], [x, y + k * s + s * .35], [x - s, y + k * s]])); },
+    plug: (c, x, y, s) => { rr(c, x - s * .55, y - s * .3, s * 1.1, s * .8, s * .2); L(c, [[x - s * .25, y - s * .3], [x - s * .25, y - s * .8]]); L(c, [[x + s * .25, y - s * .3], [x + s * .25, y - s * .8]]); L(c, [[x, y + s * .5], [x, y + s]]); },
+    compare: (c, x, y, s) => { c.strokeRect(x - s, y - s * .7, s * .85, s * 1.4); c.strokeRect(x + s * .15, y - s * .7, s * .85, s * 1.4); L(c, [[x - s * .15, y], [x + s * .15, y]]); },
+    sliders: (c, x, y, s) => { [-.6, 0, .6].forEach((k, i) => { L(c, [[x - s, y + k * s], [x + s, y + k * s]]); circ(c, x + [-.4, .3, -.1][i] * s, y + k * s, s * .18, 1); }); },
+    eye: (c, x, y, s) => { c.beginPath(); c.moveTo(x - s, y); c.quadraticCurveTo(x, y - s * .9, x + s, y); c.quadraticCurveTo(x, y + s * .9, x - s, y); c.stroke(); circ(c, x, y, s * .3, 1); },
+    sparkle: (c, x, y, s) => { c.beginPath(); for (let i = 0; i < 8; i++) { const a = i * Math.PI / 4, r = i % 2 ? s * .25 : s; c.lineTo(x + Math.cos(a) * r, y + Math.sin(a) * r); } c.closePath(); c.fill(); },
+    brain: (c, x, y, s) => { c.beginPath(); c.arc(x - s * .35, y - s * .2, s * .5, Math.PI * .6, Math.PI * 1.9); c.arc(x + s * .35, y - s * .2, s * .5, Math.PI * 1.1, Math.PI * .4); c.closePath(); c.stroke(); L(c, [[x, y - s * .65], [x, y + s * .45]]); },
+    myth: (c, x, y, s) => { circ(c, x - s * .5, y, s * .45); L(c, [[x - s * .8, y - s * .3], [x - s * .2, y + s * .3]]); L(c, [[x - s * .2, y - s * .3], [x - s * .8, y + s * .3]]); circ(c, x + s * .5, y, s * .45); L(c, [[x + s * .3, y], [x + s * .45, y + s * .18], [x + s * .7, y - s * .2]]); },
+    prompt: (c, x, y, s) => { rr(c, x - s * 1.1, y - s * .45, s * 2.2, s * .9, s * .45); L(c, [[x - s * .75, y - s * .15], [x - s * .5, y], [x - s * .75, y + s * .15]]); L(c, [[x - s * .35, y + s * .15], [x + s * .6, y + s * .15]]); },
+    package: (c, x, y, s) => { L(c, [[x, y - s], [x + s * .9, y - s * .5], [x + s * .9, y + s * .5], [x, y + s], [x - s * .9, y + s * .5], [x - s * .9, y - s * .5], [x, y - s]]); L(c, [[x - s * .9, y - s * .5], [x, y], [x + s * .9, y - s * .5]]); L(c, [[x, y], [x, y + s]]); },
+    book: (c, x, y, s) => { L(c, [[x, y - s * .7], [x - s, y - s * .9], [x - s, y + s * .7], [x, y + s * .9], [x + s, y + s * .7], [x + s, y - s * .9], [x, y - s * .7], [x, y + s * .9]]); }
+  };
+  // kind strings: "num:01" | "word:876" | "right:folder" | "row:a,b,c" | "corner:gear" | "wall" | "bricks" ...
+  const compile = kind => {
+    const [k, arg = ""] = kind.split(":");
+    const lw = c => { c.lineWidth = 180 * .016; c.lineJoin = "round"; };
+    if (k === "num") return (c, W, H) => txt(c, arg, W * .7, H * .45, H * .62);
+    if (k === "word") return (c, W, H) => txt(c, arg, W * .77, H * .5, H * .3);
+    if (k === "right") return (c, W, H) => { lw(c); I[arg](c, W * .78, H * .52, H * .17); };
+    if (k === "corner") return (c, W, H) => { lw(c); c.lineWidth = 180 * .014; I[arg](c, W * .87, H * .18, H * .09); };
+    if (k === "row") return (c, W, H) => { lw(c); const a = arg.split(","), n = a.length; a.forEach((nm, i) => I[nm](c, W * (.06 + .88 * (i + .5) / n), H * .41, H * .1)); };
+    if (k === "row2") return (c, W, H) => { lw(c); const a = arg.split(","), n = a.length; a.forEach((nm, i) => I[nm](c, W * (.06 + .88 * (i + .5) / n), H * .33, H * .07)); };
+    if (k === "duo") return (c, W, H) => { lw(c); const [a, b] = arg.split(","); I[a](c, W * .3, H * .47, H * .13); I[b](c, W * .7, H * .47, H * .13); L(c, [[W * .44, H * .47], [W * .56, H * .47]]); L(c, [[W * .54, H * .44], [W * .56, H * .47], [W * .54, H * .5]]); };
+    if (k === "trio") return (c, W, H) => { lw(c); const a = arg.split(","); [.2, .5, .8].forEach((v, i) => { I[a[i]](c, W * v, H * .45, H * .11); if (i < 2) { L(c, [[W * (v + .1), H * .45], [W * (v + .2), H * .45]]); L(c, [[W * (v + .18), H * .42], [W * (v + .2), H * .45], [W * (v + .18), H * .48]]); } }); };
+    return () => {};
+  };
+  const S = new Proxy({}, { get: (o, k) => o[k] || (o[k] = compile(String(k))) });
+
+  let W = 0, H = 0, cur = 0, kind = "", t0 = 0, pts = [], key = "";
+  const N = 1300, P = Array.from({ length: N }, () => ({ x: Math.random(), y: Math.random(), p: Math.random() * 6.28, s: .6 + Math.random() * 1.2 }));
+  const off = document.createElement("canvas"); off.width = 320; off.height = 180; const oc = off.getContext("2d");
+  const brickPts = (() => { const o = []; let n = 0; for (let r = 0; r < 5; r++) { const cnt = r === 4 ? 2 : r > 2 ? 3 : 4, off = r % 2 ? .05 : 0; for (let k = 0; k < cnt; k++, n++) { const bx = .55 + off + k * .1, by = .78 - r * .1; for (let y = 0; y < 6; y++) for (let x = 0; x < 13; x++) o.push([bx + .092 * (.08 + .84 * (x + .5) / 13), by + .085 * (.12 + .76 * (y + .5) / 6), n]); } } return o; })();
+  const sample = t => {
+    if (kind === "bricks") return brickPts;
+    oc.clearRect(0, 0, 320, 180); oc.fillStyle = oc.strokeStyle = "#fff"; oc.lineCap = "round"; S[kind](oc, 320, 180, t);
+    const d = oc.getImageData(0, 0, 320, 180).data, o = [];
+    for (let y = 0; y < 180; y += 2) for (let x = 0; x < 320; x += 2) if (d[(y * 320 + x) * 4 + 3] > 110) o.push([x / 320, y / 180]);
+    for (let i = o.length - 1; i > 0; i--) { const j = (i * 7919) % (i + 1); [o[i], o[j]] = [o[j], o[i]]; }
+    return o;
+  };
+  const fit = () => { const r = stage.getBoundingClientRect(), d = Math.min(2, devicePixelRatio || 1); W = cv.width = Math.round(r.width * d); H = cv.height = Math.round(r.height * d); };
+  // ดาวประกายทองแซมเงิน (ทอง 5 : เงิน 1) บนพื้นขาวนวล — Boss อนุมัติ 2026-10-15
+  const STAR = (() => {
+    const R = 64, m = R / 2;
+    const cnv = () => { const c = document.createElement("canvas"); c.width = c.height = R; return c; };
+    const arms = [[m * .95, m * .1], [m * .1, m * .95], [m * .42, m * .05], [m * .05, m * .42]];
+    const gold = (() => {
+      const c = cnv(), g = c.getContext("2d"); g.translate(m, m); g.shadowColor = "rgba(90,60,10,.45)"; g.shadowBlur = 3; g.fillStyle = "#86590f";
+      for (const [a, b] of arms) { g.beginPath(); g.ellipse(0, 0, a, b, 0, 0, 6.3); g.fill(); }
+      g.shadowColor = "transparent"; g.fillStyle = "#f1d58a"; g.beginPath(); g.arc(0, 0, m * .14, 0, 6.3); g.fill(); g.fillStyle = "#ffffff"; g.beginPath(); g.arc(0, 0, m * .06, 0, 6.3); g.fill();
+      return c;
+    })();
+    const silver = (() => {
+      const c = cnv(), g = c.getContext("2d"); g.translate(m, m);
+      const rg = g.createRadialGradient(0, 0, 0, 0, 0, m * .95);
+      rg.addColorStop(0, "#ffffff"); rg.addColorStop(.22, "#f2f6fb"); rg.addColorStop(.5, "#b9c3d0"); rg.addColorStop(1, "#7b8696");
+      g.shadowColor = "rgba(60,78,108,.35)"; g.shadowBlur = 3; g.fillStyle = rg;
+      for (const [a, b] of arms) { g.beginPath(); g.ellipse(0, 0, a, b, 0, 0, 6.3); g.fill(); }
+      g.shadowColor = "rgba(255,255,255,.6)"; g.shadowBlur = 4; g.fillStyle = "#ffffff"; g.beginPath(); g.arc(0, 0, m * .15, 0, 6.3); g.fill();
+      return c;
+    })();
+    return {
+      fade: "rgba(250,246,238,.9)", size: 1.9,
+      draw(c, q, x, y, s, tw, now) {
+        const isSilver = (q.p * 1000 | 0) % 6 < 1, gl = isSilver ? silver : gold;
+        if (isSilver) { tw = .5 + .5 * Math.sin(now / 220 + q.p * 7); s *= .75; }
+        if (q.p * 100 % 10 < 3.5) { const k = s * (1.7 + 1.3 * tw); c.drawImage(gl, x - k / 2, y - k / 2, k, k); return; }
+        c.fillStyle = isSilver ? "rgba(120,132,150,.95)" : "rgba(112,76,16,.95)"; c.beginPath(); c.arc(x, y, Math.max(1, s * .27), 0, 6.3); c.fill();
+        if (tw > .85) { const a = (tw - .85) / .15, k = s * (2.4 + 2.2 * a); c.globalAlpha = a; c.drawImage(gl, x - k / 2, y - k / 2, k, k); c.globalAlpha = 1; }
+      }
+    };
+  })();
+  const frame = now => {
+    const t = (now - t0) / 1000, k = kind === "cover" ? Math.floor(t / 4) % 2 : 0, shown = Math.floor(t / .35) + 1;
+    if (k + kind !== key) { key = k + kind; pts = sample(t); if (kind === "cover" && t > 1) P.forEach(q => { q.x += (Math.random() - .5) * .08; q.y += (Math.random() - .5) * .08; }); }
+    ctx.fillStyle = STAR.fade; ctx.fillRect(0, 0, W, H);
+    const n = pts.length, swirl = kind === "bricks" ? 0 : Math.max(0, 1 - t * .9), cap = kind === "bricks" ? 900 : N;
+    for (let i = 0; i < cap && n; i++) {
+      const q = P[i], [tx, ty, bi] = pts[Math.floor(i * n / cap)];
+      if (kind === "bricks" && bi >= shown) { q.x += (tx - q.x) * .01; q.y += (ty - .25 - q.y) * .01; continue; }
+      q.x += (tx - q.x) * .055 * (1 - swirl * .8) + Math.cos(now / 600 + q.p) * swirl * .004;
+      q.y += (ty - q.y) * .055 * (1 - swirl * .8) + Math.sin(now / 600 + q.p) * swirl * .004 * 1.6;
+      const tw = .6 + .4 * Math.sin(now / 500 + q.p * 3), sz = q.s * W / 620 * STAR.size;
+      STAR.draw(ctx, q, q.x * W, q.y * H, sz, tw, now);
+    }
+    requestAnimationFrame(frame);
+  };
+  const go = n => {
+    cur = Math.max(0, Math.min(slides.length - 1, n));
+    slides.forEach((s, i) => s.classList.toggle("on", i === cur));
+    kind = slides[cur].dataset.dust; t0 = performance.now(); key = "";
+    P.forEach(q => { q.x += (Math.random() - .5) * .3; q.y += (Math.random() - .5) * .3; });
+    document.getElementById("pg").textContent = String(cur + 1).padStart(2, "0") + " / " + String(slides.length).padStart(2, "0");
+    document.getElementById("bar").style.width = ((cur + 1) / slides.length * 100) + "%";
+    try { history.replaceState(null, "", "#" + (cur + 1)); } catch (e) {}
+  };
+  const EMBED = new URLSearchParams(location.search).has("embed");
+  if (EMBED) document.documentElement.classList.add("embed");
+  const step = d => { if (EMBED) parent.postMessage({ deckNav: d }, "*"); else go(cur + d); };
+  window.deckGo = n => { if (EMBED) parent.postMessage({ deckGo: n }, "*"); else go(n - 1); };
+  addEventListener("keydown", e => { if (["ArrowRight", "PageDown", " ", "Enter"].includes(e.key)) { e.preventDefault(); step(1); } if (["ArrowLeft", "PageUp", "Backspace"].includes(e.key)) { e.preventDefault(); step(-1); } if (e.key === "f" && !EMBED) toggleFs(); });
+  stage.addEventListener("click", e => { const r = stage.getBoundingClientRect(); step(e.clientX - r.left > r.width * .3 ? 1 : -1); });
+  const toggleFs = () => { if (!document.fullscreenElement) document.documentElement.requestFullscreen?.(); else document.exitFullscreen?.(); };
+  document.getElementById("prev").onclick = () => go(cur - 1);
+  document.getElementById("next").onclick = () => go(cur + 1);
+  document.getElementById("fs").onclick = toggleFs;
+  addEventListener("resize", fit); fit();
+  const goHash = () => go(Math.max(1, parseInt((location.hash || "#1").slice(1), 10) || 1) - 1);
+  goHash();
+  addEventListener("hashchange", goHash);
+  const ready = document.fonts ? Promise.all([document.fonts.load("700 40px var(--fb)"), document.fonts.load("800 40px var(--fk)")]).catch(() => {}) : Promise.resolve();
+  ready.then(() => { key = ""; });
+  requestAnimationFrame(frame);
+})();
+</script>
+<script>
+(() => {
+  const sl = document.getElementById("vcw"); if (!sl) return;
+  const light = sl.querySelector(".vlight"), tp = document.getElementById("vtravel");
+  // offset-path in cqw: scale the SVG path (viewBox units == cqw) to pixels of the stage
+  const stage = document.getElementById("stage");
+  const setPath = () => { const u = stage.getBoundingClientRect().width / 100; const d = tp.getAttribute("d").replace(/(-?\d+(?:\.\d+)?) (-?\d+(?:\.\d+)?)/g, (m, x, y) => (x * u).toFixed(1) + " " + (y * u).toFixed(1)); light.style.offsetPath = `path("${d}")`; };
+  setPath(); addEventListener("resize", setPath);
+  const replay = () => { sl.classList.remove("on"); void sl.offsetWidth; sl.classList.add("on"); };
+  sl.querySelectorAll(".vn:not(.end)").forEach(n => { n.title = "กดเพื่อไปหน้าของขั้นนี้"; n.addEventListener("click", e => { e.stopPropagation(); window.deckGo(4 + Number(n.style.getPropertyValue("--i"))); }); });
+  document.getElementById("vreplay").addEventListener("click", e => { e.stopPropagation(); replay(); });
+})();
+</script>
+<script>(() => { document.querySelectorAll(".skl, .skl a").forEach(el => { el.addEventListener("click", e => e.stopPropagation()); el.addEventListener("keydown", e => e.stopPropagation()); }); })();</script>
+<script>
+(() => {
+  const copy = async (text, btn) => {
+    let ok = false;
+    const ta = document.createElement("textarea"); ta.value = text; ta.style.position = "fixed"; ta.style.opacity = "0";
+    document.body.append(ta); ta.select();
+    try { ok = document.execCommand("copy"); } catch (e) {}
+    ta.remove();
+    if (!ok && navigator.clipboard) { const t = new Promise(r => setTimeout(() => r(false), 1500)); ok = await Promise.race([navigator.clipboard.writeText(text).then(() => true, () => false), t]); }
+    btn.textContent = ok ? "คัดลอกแล้ว" : "คัดลอกไม่ได้ ลากคลุมข้อความแทน"; btn.classList.toggle("ok", ok);
+    setTimeout(() => { btn.textContent = "คัดลอก Prompt"; btn.classList.remove("ok"); }, 2200);
+  };
+  document.querySelectorAll(".say-cpy").forEach(b => {
+    b.addEventListener("click", e => { e.stopPropagation(); copy(b.dataset.text, b); });
+    b.addEventListener("keydown", e => e.stopPropagation());
+  });
+})();
+</script>
+</body>
+</html>

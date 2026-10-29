@@ -1,0 +1,149 @@
+<!doctype html><html lang="th"><head><base href="https://handoff-profile-web.vercel.app/"><!-- space-skin --><script>// Space skin: turns a light course slide into the dark space theme of the talk cover.
+// Inlined into each copied slide (scripts/apply-space-skin.py), so it also works in pages that use <base href>.
+(() => {
+  for (const name of ["replaceState", "pushState"]) {
+    const original = history[name].bind(history);
+    // Copied pages keep a <base href> to their source site, so URL updates there would throw.
+    history[name] = (...args) => { try { return original(...args); } catch (error) { return undefined; } };
+  }
+  const css = `
+    html, body { background: #000 !important; }
+    /* Filter the top-level children, not body: a filtered body would become the containing block of fixed viewers. */
+    body > * { filter: invert(1) hue-rotate(180deg); }
+    body img, body video, body iframe, body picture, body svg image,
+    body .bgi, body [style*="background-image"], body [style*="url("] { filter: invert(1) hue-rotate(180deg) !important; }
+    /* Media inside an already re-inverted box would flip back to a negative. */
+    :is(body .bgi, body [style*="background-image"], body [style*="url("]) :is(img, video, iframe, picture, svg image) { filter: none !important; }
+    #space-skin-tint {
+      position: fixed; inset: 0; z-index: 2147483647; pointer-events: none; mix-blend-mode: screen;
+      background:
+        radial-gradient(ellipse at 82% 0%, rgba(40,100,210,.34), transparent 55%),
+        radial-gradient(ellipse at 0% 100%, rgba(120,90,220,.22), transparent 55%),
+        linear-gradient(#081236, #040919);
+    }`;
+  const style = document.createElement("style");
+  style.id = "space-skin";
+  style.textContent = css;
+  document.head.append(style);
+  const addTint = () => {
+    if (document.getElementById("space-skin-tint")) return;
+    const tint = document.createElement("div");
+    tint.id = "space-skin-tint";
+    document.documentElement.append(tint);
+  };
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", addTint, { once: true });
+  else addTint();
+})();
+</script><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>AI Creative Portfolio | Gen AI Space</title><style>
+@font-face{font-family:"Sukhumvit Set";font-weight:400;font-style:normal;font-display:swap;src:url(fonts/SukhumvitSet-Text.ttf) format("truetype")}
+/* Layout: dark editorial. Full-bleed photo hero, oversized name bleeding off bottom-left, then left-aligned single-column sections
+   with 120px gaps. Surfaces: canvas, graphite cards (10px), one iris accent card per section. Pills carry a 1px inset ring; no drop shadows. */
+:root{
+  color-scheme:dark;
+  --canvas:#1c1d20; --white:#ffffff; --fog:#999d9e; --graphite:#494a4d; --iris:#455ce9; --iris-deep:#334bd3;
+  --ring:rgba(255,255,255,.2) 0 0 0 1px inset;
+  --font:"Sukhumvit Set","Noto Sans Thai",system-ui,sans-serif;
+  --pad:clamp(16px,3.2vw,48px);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--canvas);color:var(--white);font-family:var(--font);font-weight:400;font-size:15px;line-height:1.7;letter-spacing:.04em;overflow-x:hidden}
+h1,h2,h3,p{margin:0;font-weight:400}
+a{color:inherit;text-decoration:none}
+:focus-visible{outline:2px solid var(--white);outline-offset:3px}
+.fog{color:var(--fog)}
+
+/* hero */
+.hero{position:relative;height:min(100svh,62.5vw);min-height:560px;overflow:hidden;background:#d6d8d9;isolation:isolate}
+.hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 50%;display:block}
+.hero::after{content:"";position:absolute;inset:0;pointer-events:none}
+.hero .nav,.hero .tagline{color:var(--canvas)}
+.hero .nav :focus-visible{outline-color:var(--canvas)}
+.nav{position:absolute;z-index:3;top:16px;left:var(--pad);right:var(--pad);display:flex;justify-content:space-between;align-items:center;font-size:13px}
+.nav nav{display:flex;gap:32px}
+.badge{position:absolute;z-index:3;left:0;top:52%;display:flex;align-items:center;gap:22px;background:var(--canvas);border-radius:0 36.72px 36.72px 0;padding:18px 22px 18px var(--pad);font-size:12px;line-height:1.35}
+.globe{width:52px;height:52px;border-radius:50%;background:var(--fog);display:grid;place-items:center;flex:none}
+.tagline{position:absolute;z-index:3;right:5%;top:39%;max-width:28%;font-size:clamp(15px,1.7vw,27px);line-height:1.5}
+.tagline svg{display:block;margin-bottom:56px;stroke:var(--canvas)}
+.name{position:absolute;z-index:3;left:-.03em;bottom:.015em;margin:0;font-size:17vw;line-height:1;letter-spacing:0;white-space:nowrap;color:var(--white);mix-blend-mode:difference}
+
+/* sections */
+main{display:flex;flex-direction:column;gap:clamp(88px,11vw,150px);padding:clamp(88px,11vw,150px) var(--pad) 40px}
+.sec{display:grid;gap:clamp(32px,4vw,56px)}
+.h{font-size:clamp(36px,6.4vw,88px);line-height:1.2;letter-spacing:.03em;text-wrap:balance}
+.lead{max-width:34em;font-size:17px;line-height:1.75}
+.split{display:grid;grid-template-columns:1.3fr 1fr;gap:clamp(24px,4vw,64px);align-items:start}
+.card{border-radius:10px;padding:22px;min-width:0}
+.card.iris{background:var(--iris);font-size:17px;line-height:1.6}
+.card.iris b{display:block;font-weight:400;font-size:33px;line-height:1.3;margin-bottom:10px}
+.card.gr{background:var(--graphite)}
+.card.gr h3{font-size:19px;line-height:1.4;margin-bottom:6px}
+.card.gr p{font-size:14px;line-height:1.65}
+.card .cap{font-size:12px;color:var(--fog);display:block;margin-bottom:10px;line-height:1.5}
+.card.gr .cap{color:#d3d5d6}
+
+.pill{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:12px 22px;border-radius:36.72px;background:var(--canvas);color:var(--white);box-shadow:var(--ring);font:inherit;font-size:14px;letter-spacing:.05em;cursor:pointer;border:0;line-height:1.3}
+.pill:hover{background:var(--graphite)}
+.pill.iris{background:var(--iris);box-shadow:none}
+.pill.iris:hover{background:var(--iris-deep)}
+.pills{display:flex;flex-wrap:wrap;gap:10px}
+
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:1px solid rgba(255,255,255,.2)}
+.stat{padding:28px 20px 28px 0;border-bottom:1px solid rgba(255,255,255,.2);min-width:0}
+.stat b{display:block;font-weight:400;font-size:clamp(36px,5vw,60px);line-height:1.15;letter-spacing:.03em;font-variant-numeric:tabular-nums}
+.stat span{font-size:13px;color:var(--fog);line-height:1.5;display:block;margin-top:6px}
+
+.rows{border-top:1px solid rgba(255,255,255,.2)}
+.r{display:grid;grid-template-columns:1fr 1.2fr;gap:clamp(16px,4vw,64px);padding:26px 0;border-bottom:1px solid rgba(255,255,255,.2);align-items:baseline}
+.r h3{font-size:clamp(22px,2.6vw,33px);line-height:1.3}
+.r p{color:var(--fog);font-size:15px;line-height:1.7}
+
+.grp{display:grid;gap:14px}
+.grp .cap{font-size:12px;color:var(--fog)}
+
+.g2{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.shot{margin:0;display:grid;gap:10px;min-width:0}
+.shot:first-child{grid-column:1/-1}
+.shot img{width:100%;aspect-ratio:3/2;object-fit:cover;display:block;background:var(--graphite)}
+.shot:first-child img{aspect-ratio:21/9}
+.shot figcaption{font-size:12px;color:var(--fog);line-height:1.5}
+
+.contact .c{display:grid;grid-template-columns:140px 1fr auto;gap:16px;align-items:center;padding:22px 0;border-bottom:1px solid rgba(255,255,255,.2);min-width:0}
+.contact .c span.k{font-size:12px;color:var(--fog)}
+.contact .c .v{font-size:clamp(20px,3vw,33px);line-height:1.3;overflow-wrap:anywhere;user-select:all}
+.contact .list{border-top:1px solid rgba(255,255,255,.2)}
+footer{padding:0 var(--pad) 32px;display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;font-size:12px;color:var(--fog)}
+
+@media (max-width:820px){
+  .hero{height:100svh;min-height:620px}
+  .hero img{object-position:50% 50%}
+  .split{grid-template-columns:1fr}
+  .stats{grid-template-columns:1fr 1fr}
+  .r{grid-template-columns:1fr;gap:6px}
+  .g2{grid-template-columns:1fr}
+  .shot:first-child img{aspect-ratio:3/2}
+  .contact .c{grid-template-columns:1fr auto}
+  .contact .c span.k{grid-column:1/-1}
+  .tagline{top:14%;bottom:auto;left:var(--pad);right:auto;max-width:80vw;text-shadow:none}
+  .name{font-size:15.5vw}
+  .tagline svg{display:none}
+  .badge{top:auto;bottom:27%}
+  .nav nav{gap:20px}
+}
+.nav .brand-link{display:inline-flex;align-items:center;gap:10px;flex:none}.hero .nav .brand-link img{position:static;inset:auto;width:56px;height:56px;object-fit:contain;border-radius:10px}.brand-link span{font-size:14px}@media(max-width:520px){.hero .nav .brand-link img{width:44px;height:44px}.brand-link span{display:none}}
+.portfolio-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}.portfolio-work{min-width:0;background:#26272b;border-radius:12px;overflow:hidden}.portfolio-work img{display:block;width:100%;height:auto;aspect-ratio:3/2;object-fit:cover}.portfolio-work>div{padding:22px}.portfolio-work h3{font-size:24px;line-height:1.4;margin-bottom:10px}.portfolio-work p{font-size:15px;color:#bdc0c6;line-height:1.7}@media(max-width:820px){.portfolio-grid{grid-template-columns:1fr;gap:20px}.portfolio-work h3{font-size:22px}}
+
+.creative-tabs{display:flex;gap:12px}.creative-tabs button{font:inherit;font-size:18px;border:1px solid #51535a;background:#26272b;color:#fff;padding:12px 28px;border-radius:30px;cursor:pointer}.creative-tabs button[aria-selected="true"]{background:#455ce9;border-color:#455ce9}.creative-intro{color:#bdc0c6;margin-bottom:24px}.visual-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}.visual-card{display:flex;flex-direction:column;gap:12px;background:#26272b;padding:14px;border-radius:12px;min-width:0}.visual-card img{display:block;width:100%;height:240px;object-fit:contain;background:#1c1d20;border-radius:6px}.visual-card:hover{outline:1px solid #8997ff}.visual-open{color:#b8c1ff;font-size:13px;margin-top:auto}.video-pending{padding:28px;border:1px solid #51535a;border-radius:12px}.video-pending p{color:#bdc0c6;margin-top:10px}[hidden]{display:none!important}@media(max-width:820px){.visual-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.visual-card img{height:190px}}@media(max-width:520px){.visual-grid{grid-template-columns:1fr}.visual-card img{height:260px}}
+
+.creative-header{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:24px var(--pad);border-bottom:1px solid #383a40}.creative-header .creative-brand{display:flex;align-items:center;gap:12px}.creative-brand img{width:48px;height:48px;border-radius:8px}.creative-main{padding-top:48px;gap:32px}.creative-main .h{font-size:clamp(32px,5vw,56px)}
+.music-work h3,.commercial-work h3{font-size:26px;margin-bottom:20px}.music-link{display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:24px;background:#26272b;border-radius:12px;overflow:hidden}.music-link img{display:block;width:100%;aspect-ratio:16/9;object-fit:cover}.music-link>div{padding:24px}.music-link h4,.video-work h4{font-size:21px;font-weight:400;margin:0 0 12px}.music-link span,.video-work a{font-size:14px;color:#b8c1ff}.commercial-work{margin-top:40px}.video-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}.video-work{background:#26272b;border-radius:12px;overflow:hidden;min-width:0}.video-work video{display:block;width:100%;aspect-ratio:16/9;background:#000}.game-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}.game-card{overflow:hidden;padding:0;border:1px solid #454750;border-radius:14px;min-height:280px;display:flex;flex-direction:column;align-items:flex-start;justify-content:center}.game-cover{display:block;width:100%;height:360px;object-fit:contain;background:#17171c}.game-sweet .game-cover{background:#352834}.game-murder .game-cover{background:#101a21}.game-info{padding:24px;width:100%}.game-card h3{font-size:clamp(26px,3vw,38px);font-weight:400;line-height:1.2;margin:20px 0 32px}.game-sweet{background:linear-gradient(135deg,#403148,#26272b)}.game-murder{background:linear-gradient(135deg,#203641,#26272b)}@media(max-width:820px){.game-grid{grid-template-columns:1fr}}.event-heading{font-size:26px;margin:32px 0 20px}.event-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;margin-bottom:24px}.event-grid h3{font-size:26px;margin:14px 0}.event-grid p{margin:0}@media(max-width:820px){.event-grid{grid-template-columns:1fr}}.embed-preview{display:block;position:relative;width:100%;aspect-ratio:16/9;border:0;padding:0;background:#000;cursor:pointer;overflow:hidden}.embed-preview img{display:block;width:100%;height:100%;object-fit:contain}.embed-play{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);display:grid;place-items:center;width:64px;height:48px;border-radius:12px;background:#121212e6;color:white;font-size:26px}.embed-preview:hover .embed-play{background:#4358ed}.embed-preview:focus-visible{outline:3px solid #b8c1ff;outline-offset:3px}.drive-player{display:block;width:100%;aspect-ratio:16/9;border:0;background:#000}.creative-tabs{flex-wrap:wrap}.video-work>div{padding:20px}.video-work h4{margin:0}.music-player{max-width:960px;background:#26272b;border-radius:12px;overflow:hidden}.music-player iframe{display:block;width:100%;aspect-ratio:16/9;border:0}.music-player h4{font-size:21px;font-weight:400;margin:0;padding:20px}@media(max-width:820px){.music-link,.video-grid{grid-template-columns:1fr}}
+.music-details{padding:24px}.music-details h4{font-size:24px;font-weight:400;margin:0 0 12px}.music-details p{margin:6px 0;color:var(--muted)}.music-details .music-views{color:var(--accent);font-weight:600}.portfolio-nav{display:flex;align-items:center;flex-wrap:wrap;gap:18px;font-size:14px}.portfolio-nav .pill{padding:10px 20px;font-size:14px}@media(max-width:600px){.creative-header{align-items:flex-start;flex-direction:column}}</style><link rel="stylesheet" href="typography.css"><link rel="stylesheet" href="theme.css"><script>try{var l=new URLSearchParams(location.search).get('lang')||localStorage.getItem('lang');if(l==='en'||l==='zh'){document.documentElement.classList.add('i18n-pending');setTimeout(function(){document.documentElement.classList.remove('i18n-pending')},3000)}}catch(e){}</script></head><body><header class="creative-header"><a class="creative-brand" href="https://genaispace.net/"><img src="assets/gen-ai-space-logo.png" alt="Gen AI Space" width="48" height="48"><span>Gen AI Space</span></a><nav class="portfolio-nav" aria-label="Portfolio navigation"><a class="pill" href="/index.html">กลับหน้าโปรไฟล์</a><a class="pill" href="/ai-creative.html" aria-current="page">AI Creative</a><a class="pill" href="/vibe-coding.html">Vibe Coding</a></nav></header><main class="creative-main"><section class="sec" id="creative">
+    <h2 class="h">ผลงานด้าน AI Creative</h2><div class="creative-tabs" role="tablist" aria-label="ประเภทผลงาน AI Creative"><button type="button" role="tab" id="visual-tab" aria-controls="visual-panel" aria-selected="true">Key Visual</button><button type="button" role="tab" id="video-tab" aria-controls="video-panel" aria-selected="false" tabindex="-1">AI Commercial</button><button type="button" role="tab" id="ai-video-tab" aria-controls="ai-video-panel" aria-selected="false" tabindex="-1">AI Video</button><button type="button" role="tab" id="games-tab" aria-controls="games-panel" aria-selected="false" tabindex="-1">Games</button><button type="button" role="tab" id="events-tab" aria-controls="events-panel" aria-selected="false" tabindex="-1">AI Events</button></div><div id="visual-panel" role="tabpanel" aria-labelledby="visual-tab"><div class="visual-grid"><a class="visual-card" href="assets/key-visuals/key-visual-01.jpg" target="_blank" rel="noopener" aria-label="เปิดภาพผลงาน McDonald's — แคมเปญวันแม่"><img src="assets/key-visuals/key-visual-01.jpg" alt="McDonald's — แคมเปญวันแม่" loading="lazy"><span>McDonald's — แคมเปญวันแม่</span></a><a class="visual-card" href="assets/key-visuals/key-visual-02.jpg" target="_blank" rel="noopener" aria-label="เปิดภาพผลงาน McDonald's — แคมเปญวันแม่"><img src="assets/key-visuals/key-visual-02.jpg" alt="McDonald's — แคมเปญวันแม่" loading="lazy"><span>McDonald's — แคมเปญวันแม่</span></a><a class="visual-card" href="assets/key-visuals/key-visual-03.jpg" target="_blank" rel="noopener" aria-label="เปิดภาพผลงาน McDonald's — แคมเปญวันแม่"><img src="assets/key-visuals/key-visual-03.jpg" alt="McDonald's — แคมเปญวันแม่" loading="lazy"><span>McDonald's — แคมเปญวันแม่</span></a><a class="visual-card" href="assets/key-visuals/key-visual-04.jpg" target="_blank" rel="noopener" aria-label="เปิดภาพผลงาน McDonald's — แคมเปญวันแม่"><img src="assets/key-visuals/key-visual-04.jpg" alt="McDonald's — แคมเปญวันแม่" loading="lazy"><span>McDonald's — แคมเปญวันแม่</span></a><a class="visual-card" href="assets/key-visuals/key-visual-05.jpg" target="_blank" rel="noopener" aria-label="เปิดภาพผลงาน McDonald's — แคมเปญวันแม่"><img src="assets/key-visuals/key-visual-05.jpg" alt="McDonald's — แคมเปญวันแม่" loading="lazy"><span>McDonald's — แคมเปญวันแม่</span></a><a class="visual-card" href="assets/key-visuals/key-visual-06.jpg" target="_blank" rel="noopener" aria-label="เปิดภาพผลงาน McDonald's — แคมเปญวันแม่"><img src="assets/key-visuals/key-visual-06.jpg" alt="McDonald's — แคมเปญวันแม่" loading="lazy"><span>McDonald's — แคมเปญวันแม่</span></a><a class="visual-card" href="assets/key-visuals/key-visual-07.jpg" target="_blank" rel="noopener" aria-label="เปิดภาพผลงาน McDonald's — แคมเปญวันแม่"><img src="assets/key-visuals/key-visual-07.jpg" alt="McDonald's — แคมเปญวันแม่" loading="lazy"><span>McDonald's — แคมเปญวันแม่</span></a><a class="visual-card" href="assets/key-visuals/key-visual-08.jpg" target="_blank" rel="noopener" aria-label="เปิดภาพผลงาน McDonald's — แคมเปญวันแม่"><img src="assets/key-visuals/key-visual-08.jpg" alt="McDonald's — แคมเปญวันแม่" loading="lazy"><span>McDonald's — แคมเปญวันแม่</span></a><a class="visual-card" href="assets/key-visuals/key-visual-09.jpg" target="_blank" rel="noopener" aria-label="เปิดภาพผลงาน McDonald's — แคมเปญวันแม่"><img src="assets/key-visuals/key-visual-09.jpg" alt="McDonald's — แคมเปญวันแม่" loading="lazy"><span>McDonald's — แคมเปญวันแม่</span></a><a class="visual-card" href="assets/key-visuals/key-visual-10.png" target="_blank" rel="noopener" aria-label="เปิดภาพผลงาน M-150 — ฟุตบอลทีมชาติไทย"><img src="assets/key-visuals/key-visual-10.png" alt="M-150 — ฟุตบอลทีมชาติไทย" loading="lazy"><span>M-150 — ฟุตบอลทีมชาติไทย</span></a><a class="visual-card" href="assets/key-visuals/key-visual-11.png" target="_blank" rel="noopener" aria-label="เปิดภาพผลงาน งานภาพ Generative AI"><img src="assets/key-visuals/key-visual-11.png" alt="งานภาพ Generative AI" loading="lazy"><span>งานภาพ Generative AI</span></a><a class="visual-card" href="assets/key-visuals/key-visual-12.png" target="_blank" rel="noopener" aria-label="เปิดภาพผลงาน งานภาพสำหรับธนาคาร"><img src="assets/key-visuals/key-visual-12.png" alt="งานภาพสำหรับธนาคาร" loading="lazy"><span>งานภาพสำหรับธนาคาร</span></a><a class="visual-card" href="assets/key-visuals/key-visual-13.jpg" target="_blank" rel="noopener" aria-label="เปิดภาพผลงาน MSB — งานภาพแคมเปญ"><img src="assets/key-visuals/key-visual-13.jpg" alt="MSB — งานภาพแคมเปญ" loading="lazy"><span>MSB — งานภาพแคมเปญ</span></a><a class="visual-card" href="assets/key-visuals/key-visual-14.png" target="_blank" rel="noopener" aria-label="เปิดภาพผลงาน Ragnarok 2024"><img src="assets/key-visuals/key-visual-14.png" alt="Ragnarok 2024" loading="lazy"><span>Ragnarok 2024</span></a><a class="visual-card" href="assets/key-visuals/key-visual-15.png" target="_blank" rel="noopener" aria-label="เปิดภาพผลงาน Ragnarok 2024"><img src="assets/key-visuals/key-visual-15.png" alt="Ragnarok 2024" loading="lazy"><span>Ragnarok 2024</span></a></div></div><div id="video-panel" role="tabpanel" aria-labelledby="video-tab" hidden><div class="music-work"><h3>มิวสิกวิดีโอ</h3><div class="music-player"><button class="embed-preview" type="button" data-embed="https://www.youtube.com/embed/r5-tsl7Ird8?autoplay=1" data-title="หัวใจไม่เล็กอีกแล้ว — ลูกแก้ว สมบัติเจริญ" aria-label="เล่น หัวใจไม่เล็กอีกแล้ว — ลูกแก้ว สมบัติเจริญ"><img src="assets/videos/music-video.jpg" alt="หัวใจไม่เล็กอีกแล้ว — ลูกแก้ว สมบัติเจริญ" width="1000" height="563"><span class="embed-play" aria-hidden="true">▶</span></button><div class="music-details"><h4>หัวใจไม่เล็กอีกแล้ว — ลูกแก้ว สมบัติเจริญ</h4><p>ผลงาน MV ที่จัดทำให้คุณลูกแก้ว สมบัติเจริญ</p><p>เพลง “หัวใจไม่เล็กอีกแล้ว”</p><p class="music-views">ยอดวิว 190,000 วิว</p></div></div></div><div class="commercial-work"><h3>งาน AI Commercial</h3><div class="video-grid"><article class="video-work"><video controls playsinline preload="none" poster="assets/videos/itcha.jpg" aria-label="Itcha"><source src="assets/videos/itcha.mp4" type="video/mp4">เบราว์เซอร์นี้ไม่รองรับวิดีโอ</video><div><h4>Itcha</h4></div></article><article class="video-work"><video controls playsinline preload="none" poster="assets/videos/biovech.jpg" aria-label="ไปโอเวช"><source src="assets/videos/biovech.mp4" type="video/mp4">เบราว์เซอร์นี้ไม่รองรับวิดีโอ</video><div><h4>ไปโอเวช</h4></div></article><article class="video-work"><video controls playsinline preload="none" poster="assets/videos/light-lush.jpg" aria-label="Light Lush"><source src="assets/videos/light-lush.mp4" type="video/mp4">เบราว์เซอร์นี้ไม่รองรับวิดีโอ</video><div><h4>Light Lush</h4></div></article><article class="video-work"><video controls playsinline preload="none" poster="assets/videos/nisit-supplement.jpg" aria-label="Nisit — อาหารเสริม"><source src="assets/videos/nisit-supplement.mp4" type="video/mp4">เบราว์เซอร์นี้ไม่รองรับวิดีโอ</video><div><h4>Nisit — อาหารเสริม</h4></div></article><article class="video-work"><video controls playsinline preload="none" poster="assets/videos/trme.jpg" aria-label="TRME"><source src="assets/videos/trme.mp4" type="video/mp4">เบราว์เซอร์นี้ไม่รองรับวิดีโอ</video><div><h4>TRME</h4></div></article><article class="video-work"><video controls playsinline preload="none" poster="assets/videos/the-toilet.jpg" aria-label="The Toilet"><source src="assets/videos/the-toilet.mp4" type="video/mp4">เบราว์เซอร์นี้ไม่รองรับวิดีโอ</video><div><h4>The Toilet</h4></div></article></div></div></div><div id="ai-video-panel" role="tabpanel" aria-labelledby="ai-video-tab" hidden><div class="video-grid"><article class="video-work"><video controls playsinline preload="none" poster="assets/videos/ai-hanuman-ultra-brothers-v13.jpg" aria-label="หนุมานปะทะ7ยอดมนุษย์ 2026"><source src="assets/videos/hanuman-ultra-brothers-v13-web.mp4" type="video/mp4"></video><div><h4>หนุมานปะทะ7ยอดมนุษย์ 2026</h4></div></article><article class="video-work"><button class="embed-preview" type="button" data-embed="https://drive.google.com/file/d/1Q0amMc05j1XobxNN0ACuZHt9fI_2kXsZ/preview" data-title="Hanuman" aria-label="เล่น Hanuman"><img src="assets/videos/ai-hanuman.jpg" alt="Hanuman" width="1000" height="563"><span class="embed-play" aria-hidden="true">▶</span></button><div><h4>Hanuman</h4></div></article><article class="video-work"><button class="embed-preview" type="button" data-embed="https://drive.google.com/file/d/1mYhjCpy_mUNf9yKkCp72AzLQOYTnw2tZ/preview" data-title="Bangkok Apocalypse" aria-label="เล่น Bangkok Apocalypse"><img src="assets/videos/ai-bangkok-apocalypse.jpg" alt="Bangkok Apocalypse" width="1000" height="563"><span class="embed-play" aria-hidden="true">▶</span></button><div><h4>Bangkok Apocalypse</h4></div></article><article class="video-work"><button class="embed-preview" type="button" data-embed="https://drive.google.com/file/d/1_sFoXXkNhDjB_pH6SPrXOtj3VaQoXyp3/preview" data-title="ละครกูน่ะทำ" aria-label="เล่น ละครกูน่ะทำ"><img src="assets/videos/ai-drama.jpg" alt="ละครกูน่ะทำ" width="1000" height="563"><span class="embed-play" aria-hidden="true">▶</span></button><div><h4>ละครกูน่ะทำ</h4></div></article><article class="video-work"><button class="embed-preview" type="button" data-embed="https://drive.google.com/file/d/1OwBGiPdVg21zurK2wktCDIUf0Fl_LQ2f/preview" data-title="Bangkok Sweetheart" aria-label="เล่น Bangkok Sweetheart"><img src="assets/videos/ai-bangkok-sweetheart.jpg" alt="Bangkok Sweetheart" width="1000" height="563"><span class="embed-play" aria-hidden="true">▶</span></button><div><h4>Bangkok Sweetheart</h4></div></article><article class="video-work"><button class="embed-preview" type="button" data-embed="https://drive.google.com/file/d/1nEuNP28MZPpWwmqydwkTqcl87uFShazZ/preview" data-title="SF พระราม 2" aria-label="เล่น SF พระราม 2"><img src="assets/videos/ai-sf-rama2.jpg" alt="SF พระราม 2" width="1000" height="563"><span class="embed-play" aria-hidden="true">▶</span></button><div><h4>SF พระราม 2</h4></div></article><article class="video-work"><button class="embed-preview" type="button" data-embed="https://drive.google.com/file/d/1hHSJNfRrNdFLNH4KMvazFE6ARu__R3b7/preview" data-title="Opalite" aria-label="เล่น Opalite"><img src="assets/videos/ai-opalite.jpg" alt="Opalite" width="1000" height="563"><span class="embed-play" aria-hidden="true">▶</span></button><div><h4>Opalite</h4></div></article><article class="video-work"><button class="embed-preview" type="button" data-embed="https://drive.google.com/file/d/19Ud7dHhXH8jCsyCpiyjVufM5DBXie7zQ/preview" data-title="City Run" aria-label="เล่น City Run"><img src="assets/videos/ai-city-run.jpg" alt="City Run" width="1000" height="563"><span class="embed-play" aria-hidden="true">▶</span></button><div><h4>City Run</h4></div></article><article class="video-work"><button class="embed-preview" type="button" data-embed="https://drive.google.com/file/d/1oW5a1skRgowClH2o7NBAitKQ75jvnnVj/preview" data-title="คิดมาก" aria-label="เล่น คิดมาก"><img src="assets/videos/ai-overthinking.jpg" alt="คิดมาก" width="1000" height="563"><span class="embed-play" aria-hidden="true">▶</span></button><div><h4>คิดมาก</h4></div></article><article class="video-work"><button class="embed-preview" type="button" data-embed="https://drive.google.com/file/d/1lKlp6OorUEI5lD0fnyUObQFU41HB_bJG/preview" data-title="ข่าวน้ำท่วม" aria-label="เล่น ข่าวน้ำท่วม"><img src="assets/videos/ai-flood-news.jpg" alt="ข่าวน้ำท่วม" width="1000" height="563"><span class="embed-play" aria-hidden="true">▶</span></button><div><h4>ข่าวน้ำท่วม</h4></div></article><article class="video-work"><button class="embed-preview" type="button" data-embed="https://drive.google.com/file/d/1DbrQoGPbqDzUVtnw5iJ8jb9xGYIVcpgb/preview" data-title="10 20" aria-label="เล่น 10 20"><img src="assets/videos/ai-ten-twenty.jpg" alt="10 20" width="1000" height="563"><span class="embed-play" aria-hidden="true">▶</span></button><div><h4>10 20</h4></div></article></div></div><div id="games-panel" role="tabpanel" aria-labelledby="games-tab" hidden><div class="game-grid"><article class="game-card game-sweet"><img class="game-cover" src="assets/videos/ai-bangkok-sweetheart.jpg" alt="Bangkok Sweethearts cover"><div class="game-info"><h3>Bangkok Sweethearts</h3><a class="pill" href="https://bangkok-sweethearts.vercel.app/" target="_blank" rel="noopener">เล่น Bangkok Sweethearts ↗</a></div></article><article class="game-card game-murder"><img class="game-cover" src="assets/videos/game-murder-night.jpg" alt="Bangkok Murder Night cover"><div class="game-info"><h3>Bangkok Murder Night</h3><a class="pill" href="https://bangkok-murder-night.vercel.app/" target="_blank" rel="noopener">เล่น Bangkok Murder Night ↗</a></div></article></div></div><div id="events-panel" role="tabpanel" aria-labelledby="events-tab" hidden>    <h3 class="event-heading">งาน AI ที่เป็นผู้จัด</h3>
+    <div class="event-grid">
+      <article class="card iris"><span class="cap" style="color:#dfe4ff">BACC</span><h3>Synthetic Muse</h3><p>นิทรรศการศิลปะ AI ที่หอศิลปวัฒนธรรมแห่งกรุงเทพมหานคร</p></article>
+      <article class="card gr"><span class="cap">ร่วมกับ Bitkub</span><h3>AI After Work</h3></article>
+      <article class="card gr"><span class="cap">ร่วมกับ ดร. กานดี</span><h3>AI Zip Talk</h3></article>
+      <article class="card gr"><span class="cap">Meetup</span><h3>ComfyUI Thailand Meetup</h3></article>
+    </div>
+</div>
+  </section></main><footer>Gen AI Space</footer><script src="creative.js" defer></script><script src="i18n-dict.js" defer></script><script src="i18n.js" defer></script><script src="presenter.js" defer></script></body></html>

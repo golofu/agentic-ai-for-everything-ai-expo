@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="th"><head><base href="https://handoff-profile-web.vercel.app/"><!-- space-skin --><script>// Space skin: turns a light course slide into the dark space theme of the talk cover.
+// Inlined into each copied slide (scripts/apply-space-skin.py), so it also works in pages that use <base href>.
+(() => {
+  for (const name of ["replaceState", "pushState"]) {
+    const original = history[name].bind(history);
+    // Copied pages keep a <base href> to their source site, so URL updates there would throw.
+    history[name] = (...args) => { try { return original(...args); } catch (error) { return undefined; } };
+  }
+  const css = `
+    html, body { background: #000 !important; }
+    /* Filter the top-level children, not body: a filtered body would become the containing block of fixed viewers. */
+    body > * { filter: invert(1) hue-rotate(180deg); }
+    body img, body video, body iframe, body picture, body svg image,
+    body .bgi, body [style*="background-image"], body [style*="url("] { filter: invert(1) hue-rotate(180deg) !important; }
+    /* Media inside an already re-inverted box would flip back to a negative. */
+    :is(body .bgi, body [style*="background-image"], body [style*="url("]) :is(img, video, iframe, picture, svg image) { filter: none !important; }
+    #space-skin-tint {
+      position: fixed; inset: 0; z-index: 2147483647; pointer-events: none; mix-blend-mode: screen;
+      background:
+        radial-gradient(ellipse at 82% 0%, rgba(40,100,210,.34), transparent 55%),
+        radial-gradient(ellipse at 0% 100%, rgba(120,90,220,.22), transparent 55%),
+        linear-gradient(#081236, #040919);
+    }`;
+  const style = document.createElement("style");
+  style.id = "space-skin";
+  style.textContent = css;
+  document.head.append(style);
+  const addTint = () => {
+    if (document.getElementById("space-skin-tint")) return;
+    const tint = document.createElement("div");
+    tint.id = "space-skin-tint";
+    document.documentElement.append(tint);
+  };
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", addTint, { once: true });
+  else addTint();
+})();
+</script><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Vibe Coding Portfolio | Gen AI Space</title>
+<style>
+@font-face{font-family:Sukhumvit;src:url(fonts/SukhumvitSet-Text.ttf)}
+:root{color-scheme:dark;--bg:#1c1d20;--card:#26272b;--accent:#455ce9;--muted:#bdc0c6}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:#fff;font:16px/1.7 Sukhumvit,system-ui,sans-serif}a{color:inherit;text-decoration:none}h1,h2,p{margin:0;font-weight:400}a:focus-visible,video:focus-visible{outline:2px solid #aab5ff;outline-offset:5px}
+header{display:flex;align-items:center;justify-content:space-between;padding:24px clamp(20px,4vw,64px);gap:20px;border-bottom:1px solid #3b3c41}.brand{display:flex;align-items:center;gap:12px}.brand img{width:44px;height:44px;border-radius:8px}nav{display:flex;align-items:center;flex-wrap:wrap;gap:18px;font-size:14px}nav .button{margin-top:0;align-self:center}
+main{padding:48px clamp(20px,4vw,64px) 72px;max-width:1500px;margin:auto}.eyebrow{font-size:12px;letter-spacing:.16em;color:var(--muted)}h1{font-size:clamp(38px,6vw,70px);line-height:1.15;margin:14px 0 20px}.intro{max-width:700px;color:var(--muted);margin-bottom:36px}.featured{display:grid;grid-template-columns:1.5fr 1fr;gap:0;margin-bottom:28px;background:var(--card);border:1px solid #414249;border-radius:14px;overflow:hidden}.featured video{display:block;width:100%;height:100%;min-height:280px;background:#111;aspect-ratio:16/9;object-fit:contain}.featured .body{padding:30px;display:flex;flex-direction:column;justify-content:center;gap:14px}.featured h2{font-size:30px}.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}.card{background:var(--card);border:1px solid #393a40;border-radius:12px;overflow:hidden;display:flex;flex-direction:column;min-width:0}.card img{display:block;width:100%;aspect-ratio:16/10;object-fit:contain;background:#18191b}.card .body{padding:24px;display:flex;flex-direction:column;gap:12px;flex:1}.card h2{font-size:24px;line-height:1.35}.body p{color:var(--muted)}.tag{font-size:12px;color:#b9c2ff}.button{display:inline-flex;align-self:flex-start;padding:10px 20px;border:1px solid #5d6068;border-radius:30px;margin-top:auto;transition:background .2s,border-color .2s}.button:hover{background:var(--accent);border-color:var(--accent)}footer{padding:24px;color:var(--muted);text-align:center;font-size:13px}@media(max-width:1000px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.featured{grid-template-columns:1fr}}@media(max-width:600px){.grid{grid-template-columns:1fr}header{align-items:flex-start;flex-direction:column}.featured .body,.card .body{padding:22px}main{padding-top:30px}.featured video{min-height:0}}
+</style><link rel="stylesheet" href="typography.css"><link rel="stylesheet" href="theme.css"><script>try{var l=new URLSearchParams(location.search).get('lang')||localStorage.getItem('lang');if(l==='en'||l==='zh'){document.documentElement.classList.add('i18n-pending');setTimeout(function(){document.documentElement.classList.remove('i18n-pending')},3000)}}catch(e){}</script></head><body>
+<header><a class="brand" href="https://genaispace.net/"><img src="assets/gen-ai-space-logo.png" alt="Gen AI Space"><span>Gen AI Space</span></a><nav aria-label="Portfolio navigation"><a class="button profile-back" href="/index.html">กลับหน้าโปรไฟล์</a><a class="button" href="/ai-creative.html">AI Creative</a><a class="button" href="/vibe-coding.html" aria-current="page">Vibe Coding</a></nav></header>
+<main><p class="eyebrow">PROGRAMS / WEB APPLICATIONS</p><h1>Vibe Coding</h1><p class="intro">โปรแกรมที่พัฒนาจากปัญหาและงานที่ต้องใช้จริง เลือกเปิดเว็บไซต์เพื่อลองใช้งาน หรือดูหน้าจอการทำงานของระบบ Analysis</p>
+<article class="featured"><video controls playsinline preload="metadata" poster="assets/vibe/analysis-dashboard.png" aria-label="คลิปพาชมหน้าจอ Gen AI Space Analysis"><source src="assets/vibe/analysis-demo.mp4" type="video/mp4"></video><div class="body"><span class="tag">SCREEN WALKTHROUGH</span><h2>Gen AI Space Analysis</h2><p>ระบบค้นหาลูกค้าเป้าหมาย ติดตามคู่แข่ง และสรุปข้อมูลการตลาด</p><p>คลิปพาชมหน้าจอจริง: Dashboard → เลือกกลุ่มลูกค้า → ปรับเงื่อนไขค้นหา</p></div></article>
+<section class="grid" aria-label="โปรแกรม Vibe Coding">
+<article class="card"><img src="assets/vibe/crm.png" alt="Go Digit CRM เดโม Pipeline" loading="lazy"><div class="body"><span class="tag">CRM / SALES</span><h2>Go Digit CRM</h2><p>จัดการลูกค้า ดีลขาย งานติดตาม และรายงานยอดขาย พร้อมตรวจข้อมูลที่ AI แยกจากบันทึกงานก่อนยืนยัน</p><p class="tag">เดโมข้อมูลสมมติ · ทดลองได้ทันที</p><a class="button" href="/demos/crm/" target="_blank" rel="noopener noreferrer">ลองเดโม ↗</a><a class="tag" href="https://godigit-crm.vercel.app/" target="_blank" rel="noopener noreferrer">เว็บจริง · ต้องมีบัญชี ↗</a></div></article>
+<article class="card"><img src="assets/vibe/ocr.png" alt="Thai OCR Hub เดโมขั้นตอนตรวจเอกสาร" loading="lazy"><div class="body"><span class="tag">DOCUMENTS / OCR</span><h2>Thai OCR Hub</h2><p>อ่านข้อความไทยและอังกฤษจาก PDF และรูปภาพ เลือกช่องทาง OCR ให้เหมาะกับเอกสาร</p><p class="tag">เดโมขั้นตอนด้วยเอกสารตัวอย่าง</p><a class="button" href="/demos/ocr/" target="_blank" rel="noopener noreferrer">ลองเดโม ↗</a><a class="tag" href="https://thai-ocr-hub.alwaysdata.net/" target="_blank" rel="noopener noreferrer">เว็บจริง · ต้องมีบัญชี ↗</a></div></article>
+<article class="card"><img src="assets/vibe/rack.png" alt="ตัวอย่างคำตอบราคาแร็คพวงมาลัย" loading="lazy"><div class="body"><span class="tag">CHATBOT / PRODUCT SEARCH</span><h2>Rack Price Chatbot</h2><p>ถามราคาอะไหล่ด้วยชื่อรุ่นรถ ปีรถ หรือรหัสแร็ค พร้อมดูรุ่นรถที่ใช้ร่วมกันได้</p><p class="tag">ทดลองได้ทันที · ราคาข้อมูลตัวอย่าง</p><a class="button" href="https://rack-price-chatbot.vercel.app/" target="_blank" rel="noopener noreferrer">ลองใช้งาน ↗</a></div></article>
+<article class="card"><img src="assets/vibe/pinky.png" alt="Pinky ตอบเรื่องวันลาพร้อมอ้างอิงกฎ HR" loading="lazy"><div class="body"><span class="tag">CHATBOT / HR</span><h2>Pinky HR Chatbot</h2><p>ผู้ช่วยตอบกฎและระเบียบ HR จากข้อมูลที่กำหนด พร้อมแสดงข้ออ้างอิงในคำตอบ</p><p class="tag">ทดลองได้ทันที</p><a class="button" href="https://pinky-hr-chatbot.vercel.app/" target="_blank" rel="noopener noreferrer">ลองใช้งาน ↗</a></div></article>
+<article class="card"><img src="assets/vibe/tax.png" alt="หน้าคำนวณภาษีเงินได้ครึ่งปี" loading="lazy"><div class="body"><span class="tag">CALCULATOR</span><h2>ภ.ง.ด. 94 Calculator</h2><p>กรอกรายได้ ต้นทุน และค่าลดหย่อน เพื่อเปรียบเทียบการหักค่าใช้จ่ายเหมากับตามจริง</p><p class="tag">ทดลองได้ทันที · เกณฑ์ปีภาษี 2568</p><a class="button" href="https://phongdor-94-calculator.netlify.app/" target="_blank" rel="noopener noreferrer">ลองใช้งาน ↗</a></div></article>
+<article class="card"><img src="assets/vibe/running.png" alt="Running Dashboard ด้วยข้อมูลตัวอย่าง" loading="lazy"><div class="body"><span class="tag">DASHBOARD / DEMO</span><h2>Running Dashboard</h2><p>ดูภาพรวมการวิ่ง ระยะทาง เพซ สปลิตรายกิโล และการนอน ผ่านกราฟและรายการกิจกรรม</p><p class="tag">เดโมข้อมูลสมมติ · ไม่มีการเชื่อมต่อ Garmin จริง</p><a class="button" href="/demos/running/" target="_blank" rel="noopener noreferrer">ลองเดโม ↗</a></div></article>
+<article class="card"><img src="assets/vibe/skill.png" alt="หน้าเริ่มต้น Skill Studio" loading="lazy"><div class="body"><span class="tag">PROMPT / SKILL</span><h2>Skill Studio</h2><p>เลือกงาน ตอบสามคำถาม แล้วได้ Prompt ไปใช้กับ Claude หรือ ChatGPT เพื่อสร้าง Skill จากงานของคุณ</p><p class="tag">ทดลองได้ทันที</p><a class="button" href="https://skill-studio-pi.vercel.app/" target="_blank" rel="noopener noreferrer">ลองใช้งาน ↗</a></div></article>
+<article class="card"><img src="assets/vibe/typing.png" alt="หน้ารวมโหมด Gen AI Space Typing" loading="lazy"><div class="body"><span class="tag">TYPING / LEARNING</span><h2>Gen AI Space Typing</h2><p>ฝึกพิมพ์ไทยและอังกฤษ พร้อมโหมดฝึกฝน แข่งกับเพื่อน และภารกิจฝึกใช้ AI รายวัน</p><p class="tag">ทดลองได้ทันที · โหมดวัดความเร็วใช้คีย์บอร์ด</p><a class="button" href="https://gen-ai-space-typing.netlify.app/" target="_blank" rel="noopener noreferrer">ลองใช้งาน ↗</a></div></article>
+<article class="card"><img src="assets/vibe/trip.png" alt="หน้าค้นหาเที่ยวบินและที่พักฮ่องกง" loading="lazy"><div class="body"><span class="tag">TRAVEL / SEARCH</span><h2>Hong Kong Trip Finder</h2><p>ค้นเที่ยวบินไปกลับและโรงแรมตามวันเดินทาง งบประมาณ และย่านที่พัก พร้อมลิงก์ไปจองกับผู้ขาย</p><p class="tag">การค้นหาจริงใช้โควต้าของระบบ</p><a class="button" href="https://hong-kong-trip-finder.vercel.app/" target="_blank" rel="noopener noreferrer">เปิดเว็บไซต์ ↗</a></div></article>
+</section></main><footer>Gen AI Space</footer><script src="i18n-dict.js" defer></script><script src="i18n.js" defer></script><script src="presenter.js" defer></script></body></html>

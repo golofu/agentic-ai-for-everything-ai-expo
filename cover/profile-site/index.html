@@ -1,0 +1,499 @@
+<!doctype html>
+<html lang="th"><head><base href="https://handoff-profile-web.vercel.app/"><!-- space-skin --><script>// Space skin: turns a light course slide into the dark space theme of the talk cover.
+// Inlined into each copied slide (scripts/apply-space-skin.py), so it also works in pages that use <base href>.
+(() => {
+  for (const name of ["replaceState", "pushState"]) {
+    const original = history[name].bind(history);
+    // Copied pages keep a <base href> to their source site, so URL updates there would throw.
+    history[name] = (...args) => { try { return original(...args); } catch (error) { return undefined; } };
+  }
+  const css = `
+    html, body { background: #000 !important; }
+    /* Filter the top-level children, not body: a filtered body would become the containing block of fixed viewers. */
+    body > * { filter: invert(1) hue-rotate(180deg); }
+    body img, body video, body iframe, body picture, body svg image,
+    body .bgi, body [style*="background-image"], body [style*="url("] { filter: invert(1) hue-rotate(180deg) !important; }
+    /* Media inside an already re-inverted box would flip back to a negative. */
+    :is(body .bgi, body [style*="background-image"], body [style*="url("]) :is(img, video, iframe, picture, svg image) { filter: none !important; }
+    #space-skin-tint {
+      position: fixed; inset: 0; z-index: 2147483647; pointer-events: none; mix-blend-mode: screen;
+      background:
+        radial-gradient(ellipse at 82% 0%, rgba(40,100,210,.34), transparent 55%),
+        radial-gradient(ellipse at 0% 100%, rgba(120,90,220,.22), transparent 55%),
+        linear-gradient(#081236, #040919);
+    }`;
+  const style = document.createElement("style");
+  style.id = "space-skin";
+  style.textContent = css;
+  document.head.append(style);
+  const addTint = () => {
+    if (document.getElementById("space-skin-tint")) return;
+    const tint = document.createElement("div");
+    tint.id = "space-skin-tint";
+    document.documentElement.append(tint);
+  };
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", addTint, { once: true });
+  else addTint();
+})();
+</script><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Panjapat Profile | อบรม Generative AI สำหรับองค์กร</title>
+<meta name="description" content="อบรม Generative AI สำหรับองค์กร เริ่มจากปัญหาองค์กร ฝึกสั่งงานและตรวจคำตอบ ปรับเนื้อหาตามระดับผู้เรียน โดยปัญจพัฒน์ เกรียงวีระยุทธ">
+<style>
+@font-face{font-family:"Sukhumvit Set";font-weight:400;font-style:normal;font-display:swap;src:url(fonts/SukhumvitSet-Text.ttf) format("truetype")}
+/* Layout: dark editorial. Full-bleed photo hero, oversized name bleeding off bottom-left, then left-aligned single-column sections
+   with 120px gaps. Surfaces: canvas, graphite cards (10px), one iris accent card per section. Pills carry a 1px inset ring; no drop shadows. */
+:root{
+  color-scheme:dark;
+  --canvas:#1c1d20; --white:#ffffff; --fog:#999d9e; --graphite:#494a4d; --iris:#455ce9; --iris-deep:#334bd3;
+  --ring:rgba(255,255,255,.2) 0 0 0 1px inset;
+  --font:"Sukhumvit Set","Noto Sans Thai",system-ui,sans-serif;
+  --pad:clamp(16px,3.2vw,48px);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--canvas);color:var(--white);font-family:var(--font);font-weight:400;font-size:15px;line-height:1.7;letter-spacing:.04em;overflow-x:hidden}
+h1,h2,h3,p{margin:0;font-weight:400}
+a{color:inherit;text-decoration:none}
+:focus-visible{outline:2px solid var(--white);outline-offset:3px}
+.fog{color:var(--fog)}
+
+/* hero */
+.hero{position:relative;height:min(100svh,62.5vw);min-height:560px;overflow:hidden;background:#d6d8d9;isolation:isolate}
+.hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 50%;display:block}
+.hero::after{content:"";position:absolute;inset:0;pointer-events:none}
+.hero .nav,.hero .tagline{color:var(--canvas)}
+.hero .nav :focus-visible{outline-color:var(--canvas)}
+.nav{position:absolute;z-index:3;top:16px;left:var(--pad);right:var(--pad);display:flex;justify-content:space-between;align-items:center;font-size:13px}
+.nav nav{display:flex;gap:32px}
+.badge{position:absolute;z-index:3;left:0;top:52%;display:flex;align-items:center;gap:22px;background:var(--canvas);border-radius:0 36.72px 36.72px 0;padding:18px 22px 18px var(--pad);font-size:12px;line-height:1.35}
+.globe{width:52px;height:52px;border-radius:50%;background:var(--fog);display:grid;place-items:center;flex:none}
+.tagline{position:absolute;z-index:3;right:5%;top:39%;max-width:28%;font-size:clamp(15px,1.7vw,27px);line-height:1.5}
+.tagline svg{display:block;margin-bottom:56px;stroke:var(--canvas)}
+.name{position:absolute;z-index:3;left:-.03em;bottom:.015em;margin:0;font-size:17vw;line-height:1;letter-spacing:0;white-space:nowrap;color:var(--white);mix-blend-mode:difference}
+
+/* sections */
+main{display:flex;flex-direction:column;gap:clamp(88px,11vw,150px);padding:clamp(88px,11vw,150px) var(--pad) 40px}
+.sec{display:grid;gap:clamp(32px,4vw,56px)}
+.h{font-size:clamp(36px,6.4vw,88px);line-height:1.2;letter-spacing:.03em;text-wrap:balance}
+.lead{max-width:34em;font-size:17px;line-height:1.75}
+.about-copy{display:grid;grid-template-columns:1.4fr 1fr;gap:clamp(24px,4vw,64px);align-items:start}@media(max-width:820px){.about-copy{grid-template-columns:1fr}}.split{display:grid;grid-template-columns:1.3fr 1fr;gap:clamp(24px,4vw,64px);align-items:start}
+.card{border-radius:10px;padding:22px;min-width:0}
+.card.iris{background:var(--iris);font-size:17px;line-height:1.6}
+.card.iris b{display:block;font-weight:400;font-size:33px;line-height:1.3;margin-bottom:10px}
+.card.gr{background:var(--graphite)}
+.card.gr h3{font-size:19px;line-height:1.4;margin-bottom:6px}
+.card.gr p{font-size:14px;line-height:1.65}
+.card .cap{font-size:12px;color:var(--fog);display:block;margin-bottom:10px;line-height:1.5}
+.card.gr .cap{color:#d3d5d6}
+
+.pill{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:12px 22px;border-radius:36.72px;background:var(--canvas);color:var(--white);box-shadow:var(--ring);font:inherit;font-size:14px;letter-spacing:.05em;cursor:pointer;border:0;line-height:1.3}
+.pill:hover{background:var(--graphite)}
+.pill.iris{background:var(--iris);box-shadow:none}
+.pill.iris:hover{background:var(--iris-deep)}
+.pills{display:flex;flex-wrap:wrap;gap:10px}
+
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:1px solid rgba(255,255,255,.2)}
+.stat{padding:28px 20px 28px 0;border-bottom:1px solid rgba(255,255,255,.2);min-width:0}
+.stat b{display:block;font-weight:400;font-size:clamp(36px,5vw,60px);line-height:1.15;letter-spacing:.03em;font-variant-numeric:tabular-nums}
+.stat span{font-size:13px;color:var(--fog);line-height:1.5;display:block;margin-top:6px}
+
+.rows{border-top:1px solid rgba(255,255,255,.2)}
+.r{display:grid;grid-template-columns:1fr 1.2fr;gap:clamp(16px,4vw,64px);padding:26px 0;border-bottom:1px solid rgba(255,255,255,.2);align-items:baseline}
+.r h3{font-size:clamp(22px,2.6vw,33px);line-height:1.3}
+.r p{color:var(--fog);font-size:15px;line-height:1.7}
+
+.grp{display:grid;gap:14px}
+.grp .cap{font-size:12px;color:var(--fog)}
+
+.g2{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.shot{margin:0;display:grid;gap:10px;min-width:0}
+.shot:first-child{grid-column:1/-1}
+.shot img{width:100%;aspect-ratio:3/2;object-fit:cover;display:block;background:var(--graphite)}
+.shot:first-child img{aspect-ratio:21/9}
+.shot figcaption{font-size:12px;color:var(--fog);line-height:1.5}
+
+.contact .c{display:grid;grid-template-columns:140px 1fr auto;gap:16px;align-items:center;padding:22px 0;border-bottom:1px solid rgba(255,255,255,.2);min-width:0}
+.contact .c span.k{font-size:12px;color:var(--fog)}
+.contact .c .v{font-size:clamp(20px,3vw,33px);line-height:1.3;overflow-wrap:anywhere;user-select:all}
+.contact .list{border-top:1px solid rgba(255,255,255,.2)}
+footer{padding:0 var(--pad) 32px;display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;font-size:12px;color:var(--fog)}
+
+@media (max-width:820px){
+  .hero{height:100svh;min-height:620px}
+  .hero img{object-position:50% 50%}
+  .split{grid-template-columns:1fr}
+  .stats{grid-template-columns:1fr 1fr}
+  .r{grid-template-columns:1fr;gap:6px}
+  .g2{grid-template-columns:1fr}
+  .shot:first-child img{aspect-ratio:3/2}
+  .contact .c{grid-template-columns:1fr auto}
+  .contact .c span.k{grid-column:1/-1}
+  .tagline{top:14%;bottom:auto;left:var(--pad);right:auto;max-width:80vw;text-shadow:none}
+  .name{font-size:15.5vw}
+  .tagline svg{display:none}
+  .badge{top:auto;bottom:27%}
+  .nav nav{gap:20px}
+}
+.nav .brand-link{display:inline-flex;align-items:center;gap:10px;flex:none}.hero .nav .brand-link img{position:static;inset:auto;width:56px;height:56px;object-fit:contain;border-radius:10px}.brand-link span{font-size:14px}@media(max-width:520px){.hero .nav .brand-link img{width:44px;height:44px}.brand-link span{display:none}}
+.portfolio-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}.portfolio-work{min-width:0;background:#26272b;border-radius:12px;overflow:hidden}.portfolio-work img{display:block;width:100%;height:auto;aspect-ratio:3/2;object-fit:cover}.portfolio-work>div{padding:22px}.portfolio-work h3{font-size:24px;line-height:1.4;margin-bottom:10px}.portfolio-work p{font-size:15px;color:#bdc0c6;line-height:1.7}@media(max-width:820px){.portfolio-grid{grid-template-columns:1fr;gap:20px}.portfolio-work h3{font-size:22px}}
+
+.creative-tabs{display:flex;gap:12px}.creative-tabs button{font:inherit;font-size:18px;border:1px solid #51535a;background:#26272b;color:#fff;padding:12px 28px;border-radius:30px;cursor:pointer}.creative-tabs button[aria-selected="true"]{background:#455ce9;border-color:#455ce9}.creative-intro{color:#bdc0c6;margin-bottom:24px}.visual-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}.visual-card{display:flex;flex-direction:column;gap:12px;background:#26272b;padding:14px;border-radius:12px;min-width:0}.visual-card img{display:block;width:100%;height:240px;object-fit:contain;background:#1c1d20;border-radius:6px}.visual-card:hover{outline:1px solid #8997ff}.visual-open{color:#b8c1ff;font-size:13px;margin-top:auto}.video-pending{padding:28px;border:1px solid #51535a;border-radius:12px}.video-pending p{color:#bdc0c6;margin-top:10px}[hidden]{display:none!important}@media(max-width:820px){.visual-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.visual-card img{height:190px}}@media(max-width:520px){.visual-grid{grid-template-columns:1fr}.visual-card img{height:260px}}
+.portfolio-menus{display:grid;grid-template-columns:1fr 1fr;gap:32px}.portfolio-menus>div{padding:28px;border:1px solid #414249;border-radius:12px;background:#26272b}@media(max-width:600px){.portfolio-menus{grid-template-columns:1fr;gap:20px}}
+:is(#training-history,#online-courses) .split{align-items:stretch;gap:20px}
+:is(#training-history,#online-courses) .card h4{font-size:19px;line-height:1.4;font-weight:400;margin:0 0 6px}
+@media(min-width:1100px){:is(#training-history,#online-courses) .split{grid-template-columns:repeat(3,minmax(0,1fr))}}
+
+#online-courses .online-course-list{margin:4px 0 0;padding-left:20px;line-height:1.65}
+#online-courses .online-course-list li+li{margin-top:12px}
+</style>
+<style>
+/* Client-facing workshop preview: problem, practice, evidence, contact. */
+body{letter-spacing:0;line-height:1.75}
+.fog,.r p,.grp .cap,.shot figcaption,footer{color:#bdc0c6}
+.hero{height:auto;min-height:0;color:var(--canvas);background:#d6d8d9;padding:0;overflow:visible}
+.nav{position:relative;inset:auto;padding:22px var(--pad);gap:20px;font-size:14px}
+.hero-grid{display:grid;grid-template-columns:1.08fr 1fr;align-items:center;min-height:560px}
+.hero-copy{position:relative;z-index:1;padding:36px 0 52px var(--pad)}
+.eyebrow{font-size:13px;letter-spacing:.1em;margin-bottom:18px;display:block}
+.hero h1{font-size:clamp(36px,4.1vw,64px);line-height:1.28;letter-spacing:-.02em;max-width:12em;text-wrap:balance}
+.hero-desc{font-size:18px;max-width:31em;margin:22px 0;color:#34373c}
+.hero-person{font-size:14px;margin-top:24px;line-height:1.7}
+.hero-person strong{font-size:17px;font-weight:400;display:block}
+.hero-photo{align-self:stretch;position:relative;min-width:0;overflow:hidden}
+.hero .hero-photo img{position:absolute;width:100%;height:100%;object-fit:cover;object-position:53% 50%;inset:0}
+.hero .pill{box-shadow:none}.hero .pill.secondary{background:transparent;color:var(--canvas);box-shadow:0 0 0 1px #777b80 inset}
+.hero :focus-visible{outline-color:var(--canvas)}
+main{max-width:1440px;margin:auto;gap:76px;padding:64px var(--pad)}
+.sec{gap:28px;scroll-margin-top:24px}
+.h{font-size:clamp(29px,3.5vw,48px);line-height:1.35;letter-spacing:0;text-wrap:balance}
+.lead{max-width:46em;font-size:17px}
+.three{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.problem,.course{background:#27292e;padding:26px;border:1px solid #41444b;border-radius:12px}
+.problem h3,.course h3{font-size:23px;line-height:1.4;margin-bottom:14px}
+.problem p,.course p{font-size:16px;color:#d2d4da}
+.problem .answer{padding-top:18px;margin-top:18px;border-top:1px solid #494c54;color:#fff}
+.label{font-size:12px;color:#afbaff;display:block;margin-bottom:10px}
+.course .example{margin:18px 0;padding:16px;background:#353840;border-radius:8px}
+.course .example p{color:#fff;font-size:15px}
+.course .pill{margin-top:12px}
+.steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;border-top:1px solid #4a4d54;padding-top:26px}
+.steps h3{font-size:21px;margin-bottom:10px}.steps p{color:#d2d4da;font-size:16px}
+.note{font-size:14px;color:#bdc0c6}
+details{border-bottom:1px solid #4a4d54;padding:20px 0}summary{cursor:pointer;font-size:20px;line-height:1.5}details p{color:#d2d4da;margin-top:14px;max-width:50em}
+.contact{background:#292c34;padding:32px;border-radius:14px}.contact .pills{margin-bottom:0}.contact .c .v{font-size:clamp(17px,2.5vw,28px)}
+.g2{gap:20px}.shot:first-child img{aspect-ratio:3/2}.shot figcaption{font-size:14px}
+.card.gr{background:#30333a}.card.gr p{font-size:16px}.split.equal{grid-template-columns:1fr 1fr}
+/* Share content rows so different copy lengths keep all three courses aligned. */
+#courses>.lead{max-width:none;text-wrap:initial}
+@media(min-width:1024px){#courses>.lead{white-space:nowrap;font-size:clamp(16px,1.55vw,17px)}}
+#courses .three{grid-template-rows:repeat(6,auto);row-gap:0}
+#courses .course{display:grid;grid-template-rows:subgrid;grid-row:span 6;min-width:0}
+#courses .course>.pill{justify-self:start;align-self:end}
+#problems .three{grid-template-rows:repeat(3,auto);row-gap:0}
+#problems .problem{display:grid;grid-template-rows:subgrid;grid-row:span 3;min-width:0}
+#teaching-topics .split{align-items:stretch;gap:24px}
+:is(#training-history,#online-courses) .split{align-items:stretch;grid-auto-rows:1fr;gap:24px}
+:is(#training-history,#online-courses) .card{display:flex;flex-direction:column;align-items:flex-start}
+@media(max-width:820px){#courses .three,#problems .three{grid-template-rows:none;row-gap:16px}#courses .course,#problems .problem{display:block;grid-row:auto}#teaching-topics .split{gap:16px}:is(#training-history,#online-courses) .split{gap:16px}}
+@media(max-width:820px){.hero-grid{grid-template-columns:1fr;min-height:0}.hero-copy{padding:24px var(--pad) 32px}.hero h1{font-size:clamp(32px,7vw,48px);max-width:16em}.hero-desc{font-size:16px}.hero-photo{height:360px}.hero .hero-photo img{object-position:52% 26%}.three,.steps,.split.equal{grid-template-columns:1fr}.nav{flex-wrap:wrap;padding:18px var(--pad)}.nav nav{gap:18px;font-size:13px}main{gap:54px;padding-top:42px}.contact{padding:24px 18px}.problem,.course{padding:22px}.hero-person{margin-top:18px}.shot:first-child img{aspect-ratio:3/2}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+/* Full-width photo mosaic with the original suit portrait in front. */
+.hero{overflow:hidden;position:relative;background:#d6d8d9;min-height:100svh}
+.hero .nav{z-index:4;background:rgba(232,234,235,.72)}
+.hero-grid{display:grid;grid-template-columns:1.08fr 1fr;min-height:calc(100svh - 69px);position:relative;z-index:2}
+.hero-copy{width:auto;padding-top:48px;padding-bottom:54px;align-self:center}
+.hero-desc{max-width:29em}
+.photo-wall{position:absolute;z-index:0;inset:0;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));grid-template-rows:repeat(4,minmax(0,1fr));gap:0;transform:none;pointer-events:none}
+.photo-tile{background-repeat:no-repeat;background-size:cover;background-position:center;border:0;border-radius:0;box-shadow:none}
+.photo-tile.martec{background-image:url(assets/profile-stage-tan.jpg);background-size:cover;background-position:50% 25%}
+.photo-tile.front{background-image:url(assets/profile-stage-blue.png);background-size:cover;background-position:50% 28%}
+.photo-tile.side{background-image:url(assets/profile-stage-burgundy.jpg);background-size:cover;background-position:50% 20%}
+.photo-tile.teach{background-image:url(assets/profile-training-black.jpg);background-size:cover;background-position:40% 22%}
+.photo-tile.workshop{background-image:url(assets/profile-training-close.jpg);background-size:cover;background-position:52% 20%}
+.photo-tile.demo{background-image:url(assets/profile-ai-studio.jpg);background-size:cover;background-position:50% 30%}
+.hero::after{z-index:1;background:linear-gradient(90deg,rgba(230,232,233,.9) 0%,rgba(230,232,233,.84) 38%,rgba(230,232,233,.55) 58%,rgba(230,232,233,.3) 100%)}
+.hero-photo{min-height:600px;align-self:stretch;position:relative;z-index:2;overflow:hidden}
+.hero .hero-photo img{inset:0;position:absolute;width:100%;height:100%;object-fit:cover;object-position:53% bottom}
+@media(max-width:820px){.hero{min-height:100svh}.hero-grid{grid-template-columns:1fr;min-height:0;padding-bottom:0}.hero-copy{width:100%;padding-top:28px;padding-bottom:24px}.hero-photo{height:420px;min-height:0}.hero .hero-photo img{object-fit:contain;object-position:center bottom}.photo-wall{inset:0;grid-template-columns:repeat(4,minmax(0,1fr));grid-template-rows:repeat(5,minmax(0,1fr));gap:0;transform:none;height:auto}.hero::after{background:linear-gradient(180deg,rgba(230,232,233,.88) 0%,rgba(230,232,233,.84) 45%,rgba(230,232,233,.22) 76%)}.hero .nav{background:rgba(232,234,235,.8)}}
+
+.client-proof{gap:24px}.proof-heading{display:flex;justify-content:space-between;align-items:center;gap:24px}.proof-heading .h{font-size:clamp(26px,3vw,40px)}.learner-count{flex:none;text-align:right}.learner-count strong{display:block;font-size:46px;line-height:1.15;color:#b8c1ff;font-weight:400}.learner-count span{font-size:14px;color:#bdc0c6}.client-logos{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px}.client-logo{background:#fff;min-width:0;height:110px;display:flex;align-items:center;justify-content:center;border-radius:8px;padding:15px}.client-logo img{display:block;width:100%;height:100%;object-fit:contain}.hero-person{max-width:34em}
+@media(max-width:820px){.proof-heading{align-items:flex-start;flex-direction:column;gap:16px}.learner-count{text-align:left}.learner-count strong{font-size:38px}.client-logos{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.client-logo{height:88px;padding:12px}}
+
+/* Fit the complete introduction inside the opening viewport. */
+.hero{height:100svh;min-height:0;display:flex;flex-direction:column;color:#1c1d20}
+.hero .nav{flex:none;padding:14px var(--pad);background:rgba(232,234,235,.78)}
+.hero-grid{display:block;position:relative;flex:1;min-height:0;width:100%;max-width:1760px;margin:0 auto}
+.hero-copy{width:60%;height:100%;min-height:0;padding:20px 28px 20px var(--pad);display:flex;flex-direction:column;justify-content:center;z-index:3}
+.photo-wall{opacity:1;filter:none}
+.hero::after{background:linear-gradient(90deg,rgba(230,232,233,.97) 0%,rgba(230,232,233,.91) 44%,rgba(230,232,233,.55) 68%,rgba(230,232,233,.38) 100%)}
+.hero h1{font-size:clamp(38px,min(7.2vw,10svh),108px);line-height:1.08;font-weight:400;letter-spacing:-.025em;max-width:none;text-wrap:initial}
+.hero .eyebrow{font-size:13px;letter-spacing:.05em;margin-bottom:clamp(8px,1.2svh,12px)}
+.hero-desc{font-size:clamp(20px,min(2.2vw,3.2svh),28px);line-height:1.55;width:92%;max-width:none;margin:clamp(12px,1.8svh,18px) 0;color:#30343a;text-wrap:pretty}
+.hero .pills{gap:10px;margin:0}
+.hero .pill{font-size:clamp(15px,1.7svh,18px);padding:13px 22px;min-height:48px}
+.hero-person{font-size:clamp(15px,2.2svh,20px);line-height:1.5;max-width:none;margin-top:clamp(14px,1.8svh,20px);color:#30343a;text-wrap:pretty}
+.hero-person strong{font-size:clamp(21px,3svh,28px);font-weight:400;margin-bottom:4px;color:#1c1d20}
+.hero-photo{position:absolute;left:52%;right:0;top:4%;bottom:0;height:auto;min-height:0;max-height:none;aspect-ratio:auto;overflow:hidden;pointer-events:none}
+.hero .hero-photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:center bottom;opacity:1;filter:none}
+/* Crop the portrait at the waist rather than fitting the entire body. */
+@media(min-width:600px){
+ .hero-photo{left:50%;right:0;top:0;bottom:0}
+ .hero .hero-photo img{left:-2%;right:auto;width:112%;height:auto;object-fit:contain;object-position:center top}
+}
+@media(min-width:600px) and (max-width:900px){
+ .hero-copy{width:58%;padding-right:16px}
+ .hero h1{font-size:clamp(30px,min(4.3vw,6svh),42px)}
+ .hero-desc{font-size:18px}
+ .hero-person{font-size:14px}
+ .hero-person strong{font-size:20px}
+ .hero .pill{font-size:13px;padding:11px 16px}
+}
+@media(max-width:599px){
+ .hero{height:auto;min-height:100svh}
+ .hero .nav{padding:12px var(--pad)}
+ .hero .nav nav{gap:14px;font-size:12px}
+ .hero-grid{flex:1;min-height:calc(100svh - 68px)}
+ .hero-copy{width:100%;height:auto;min-height:calc(100svh - 68px);padding:20px var(--pad) 24px;justify-content:center}
+ .hero h1{font-size:clamp(29px,min(8.4vw,4.8svh),40px);line-height:1.18}
+ .hero .eyebrow{font-size:11px;letter-spacing:.02em;margin-bottom:14px}
+ .hero-desc{font-size:17px;line-height:1.5;margin:18px 0;width:100%;max-width:none}
+ .hero .pills{align-items:flex-start;flex-direction:column;gap:8px}
+ .hero .pill{font-size:13px;padding:10px 16px;min-height:40px}
+ .hero-person{width:58%;font-size:12px;line-height:1.5;margin-top:22px}
+ .hero-person strong{font-size:18px;line-height:1.4}
+ .hero-photo{left:57%;right:0;top:auto;bottom:0;height:32svh;min-height:190px;max-height:300px;width:auto;margin:0;aspect-ratio:auto}
+ .hero::after{background:linear-gradient(180deg,rgba(230,232,233,.95) 0%,rgba(230,232,233,.92) 62%,rgba(230,232,233,.68) 100%)}
+}
+@media(min-width:600px) and (max-height:650px){
+ .hero-copy{padding-top:12px;padding-bottom:12px}
+ .hero h1{font-size:clamp(28px,5.8svh,38px)}
+ .hero-desc{font-size:17px;margin:12px 0}
+ .hero-person{font-size:13px;margin-top:14px}
+ .hero-person strong{font-size:19px}
+ .hero .eyebrow{font-size:11px;margin-bottom:10px}
+ .hero .pill{font-size:13px;padding:10px 16px;min-height:40px}
+}
+.nav .brand-link{display:inline-flex;align-items:center;gap:10px;flex:none}.hero .nav .brand-link img{position:static;inset:auto;width:56px;height:56px;object-fit:contain;border-radius:10px}.brand-link span{font-size:14px}@media(max-width:520px){.hero .nav .brand-link img{width:44px;height:44px}.brand-link span{display:none}}
+.portfolio-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}.portfolio-work{min-width:0;background:#26272b;border-radius:12px;overflow:hidden}.portfolio-work img{display:block;width:100%;height:auto;aspect-ratio:3/2;object-fit:cover}.portfolio-work>div{padding:22px}.portfolio-work h3{font-size:24px;line-height:1.4;margin-bottom:10px}.portfolio-work p{font-size:15px;color:#bdc0c6;line-height:1.7}@media(max-width:820px){.portfolio-grid{grid-template-columns:1fr;gap:20px}.portfolio-work h3{font-size:22px}}
+
+.creative-tabs{display:flex;gap:12px}.creative-tabs button{font:inherit;font-size:18px;border:1px solid #51535a;background:#26272b;color:#fff;padding:12px 28px;border-radius:30px;cursor:pointer}.creative-tabs button[aria-selected="true"]{background:#455ce9;border-color:#455ce9}.creative-intro{color:#bdc0c6;margin-bottom:24px}.visual-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}.visual-card{display:flex;flex-direction:column;gap:12px;background:#26272b;padding:14px;border-radius:12px;min-width:0}.visual-card img{display:block;width:100%;height:240px;object-fit:contain;background:#1c1d20;border-radius:6px}.visual-card:hover{outline:1px solid #8997ff}.visual-open{color:#b8c1ff;font-size:13px;margin-top:auto}.video-pending{padding:28px;border:1px solid #51535a;border-radius:12px}.video-pending p{color:#bdc0c6;margin-top:10px}[hidden]{display:none!important}@media(max-width:820px){.visual-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.visual-card img{height:190px}}@media(max-width:520px){.visual-grid{grid-template-columns:1fr}.visual-card img{height:260px}}
+.portfolio-menus{display:grid;grid-template-columns:1fr 1fr;gap:32px}.portfolio-menus>div{padding:28px;border:1px solid #414249;border-radius:12px;background:#26272b}@media(max-width:600px){.portfolio-menus{grid-template-columns:1fr;gap:20px}}
+#online-courses .online-course-list{margin:4px 0 0;padding-left:20px;line-height:1.65}
+#online-courses .online-course-list li+li{margin-top:12px}
+
+#topics,#bottom-topics,.sec{scroll-margin-top:24px}
+.topic-menu .h{font-size:28px;margin-bottom:20px}
+.topic-links{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px}.topic-links .pill{display:flex;align-items:center;justify-content:center;min-height:48px;text-align:center;white-space:normal;padding:10px 12px;line-height:1.5}
+@media(max-width:1100px){.topic-links{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(max-width:720px){.topic-links{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:520px){.topic-links{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+.floating-nav{position:fixed;right:20px;bottom:calc(20px + env(safe-area-inset-bottom));z-index:20;display:grid;gap:8px}.floating-nav .pill{display:flex;justify-content:center;background:#5257f5;color:#fff;border-color:transparent;box-shadow:0 4px 18px rgba(0,0,0,.25);min-height:44px}.floating-nav .pill+ .pill{background:#303238;border:1px solid #666}
+footer{padding-bottom:140px}
+@media(max-width:520px){.floating-nav{right:12px;bottom:calc(12px + env(safe-area-inset-bottom))}.floating-nav .pill{font-size:13px}.topic-links{gap:10px}}
+
+.contact-socials{gap:12px;flex-wrap:wrap}.contact-socials .pill{display:inline-flex;align-items:center;gap:10px;min-height:52px;padding:10px 18px}.contact-icon,.contact-logo{width:32px;height:32px;flex:none}.contact-logo{object-fit:contain;border-radius:6px}
+@media(max-width:520px){.contact-socials{display:grid;grid-template-columns:1fr}.contact-socials .pill{justify-content:center;width:100%;box-sizing:border-box}}
+
+/* Keep copy actions away from the floating shortcuts. */
+.contact .c{grid-template-columns:140px max-content 1fr}
+.contact .c button{justify-self:start;margin-left:12px}
+.floating-nav[hidden]{display:none!important}
+@media(max-width:820px){
+ .contact .c{grid-template-columns:minmax(0,1fr);gap:10px}
+ .contact .c .k{grid-column:1}
+ .contact .c button{grid-column:1;justify-self:start;margin-left:0}
+ .contact .c .v{overflow-wrap:anywhere}
+}
+@media(max-width:599px){
+ .hero{height:auto;min-height:0}
+ .hero-grid{flex:none;min-height:0;display:flex;flex-direction:column}
+ .hero-copy{height:auto;min-height:0;padding:22px var(--pad) 12px;justify-content:flex-start}
+ .hero .eyebrow{margin-bottom:10px}
+ .hero h1{font-size:clamp(30px,8.4vw,40px)}
+ .hero-desc{font-size:16px;margin:14px 0;text-wrap:pretty}
+ .hero-person{width:100%;font-size:12px;margin-top:16px;text-wrap:pretty}
+ .hero-person strong{font-size:19px}
+ .hero .pills{flex-direction:row;flex-wrap:wrap}
+ .hero .pill{font-size:12px;padding:10px 14px}
+ .hero-photo{position:relative;left:auto;right:auto;top:auto;bottom:auto;width:100%;height:clamp(250px,70vw,310px);min-height:0;max-height:none;margin:4px 0 0;flex:none}
+ .hero .hero-photo img{left:50%;right:auto;top:0;bottom:auto;transform:translateX(-50%);width:min(82%,330px);height:auto;object-fit:contain;object-position:center top}
+}
+
+.floating-nav{pointer-events:none}
+.floating-nav a{pointer-events:auto}
+.floating-pets{display:block;justify-self:center;width:120px;aspect-ratio:12/13;background-image:url(assets/agger-sofie-atlas.png);background-size:800% 1100%;background-position:42.857142857% 30%;background-repeat:no-repeat;pointer-events:none;margin-bottom:-8px}
+@media(max-width:520px){.floating-pets{width:96px;margin-bottom:-10px}}
+</style>
+<link rel="stylesheet" href="typography.css"><link rel="stylesheet" href="theme.css"><script>try{var l=new URLSearchParams(location.search).get('lang')||localStorage.getItem('lang');if(l==='en'||l==='zh'){document.documentElement.classList.add('i18n-pending');setTimeout(function(){document.documentElement.classList.remove('i18n-pending')},3000)}}catch(e){}</script></head><body>
+
+<header class="hero" id="top">
+  <div class="photo-wall" aria-hidden="true">
+    <div class="photo-tile" style="background-image:url(assets/unique-profile-01.jpg);background-position:50% 25%;background-size:cover"></div>
+    <div class="photo-tile" style="background-image:url(assets/unique-profile-02.png);background-position:50% 25%;background-size:cover"></div>
+    <div class="photo-tile" style="background-image:url(assets/unique-profile-03.jpg);background-position:68% 28%;background-size:cover"></div>
+    <div class="photo-tile" style="background-image:url(assets/unique-profile-04.jpg);background-position:50% 28%;background-size:cover"></div>
+    <div class="photo-tile" style="background-image:url(assets/unique-profile-05.jpg);background-position:72% 25%;background-size:cover"></div>
+    <div class="photo-tile" style="background-image:url(assets/unique-profile-06.jpg);background-position:50% 25%;background-size:cover"></div>
+    <div class="photo-tile" style="background-image:url(assets/unique-profile-07.jpg);background-position:50% 30%;background-size:cover"></div>
+    <div class="photo-tile" style="background-image:url(assets/unique-profile-08.jpg);background-position:40% 22%;background-size:cover"></div>
+    <div class="photo-tile" style="background-image:url(assets/unique-profile-09.jpg);background-position:52% 20%;background-size:cover"></div>
+    <div class="photo-tile" style="background-image:url(assets/unique-profile-10.jpg);background-position:45% 25%;background-size:cover"></div>
+    <div class="photo-tile" style="background-image:url(assets/unique-profile-11.jpg);background-position:50% 22%;background-size:cover"></div>
+    <div class="photo-tile" style="background-image:url(assets/unique-profile-12.jpg);background-position:72% 20%;background-size:cover"></div>
+    <div class="photo-tile" style="background-image:url(assets/unique-profile-13.jpg);background-position:80% 0%;background-size:auto 180%"></div>
+    <div class="photo-tile" style="background-image:url(assets/unique-profile-14.jpg);background-position:35% 0%;background-size:auto 180%"></div>
+    <div class="photo-tile" style="background-image:url(assets/unique-profile-15.jpg);background-position:57% 0%;background-size:auto 180%"></div>
+    <div class="photo-tile" style="background-image:url(assets/unique-profile-16.jpg);background-position:85% 0%;background-size:auto 190%"></div>
+    <div class="photo-tile" style="background-image:url(assets/unique-profile-17.jpg);background-position:75% 0%;background-size:auto 190%"></div>
+    <div class="photo-tile" style="background-image:url(assets/unique-profile-18.jpg);background-position:75% 0%;background-size:auto 140%"></div>
+    <div class="photo-tile" style="background-image:url(assets/unique-profile-19.jpg);background-position:45% 0%;background-size:auto 150%"></div>
+    <div class="photo-tile" style="background-image:url(assets/unique-profile-20.jpg);background-position:52% 0%;background-size:auto 190%"></div>
+  </div>
+  <div class="nav">
+    <a class="brand-link" href="https://genaispace.net/" aria-label="Gen AI Space — เว็บไซต์หลัก"><img src="assets/gen-ai-space-logo.png" alt="Gen AI Space" width="56" height="56"><span>Gen AI Space</span></a>
+    <nav aria-label="เมนูหลัก"><a class="pill" href="#courses">แนวทางอบรม</a><a class="pill" href="#work">ประสบการณ์</a><a class="pill" href="#contact">ติดต่อ</a></nav>
+  </div>
+  <div class="hero-grid">
+    <div class="hero-copy">
+      <span class="eyebrow">GENERATIVE AI WORKSHOP / สำหรับองค์กร</span>
+      <h1>องค์กรมี AI แล้ว<br>แต่ยังใช้กับงานจริง<br>ได้ไม่เต็มที่?</h1>
+      <p class="hero-desc">Gen AI Space ออกแบบหลักสูตรจากปัญหาขององค์กร เลือกเครื่องมือที่เหมาะสม และฝึกพนักงานให้ใช้ AI กับงานจริง พร้อมตรวจคำตอบ<span class="keep-phrase">ก่อนนำไปใช้</span></p>
+      <div class="pills"><a class="pill iris" href="#contact">ปรึกษาปัญหาและวางแผนอบรม</a><a class="pill secondary" href="#courses">ดูตัวอย่างที่ฝึกในคลาส</a></div>
+      <p class="hero-person"><strong>ปัญจพัฒน์ เกรียงวีระยุทธ</strong><span class="th-only">Panjapat Kriengveerayuth</span><br>กรรมการสมาคมสร้างสรรค์ปัญญาประดิษฐ์ไทย (AICAT)<br>CEO Gen AI Space / Generative AI Trainer</p>
+    </div>
+    <div class="hero-photo"><img src="assets/hero-v56-complete-arms.png" alt="ปัญจพัฒน์ เกรียงวีระยุทธ CEO Gen AI Space" width="1024" height="1536" fetchpriority="high"></div>
+  </div>
+</header>
+
+<main>
+  <section class="sec" id="about">
+    <h2 class="h">รู้จักวิทยากร</h2>
+    <div class="about-copy"><p class="lead">ปัญจพัฒน์ เกรียงวีระยุทธ (กอล์ฟ) กรรมการสมาคมสร้างสรรค์ปัญญาประดิษฐ์ไทย (AICAT), <span style="white-space:nowrap">CEO บริษัท เจน เอไอ สเปซ จำกัด</span> และ Generative AI Trainer มีประสบการณ์บรรยายและจัดอบรมการใช้ Generative AI เป็นเวลา 3 ปี ให้กับองค์กรกว่า 70 แห่ง<br>ทั้งหน่วยงานราชการ บริษัทเอกชน และมหาวิทยาลัย มีผู้เข้ารับการอบรมมากกว่า 4,500 คน ครอบคลุมงานข้อความ ภาพ วิดีโอ และดนตรี พร้อมผลงานคอร์สออนไลน์ร่วมกับ SkillLane และ FutureSkill</p><div class="grp" style="gap:24px"><p class="lead fog">เน้นอธิบายให้เข้าใจง่าย ใช้ตัวอย่างงานที่ผู้เรียน<span style="white-space:nowrap">คุ้นเคย</span> และเลือกเครื่องมือให้เหมาะกับข้อจำกัดขององค์กร</p><div class="pills"><a class="pill" href="#work">ดูผลงาน</a><a class="pill" href="#contact">ติดต่อ</a></div></div></div>
+  </section>
+<nav class="topic-menu" id="topics" aria-label="เลือกหัวข้อในหน้านี้"><h2 class="h">เลือกหัวข้อ</h2><div class="topic-links"><a class="pill" href="#clients">ลูกค้าที่เคยอบรม</a><a class="pill" href="#creative">AI Creative / Vibe Coding</a><a class="pill" href="#problems">โจทย์ขององค์กร</a><a class="pill" href="#approach">แนวทางการสอน</a><a class="pill" href="#courses">หลักสูตรอบรม</a><a class="pill" href="#about">รู้จักวิทยากร</a><a class="pill" href="#teaching-topics">หัวข้อการสอน</a><a class="pill" href="#training-history">ตัวอย่างหลักสูตรที่อบรม</a><a class="pill" href="#online-courses">คอร์สสอน Online</a><a class="pill" href="#work">ผลงานและประสบการณ์</a><a class="pill" href="#questions">คำถามก่อนจัดอบรม</a><a class="pill" href="#contact">ติดต่อ</a></div></nav>
+  <section class="sec client-proof" id="clients">
+    <div class="proof-heading"><div><h2 class="h">องค์กรและหน่วยงานที่เคยเข้าอบรมการใช้ AI ในการทำงาน</h2></div><p class="learner-count"><strong>4,500+</strong><span>ผู้เรียนที่ผ่านการอบรม</span></p></div>
+    <div class="client-logos"><div class="client-logo" style="overflow:hidden"><img src="assets/client-logos/ford.jpg" alt="Ford" loading="lazy" width="160" height="90" style="transform:scale(1.3)"></div><div class="client-logo" style="overflow:hidden"><img src="assets/client-logos/pea.jpg" alt="การไฟฟ้าส่วนภูมิภาค (PEA)" loading="lazy" width="160" height="90" style="transform:scale(1.5)"></div><div class="client-logo" style="overflow:hidden"><img src="assets/client-logos/chatrium.png" alt="Chatrium Hospitality" loading="lazy" width="160" height="90" style="transform:scale(1.8)"></div><div class="client-logo" style="overflow:hidden"><img src="assets/client-logos/enfourtech.jpg" alt="eNfourtech" loading="lazy" width="160" height="90" style="transform:scale(1.6)"></div><div class="client-logo"><img src="assets/client-logos/portfolio-logo-X4.png" alt="SC Asset" loading="lazy" width="160" height="90"></div><div class="client-logo"><img src="assets/client-logos/portfolio-logo-X6.png" alt="องค์กรและหน่วยงานในแฟ้มผลงาน ลำดับ 2" loading="lazy" width="160" height="90"></div><div class="client-logo"><img src="assets/client-logos/portfolio-logo-X7.jpg" alt="FWD" loading="lazy" width="160" height="90"></div><div class="client-logo"><img src="assets/client-logos/portfolio-logo-X8.png" alt="องค์กรและหน่วยงานในแฟ้มผลงาน ลำดับ 4" loading="lazy" width="160" height="90"></div><div class="client-logo"><img src="assets/client-logos/portfolio-logo-X9.jpg" alt="AWS" loading="lazy" width="160" height="90"></div><div class="client-logo"><img src="assets/client-logos/portfolio-logo-X10.jpg" alt="องค์กรและหน่วยงานในแฟ้มผลงาน ลำดับ 6" loading="lazy" width="160" height="90"></div><div class="client-logo"><img src="assets/client-logos/portfolio-logo-X11.png" alt="มหาวิทยาลัยรังสิต" loading="lazy" width="160" height="90"></div><div class="client-logo"><img src="assets/client-logos/portfolio-logo-X12.png" alt="UTCC ISM" loading="lazy" width="160" height="90"></div><div class="client-logo"><img src="assets/client-logos/portfolio-logo-X13.png" alt="มูลนิธิเอสซีจี" loading="lazy" width="160" height="90"></div><div class="client-logo"><img src="assets/client-logos/portfolio-logo-X14.png" alt="SCGC" loading="lazy" width="160" height="90"></div><div class="client-logo"><img src="assets/client-logos/portfolio-logo-X15.png" alt="องค์กรและหน่วยงานในแฟ้มผลงาน ลำดับ 11" loading="lazy" width="160" height="90"></div><div class="client-logo"><img src="assets/client-logos/portfolio-logo-X16.png" alt="Heroleads" loading="lazy" width="160" height="90"></div><div class="client-logo"><img src="assets/client-logos/portfolio-logo-X17.jpg" alt="Ragnarok" loading="lazy" width="160" height="90"></div><div class="client-logo"><img src="assets/client-logos/portfolio-logo-X18.png" alt="MPD" loading="lazy" width="160" height="90"></div><div class="client-logo"><img src="assets/client-logos/portfolio-logo-X19.png" alt="อักษร" loading="lazy" width="160" height="90"></div><div class="client-logo"><img src="assets/client-logos/portfolio-logo-X20.jpg" alt="องค์กรและหน่วยงานในแฟ้มผลงาน ลำดับ 16" loading="lazy" width="160" height="90"></div><div class="client-logo"><img src="assets/client-logos/portfolio-logo-X21.jpg" alt="การประปานครหลวง" loading="lazy" width="160" height="90"></div><div class="client-logo"><img src="assets/client-logos/portfolio-logo-X22.png" alt="กรมชลประทาน" loading="lazy" width="160" height="90"></div><div class="client-logo"><img src="assets/client-logos/portfolio-logo-X23.png" alt="PT" loading="lazy" width="160" height="90"></div><div class="client-logo"><img src="assets/client-logos/portfolio-logo-X24.png" alt="AUTOBACS" loading="lazy" width="160" height="90"></div><div class="client-logo"><img src="assets/client-logos/portfolio-logo-X25.png" alt="ดุสิต ผลิตภัณฑ์อาหาร" loading="lazy" width="160" height="90"></div><div class="client-logo"><img src="assets/client-logos/portfolio-logo-X26.png" alt="องค์กรและหน่วยงานในแฟ้มผลงาน ลำดับ 22" loading="lazy" width="160" height="90"></div><div class="client-logo"><img src="assets/client-logos/portfolio-logo-X27.png" alt="มหาวิทยาลัยศรีปทุม" loading="lazy" width="160" height="90"></div><div class="client-logo"><img src="assets/client-logos/portfolio-logo-X28.jpg" alt="Bitkub" loading="lazy" width="160" height="90"></div><div class="client-logo"><img src="assets/client-logos/portfolio-logo-X29.png" alt="SHARP" loading="lazy" width="160" height="90"></div><div class="client-logo"><img src="assets/client-logos/portfolio-logo-X30.png" alt="Green Spot" loading="lazy" width="160" height="90"></div><div class="client-logo"><img src="assets/client-logos/portfolio-logo-X31.png" alt="TCCT" loading="lazy" width="160" height="90"></div><div class="client-logo"><img src="assets/client-logos/portfolio-logo-X33.jpg" alt="Martech Expo" loading="lazy" width="160" height="90"></div><div class="client-logo"><img src="assets/client-logos/portfolio-logo-X34.jpg" alt="DIPROM" loading="lazy" width="160" height="90"></div><div class="client-logo"><img src="assets/client-logos/portfolio-logo-X35.png" alt="องค์กรและหน่วยงานในแฟ้มผลงาน ลำดับ 30" loading="lazy" width="160" height="90"></div><div class="client-logo"><img src="assets/client-logos/portfolio-logo-X36.png" alt="องค์กรและหน่วยงานในแฟ้มผลงาน ลำดับ 31" loading="lazy" width="160" height="90"></div><div class="client-logo"><img src="assets/client-logos/portfolio-logo-X38.jpg" alt="S.CON Concrete" loading="lazy" width="160" height="90"></div></div></section>
+
+  <section class="sec" id="creative"><div class="portfolio-menus"><div><h2 class="h">AI Creative</h2><a class="pill" href="/ai-creative.html?rev=creative-link-v35">ดูผลงาน AI Creative ↗</a></div><div><h2 class="h">Vibe Coding</h2><a class="pill" href="/vibe-coding.html">ดูผลงาน Vibe Coding ↗</a></div></div></section>
+
+  <section class="sec" id="problems">
+    <h2 class="h">องค์กรของคุณติดปัญหาตรงไหน?</h2>
+    <p class="lead fog">งานล้น อบรมแล้วไม่ได้ใช้ หรือใช้ AI แล้วไม่มั่นใจในผลงาน? เลือกฝึกจากปัญหาที่องค์กรกำลังเจอ</p>
+    <div class="three">
+      <article class="problem"><h3>งานเอกสารกินเวลา<br>จนงานหลักไม่เดิน</h3><p>ต้องสรุปประชุม ร่างอีเมล และทำรายงานซ้ำ ๆ ทุกวัน งานสำคัญจึงต้องรอ ทั้งที่คนก็มีเท่าเดิม</p><p class="answer">ฝึกใช้ AI กับงานเอกสารที่ทำบ่อย ตั้งแต่สรุปไฟล์จนถึงร่างรายงาน พร้อมคำสั่งและรูปแบบงานที่นำกลับไปใช้ซ้ำได้</p></article>
+      <article class="problem"><h3>อบรม AI ไปแล้ว<br>แต่ยังทำงานแบบเดิม</h3><p>ตอนเรียนทำตามได้ แต่กลับมาไม่รู้จะเริ่มกับงานตัวเองอย่างไร สุดท้ายใช้วิธีเดิมและยังเสียเวลาเท่าเดิม</p><p class="answer">ออกแบบแบบฝึกตามงานของแต่ละแผนก ให้ผู้เรียนทำชิ้นงานตั้งแต่ต้นจนจบ พร้อมชุดคำสั่งและขั้นตอนสำหรับใช้ต่อหลังอบรม</p></article>
+      <article class="problem"><h3>พนักงานใช้ AI กันเอง<br>แต่ไม่มีเกณฑ์ตรวจงาน</h3><p>แต่ละคนใช้คนละวิธี ส่งข้อมูลเข้า AI โดยไม่แน่ใจว่าอะไรส่งได้ และนำคำตอบมาใช้โดยยังไม่ตรวจความถูกต้อง</p><p class="answer">ฝึกแยกข้อมูลที่ส่งได้และควรปกปิด ตรวจคำตอบเทียบเอกสารต้นทาง และทำรายการตรวจงานก่อนส่ง โดยปรับตามข้อกำหนดขององค์กร</p></article>
+    </div>
+  </section>
+  <section class="sec" id="approach">
+    <h2 class="h">จากปัญหาขององค์กร สู่การฝึกใช้ AI กับงานจริง</h2>
+    <div class="steps">
+      <article><h3>1. เริ่มจากปัญหา</h3><p>ทำความเข้าใจสิ่งที่ทำให้งานติดขัด และผลลัพธ์ที่องค์กรต้องการ ก่อนออกแบบหลักสูตรให้ตรงกับผู้เรียน</p></article>
+      <article><h3>2. เลือกเครื่องมือที่เหมาะสม</h3><p>เลือก AI ให้เหมาะกับงาน พื้นฐานพนักงาน และข้อกำหนดขององค์กร พร้อมตัวอย่างที่เชื่อมกับงานของลูกค้า</p></article>
+      <article><h3>3. เทรนนิ่งพนักงาน</h3><p>ถ่ายทอดจากประสบการณ์อบรมผู้เรียนมากกว่า 4,500 คน ฝึกลงมือทำ ปรับคำสั่ง และตรวจงานก่อนนำไปใช้จริง</p></article>
+    </div>
+  </section>
+  <section class="sec" id="courses"><h2 class="h">หลักสูตรอบรม AI ที่ออกแบบจากปัญหาขององค์กร</h2><p class="lead fog">จัดได้ทั้ง Onsite และ Online โดยออกแบบคอร์สตามปัญหาและความต้องการของลูกค้าเป็นหลัก ปรับเนื้อหา กิจกรรม และระยะเวลาให้เหมาะกับองค์กร</p><div class="three">
+<article class="course"><span class="label">01 / ใช้ ChatGPT Agent ทำงาน</span><h3>AI for Work</h3><p>สอนเขียนคำสั่ง เตรียมไฟล์ และมอบหมายงานหลายขั้นตอนให้ ChatGPT Agent ตั้งแต่ค้นข้อมูล วิเคราะห์ จนถึงจัดทำชิ้นงาน</p><div class="example"><span class="label">หัวข้อที่เรียน</span><p>Prompt และบริบทงาน · อ่าน PDF, Word, Excel และ CSV · ChatGPT Agent · Project และคำสั่งประจำงาน · ตรวจข้อมูลและแหล่งอ้างอิง</p></div><p>ฝึกค้นข้อมูลคู่แข่ง จัดตารางเปรียบเทียบ และร่างรายงาน พร้อมตรวจผลลัพธ์และกำหนดจุดที่ต้องให้คนอนุมัติ</p><a class="pill" href="#contact">คุยหลักสูตร AI for Work</a></article>
+<article class="course"><span class="label">02 / สร้างเว็บไซต์และแอปต้นแบบ</span><h3>Vibe Coding</h3><p>สอนเปลี่ยนปัญหางานเป็นเว็บไซต์หรือแอปต้นแบบ เขียนบรีฟ อธิบายหน้าจอให้ AI สร้าง แล้วทดลองใช้และแก้ไขทีละรอบ</p><div class="example"><span class="label">หัวข้อที่เรียน</span><p>เลือกปัญหาและผู้ใช้ · เขียนบรีฟ · วางหน้าจอ · สร้างปุ่ม ฟอร์ม และตารางข้อมูล · ทดสอบและแจ้งข้อผิดพลาด · เตรียมเดโม</p></div><p>ฝึกสร้างแอปต้นแบบฝ่ายขายสำหรับกรอกข้อมูลลูกค้า สรุปความต้องการ ร่างข้อเสนอ และแสดงงานที่ต้องติดตาม</p><a class="pill" href="#contact">คุยหลักสูตร Vibe Coding</a></article>
+<article class="course"><span class="label">03 / สร้างภาพและวิดีโอด้วย AI</span><h3>AI Creative</h3><p>สอนแปลงบรีฟเป็นคำสั่งสร้างภาพและวิดีโอ วางองค์ประกอบภาพ เขียนสคริปต์ และทำ Storyboard ให้ตรงกับแบรนด์</p><div class="example"><span class="label">หัวข้อที่เรียน</span><p>Image Prompt · องค์ประกอบ แสง และสไตล์ภาพ · ภาพสินค้าและ Key Visual · Script และ Storyboard · ภาพ เสียง และวิดีโอ · ตรวจสิทธิ์การใช้สื่อ</p></div><p>ฝึกทำภาพแคมเปญและวางวิดีโอสั้น ตั้งแต่บรีฟถึงชิ้นงาน พร้อมตรวจข้อความ แบรนด์ ภาพบุคคล เพลง และเสียงก่อนใช้</p><a class="pill" href="#contact">คุยหลักสูตร AI Creative</a></article>
+</div></section>
+
+
+
+
+
+
+  <section class="sec" id="teaching-topics"><h2 class="h">คอร์สและหัวข้อการสอน</h2><div class="split equal"><article class="card gr"><h3>AI for Work / Prompt Engineering</h3><p>สั่งงานจากบริบทและข้อมูลจริง วิเคราะห์และสร้างชิ้นงาน</p></article><article class="card gr"><h3>AI อ่านไฟล์และผู้ช่วยประจำงาน</h3><p>PDF, Word, Excel, CSV · Project · Skill · Claude Cowork</p></article><article class="card gr"><h3>Perplexity / NotebookLM</h3><p>ค้นข้อมูลพร้อมแหล่งอ้างอิง ถามตอบจากเอกสาร และเตรียม Presentation</p></article><article class="card gr"><h3>Vibe Coding</h3><p>สร้าง Website/App ต้นแบบ อธิบายหน้าจอ ทดสอบ และปรับทีละรอบ</p></article><article class="card gr"><h3>AI Image</h3><p>สร้างภาพด้วย ChatGPT, Midjourney, Nano Banana และ Stable Diffusion</p></article><article class="card gr"><h3>AI Video</h3><p>Script, Storyboard และวิดีโอด้วย Kling, Luma, Runway และเครื่องมือสร้างวิดีโอ</p></article><article class="card gr"><h3>AI Music / Presentation</h3><p>Suno · เครื่องมือสร้างเสียงเพลง · Canva · Kimi</p></article><article class="card gr"><h3>Responsible AI / AI Copyright</h3><p>การใช้ AI อย่างรับผิดชอบ ความถูกต้อง ข้อมูลส่วนบุคคล และลิขสิทธิ์</p></article><article class="card gr"><h3>AI Transformation / AI Literacy</h3><p>ความเข้าใจ AI ในองค์กรและการเปลี่ยนวิธีทำงาน</p></article><article class="card gr"><h3>n8n / AI Workflow</h3><p>หัวข้อที่เคยจัดอบรมด้านขั้นตอนงานและระบบอัตโนมัติ</p></article></div></section>
+<section class="sec" id="training-history"><h2 class="h">ตัวอย่างหลักสูตรที่อบรม</h2>
+<div class="split equal">
+<article class="card gr"><h4>การไฟฟ้าส่วนภูมิภาค (PEA)</h4><p>การนำ AI มาใช้เพื่อเพิ่มประสิทธิภาพในการปฏิบัติงาน การแบ่งปันความรู้ และการสื่อสารการเป็น Role Model</p></article>
+<article class="card gr"><h4>สำนักงานคณะกรรมการอาหารและยา</h4><p>Generative AI เพื่อสื่อสารความรอบรู้ด้านผลิตภัณฑ์สุขภาพ</p></article>
+<article class="card gr"><h4>Mr. D.I.Y. (Thailand)</h4><p>AI for Work & AI Responsibility และ PDPA in AI</p></article>
+<article class="card gr"><h4>มหาวิทยาลัยศรีปทุม — BOI Bootcamp</h4><p>AI Automation for Productivity and Data Analytics</p></article>
+<article class="card gr"><h4>Tokio Marine</h4><p>อบรม n8n จำนวน 3 รอบ</p></article>
+<article class="card gr"><h4>Ford</h4><p>AI for Work + AI Video สำหรับงานขาย</p></article>
+<article class="card gr"><h4>Strike Force</h4><p>AI for Work: Get Jobs Done — ChatGPT, งานจากเอกสาร, Skill, Perplexity และ NotebookLM</p></article>
+<article class="card gr"><h4>ศรีเทพไทยพัฒนา (Sritep)</h4><p>Claude Skill, Claude Cowork, Perplexity, NotebookLM และ GEO</p></article>
+<article class="card gr"><h4>TK Park — AI Image Creation 101</h4><p>เวิร์กช็อปสร้างภาพด้วย AI ในงาน AI Ethic Exhibition Thailand ที่ TK Park, CentralWorld</p></article>
+<article class="card gr"><h4>AWS</h4><p>AI Images for Commercial Purposes</p></article>
+<article class="card gr"><h4>ไทยรัฐ</h4><p>การเขียน Prompt สำหรับ AI Image เบื้องต้น</p></article>
+<article class="card gr"><h4>ธนาคารกรุงศรีอยุธยา</h4><p>Midjourney Advance</p></article>
+<article class="card gr"><h4>FWD Insurance</h4><p>การใช้ Stable Diffusion</p></article>
+<article class="card gr"><h4>SC Asset</h4><p>การใช้ Stable Diffusion ร่วมกับทีม Stable Diffusion Thailand</p></article>
+<article class="card gr"><h4>SCG</h4><p>ออกแบบและจัดโปรแกรมฝึกอบรม Generative AI สำหรับองค์กร</p></article>
+<article class="card gr"><h4>SCGC</h4><p>ออกแบบและจัดโปรแกรมฝึกอบรม Generative AI สำหรับองค์กร</p></article>
+<article class="card gr"><h4>ช.การช่าง</h4><p>ออกแบบและจัดโปรแกรมฝึกอบรม Generative AI สำหรับองค์กร</p></article>
+<article class="card gr"><h4>Bitkub</h4><p>ออกแบบและจัดโปรแกรมฝึกอบรม Generative AI สำหรับองค์กร</p></article>
+<article class="card gr"><h4>เจียไต๋</h4><p>ออกแบบและจัดโปรแกรมฝึกอบรม Generative AI สำหรับองค์กร</p></article>
+<article class="card gr"><h4>Green Spot</h4><p>อบรมการใช้ Generative AI สำหรับองค์กร</p></article>
+<article class="card gr"><h4>RMA City Motors</h4><p>AI for Work + AI for Media — ใช้ ChatGPT กับงานเอกสาร และสร้างคอนเทนต์ ภาพ และวิดีโอด้วย AI</p></article>
+<article class="card gr"><h4>มหาวิทยาลัยมหิดล</h4><p>การนำ Generative AI มาใช้สนับสนุนการเรียนการสอน และการใช้งานระบบ Marvis AI Agent</p></article>
+<article class="card gr"><h4>มหาวิทยาลัยรังสิต</h4><p>สอนการใช้ Generative AI ให้กับนักศึกษา</p></article>
+<article class="card gr"><h4>มหาวิทยาลัยสยาม</h4><p>สอนการใช้ Generative AI ให้กับนักศึกษา</p></article>
+<article class="card gr"><h4>มหาวิทยาลัยหอการค้าไทย</h4><p>สอนการใช้ Generative AI ให้กับนักศึกษา</p></article>
+<article class="card gr"><h4>กรมชลประทาน</h4><p>บรรยายการใช้ AI ในโครงการฝึกอบรมเชิงปฏิบัติการสำหรับข้าราชการบรรจุใหม่ รุ่นที่ 44</p></article>
+<article class="card gr"><h4>คพอ. รุ่น 436 จังหวัดชลบุรี</h4><p>บรรยายเรื่อง Generative AI พร้อมสาธิตเครื่องมือและตัวอย่างผลงาน</p></article>
+<article class="card gr"><h4>AI Pavilion × Bitkub Summit 2025</h4><p>ร่วมบรรยายและแบ่งปันความรู้ด้าน Generative AI</p></article>
+<article class="card gr"><h4>Thailand International AI Film Festival</h4><p>ร่วมบรรยายด้าน Generative AI และงานสร้างสรรค์</p></article>
+<article class="card gr"><h4>Balance and Beyond Community AI Meetup</h4><p>ร่วมแบ่งปันความรู้เรื่อง AI Transformation และ AI Copyright</p></article>
+</div>
+</section>
+
+<section class="sec" id="online-courses"><h2 class="h">คอร์สสอน Online</h2>
+<div class="split equal">
+<article class="card gr"><h4>SkillLane</h4><ul class="online-course-list"><li>Prompt Create เสกงานด้วย AI : ปลดล็อกพลัง AI ด้วย Prompt ที่ใช่ สู่โลกแห่งการทำงานยุคใหม่</li><li>เจนอย่างง่าย ได้อย่างโปรกับ Varoriya</li><li>Beyond One Person Business: วางแผนธุรกิจและสร้างทีมผู้ช่วย AI สำหรับเจ้าของกิจการและทีมเล็ก</li></ul></article>
+<article class="card gr"><h4>FutureSkill</h4><p>Storytelling Master : เทคนิคเล่าเรื่องกับการสร้างวิดีโอด้วย AI — การเขียน Prompt วาง Storyboard และออกแบบแต่ละช็อต</p></article>
+<article class="card gr"><h4>Gorradesign</h4><p>Stable Diffusion สำหรับกราฟิกดีไซเนอร์ ครอบคลุมการเขียน Prompt, ControlNet, Inpainting และ SDXL</p></article>
+</div>
+</section>
+
+  <section class="sec" id="work"><h2 class="h">ผลงานและประสบการณ์</h2><div class="portfolio-grid"><article class="portfolio-work"><img src="assets/work-parliament-aicat.jpg" alt="ปัญจพัฒน์ เกรียงวีระยุทธ — ร่วมประชุมที่สภา ในนาม AICAT" loading="lazy" width="900" height="600" style="object-position:50% 50%"><div><h3>ร่วมประชุมที่สภา ในนาม AICAT</h3><p>กรรมการสมาคมสร้างสรรค์ปัญญาประดิษฐ์ไทย (AICAT) เข้าร่วมประชุมที่สภา</p></div></article><article class="portfolio-work"><img src="assets/work-pea-training.jpg" alt="ปัญจพัฒน์ เกรียงวีระยุทธ — การนำ AI มาใช้เพื่อเพิ่มประสิทธิภาพในการปฏิบัติงาน การแบ่งปันความรู้ และการสื่อสารการเป็น Role Model" loading="lazy" width="900" height="600" style="object-position:50% 50%"><div><h3>การนำ AI มาใช้เพื่อเพิ่มประสิทธิภาพในการปฏิบัติงาน การแบ่งปันความรู้ และการสื่อสารการเป็น Role Model</h3><p>การไฟฟ้าส่วนภูมิภาค (PEA) · อบรม 2 วัน</p></div></article><article class="portfolio-work"><img src="assets/work-irrigation-training.jpg" alt="ปัญจพัฒน์ เกรียงวีระยุทธ — บรรยายให้กรมชลประทาน" loading="lazy" width="900" height="600" style="object-position:50% 80%"><div><h3>บรรยายให้กรมชลประทาน</h3><p>การใช้ AI ในโครงการฝึกอบรมเชิงปฏิบัติการเพื่อพัฒนาข้าราชการพลเรือนสามัญที่อยู่ระหว่างทดลองปฏิบัติหน้าที่ราชการ รุ่นที่ 44</p></div></article><article class="portfolio-work"><img src="assets/work-kpo-chonburi-classroom.jpg" alt="ปัญจพัฒน์ เกรียงวีระยุทธ บรรยาย AI ให้ผู้เข้าร่วมอบรม คพอ. รุ่น 436 จังหวัดชลบุรี ภาพบรรยากาศห้องเรียน" loading="lazy" width="900" height="600" style="object-position:50% 55%"><div><h3>บรรยาย AI ในการอบรม คพอ. รุ่น 436</h3><p>จังหวัดชลบุรี · ถ่ายทอดเรื่อง Generative AI พร้อมตัวอย่างเครื่องมือและผลงานประกอบการบรรยาย</p></div></article><article class="portfolio-work"><img src="assets/work-ai-transformation-executives.jpg" alt="ปัญจพัฒน์ เกรียงวีระยุทธ — AI Transformation for Organizations: Executives &amp; CEOs" loading="lazy" width="900" height="600" style="object-position:50% 60%"><div><h3>AI Transformation for Organizations: Executives &amp; CEOs</h3><p>อบรม Generative AI และตัวอย่างการใช้งานสำหรับผู้บริหารองค์กรและ CEO</p></div></article><article class="portfolio-work"><img src="assets/work-ai-doctors-nurses.jpg" alt="ปัญจพัฒน์ เกรียงวีระยุทธ — AI for Doctors &amp; Nurses" loading="lazy" width="900" height="600" style="object-position:50% 65%"><div><h3>AI for Doctors &amp; Nurses</h3><p>อบรมการใช้ AI สำหรับแพทย์และพยาบาล</p></div></article><article class="portfolio-work"><img src="assets/work-ai-private-course.jpg" alt="ปัญจพัฒน์ เกรียงวีระยุทธ — AI for Work — Private Course" loading="lazy" width="900" height="600" style="object-position:50% 75%"><div><h3>AI for Work — Private Course</h3><p>คอร์ส AI for Work แบบกลุ่มส่วนตัว พร้อมฝึกใช้ AI และสร้าง Skill จากตัวอย่างงาน</p></div></article><article class="portfolio-work"><img src="assets/work-beyond-one-person-business.jpg" alt="ปัญจพัฒน์ เกรียงวีระยุทธ — Beyond One Person Business คอร์สออนไลน์กับ SkillLane" loading="lazy" width="900" height="600" style="object-position:50% 60%"><div><h3>Beyond One Person Business</h3><p>คอร์สออนไลน์กับ SkillLane · ภาพเบื้องหลังการถ่ายทำหลักสูตร</p></div></article></div></section>
+
+
+
+  <section class="sec" id="questions">
+    <h2 class="h">คำถามก่อนจัดอบรม</h2>
+    <div>
+      <details><summary>ผู้เรียนยังไม่เคยใช้ AI เลย เรียนได้ไหม?</summary><p>เลือกหัวข้อพื้นฐานและแบบฝึกทีละขั้นได้ แจ้งระดับผู้เรียนก่อนออกแบบหลักสูตร เพื่อให้เนื้อหาและความเร็วเหมาะกับพนักงาน</p></details>
+      <details><summary>แต่ละแผนกทำงานต่างกัน จะเลือกเนื้อหาอย่างไร?</summary><p>เริ่มจากปัญหาในการทำงาน และเลือกตัวอย่างให้ตรงกับแผนก หากระดับหรือโจทย์ต่างกันมาก ควรพิจารณาแบ่งกลุ่มเรียน</p></details>
+      <details><summary>ต้องใช้ข้อมูลจริงขององค์กรหรือไม่?</summary><p>ใช้ข้อมูลตัวอย่างหรือข้อมูลที่ปิดรายละเอียดสำคัญได้ เลือกเครื่องมือและข้อมูลตามข้อกำหนดขององค์กรก่อนเริ่มกิจกรรม</p></details>
+      <details><summary>จัดอบรมให้ลูกค้าผ่านบริษัทผู้จัดได้ไหม?</summary><p>ติดต่อพร้อมบรีฟของลูกค้า รูปแบบงาน และช่วงเวลาที่ต้องการ เพื่อคุยบทบาทวิทยากรและขอบเขตการอบรมให้ตรงกัน</p></details>
+      <details><summary>ต้องเตรียมอุปกรณ์และบัญชีอะไร?</summary><p>ขึ้นอยู่กับกิจกรรมและเครื่องมือที่เลือก แจ้งข้อจำกัดขององค์กรตั้งแต่ต้น เพื่อกำหนดอุปกรณ์ บัญชี และสิทธิ์ใช้งานที่ต้องเตรียม</p></details>
+    </div>
+  </section>
+  <section class="sec contact" id="contact">
+    <h2 class="h">ติดต่อเพื่อวางแผนการอบรม</h2>
+    <p class="lead fog">แจ้งเป้าหมายการอบรม จำนวนผู้เรียน แผนกที่เข้าร่วม และช่วงเวลาที่ต้องการ เพื่อจัดทำแนวทางหลักสูตรและใบเสนอราคาให้เหมาะกับองค์กร</p>
+    <div class="pills contact-socials"><a class="pill" href="https://line.me/ti/p/~golofu" target="_blank" rel="noopener"><svg class="contact-icon" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#06c755"/><path d="M26 14c0-5-4.5-8.5-10-8.5S6 9 6 14c0 4.3 3.6 7.8 8.5 8.4.5.1.7.4.6.8l-.4 2c-.1.5.3.7.7.5C20.4 23 26 19.3 26 14Z" fill="white"/><text x="16" y="16.4" text-anchor="middle" font-family="Arial,sans-serif" font-weight="bold" font-size="7" fill="#06c755">LINE</text></svg>คุยทาง LINE</a><a class="pill" href="https://www.facebook.com/profile.php?id=61585781140728" target="_blank" rel="noopener"><svg class="contact-icon" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="16" fill="#1877f2"/><path d="M18.5 32V19h4.4l.7-5h-5.1v-3.2c0-1.4.4-2.3 2.5-2.3h2.7V4.1c-.5-.1-2.1-.2-4-.2-4 0-6.7 2.4-6.7 6.8V14H9v5h4v13Z" fill="white"/></svg><img class="contact-logo" src="assets/gen-ai-space-logo.png" alt="" width="32" height="32">คุยทาง FB Gen AI Space</a><a class="pill" href="https://www.facebook.com/golofu/" target="_blank" rel="noopener"><svg class="contact-icon" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="16" fill="#1877f2"/><path d="M18.5 32V19h4.4l.7-5h-5.1v-3.2c0-1.4.4-2.3 2.5-2.3h2.7V4.1c-.5-.1-2.1-.2-4-.2-4 0-6.7 2.4-6.7 6.8V14H9v5h4v13Z" fill="white"/></svg>FB ส่วนตัว</a></div>
+    <p class="note">เริ่มด้วยข้อความสั้น ๆ ได้ เช่น “องค์กรต้องการอบรมฝ่าย HR จำนวน 25 คน อยากใช้ AI ช่วยสรุปเอกสาร ผู้เรียนส่วนใหญ่ยังไม่เคยใช้ มีเวลาอบรม 1 วัน”</p>
+    <div class="list" id="rows">
+      <div class="c"><span class="k">เบอร์โทร</span><a class="v" href="tel:0889563665">088-956-3665</a><button class="pill" type="button" data-copy="088-956-3665" aria-label="คัดลอกเบอร์โทร">คัดลอก</button></div>
+      <div class="c"><span class="k">LINE</span><span class="v">golofu</span><button class="pill" type="button" data-copy="golofu" aria-label="คัดลอก LINE ID">คัดลอก</button></div>
+      <div class="c"><span class="k">อีเมล</span><a class="v" href="mailto:golofu2523@gmail.com">golofu2523@gmail.com</a><button class="pill" type="button" data-copy="golofu2523@gmail.com" aria-label="คัดลอกอีเมล">คัดลอก</button></div>
+      <div class="c"><span class="k">เว็บไซต์</span><a class="v" href="https://genaispace.net/" target="_blank" rel="noopener">genaispace.net</a><button class="pill" type="button" data-copy="genaispace.net" aria-label="คัดลอกเว็บไซต์">คัดลอก</button></div>
+    </div>
+    <span id="copy-status" role="status" aria-live="polite"></span>
+  </section>
+<nav class="topic-menu" id="bottom-topics" aria-label="เลือกหัวข้อจากท้ายหน้า"><h2 class="h">เลือกหัวข้อ</h2><div class="topic-links"><a class="pill" href="#clients">ลูกค้าที่เคยอบรม</a><a class="pill" href="#creative">AI Creative / Vibe Coding</a><a class="pill" href="#problems">โจทย์ขององค์กร</a><a class="pill" href="#approach">แนวทางการสอน</a><a class="pill" href="#courses">หลักสูตรอบรม</a><a class="pill" href="#about">รู้จักวิทยากร</a><a class="pill" href="#teaching-topics">หัวข้อการสอน</a><a class="pill" href="#training-history">ตัวอย่างหลักสูตรที่อบรม</a><a class="pill" href="#online-courses">คอร์สสอน Online</a><a class="pill" href="#work">ผลงานและประสบการณ์</a><a class="pill" href="#questions">คำถามก่อนจัดอบรม</a><a class="pill" href="#contact">ติดต่อ</a></div></nav>
+</main>
+
+<nav class="floating-nav" aria-label="เมนูลัด" hidden><span class="floating-pets" role="img" aria-label="Agger และ Sofie หมาปอมสองตัวของพี่กอล์ฟ"></span><a class="pill" href="#top">กลับขึ้นบนสุด</a><a class="pill" href="#contact">ช่องทางติดต่อ</a></nav>
+<footer><span>บริษัท เจน เอไอ สเปซ จำกัด (GEN AI SPACE)</span></footer>
+
+<script>
+const floatingNav=document.querySelector('.floating-nav');
+new IntersectionObserver(function(entries){floatingNav.hidden=entries[0].isIntersecting},{threshold:0}).observe(document.getElementById('top'));
+document.querySelectorAll('[data-copy]').forEach(function(button){
+  button.addEventListener('click',async function(){
+    var status=document.getElementById('copy-status');
+    var t=window.i18nT||function(s){return s};
+    try{await navigator.clipboard.writeText(button.dataset.copy);status.textContent=t('คัดลอกแล้ว')+': '+button.dataset.copy;button.firstChild.nodeValue=t('คัดลอกแล้ว');setTimeout(function(){button.firstChild.nodeValue=t('คัดลอก')},1600)}
+    catch(error){status.textContent=t('คัดลอกอัตโนมัติไม่ได้ สามารถเลือกข้อความแล้วคัดลอกได้');}
+  });
+});
+</script>
+
+<script src="i18n-dict.js" defer></script><script src="i18n.js" defer></script><script src="presenter.js" defer></script></body></html>
