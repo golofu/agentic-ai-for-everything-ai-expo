@@ -1602,6 +1602,123 @@
     .lesson-card.prompt.section .prompt-title { font-size: clamp(1.5rem, 3vw, 3.2rem); }
     @media (max-width: 760px) { .lesson-card.prompt.section { aspect-ratio: 32 / 9; } }
 </style>
+  <style id="space-theme">
+    /* Space theme to match the cover: dark sky, stars, cyan glow. Slides inside the frame keep their own course look. */
+    :root {
+      color-scheme: dark;
+      --paper: #03060f;
+      --ink: #f4f7ff;
+      --muted: #a9b3cc;
+      --line: rgba(190,210,255,.16);
+      --violet: #7fe3ff;
+      --violet-deep: #7fe3ff;
+      --lavender: rgba(127,227,255,.16);
+      --cyan: #7fe3ff;
+    }
+    body {
+      background:
+        radial-gradient(ellipse at 85% -10%, rgba(80,140,255,.22), transparent 45%),
+        radial-gradient(ellipse at 0% 110%, rgba(185,173,255,.16), transparent 45%),
+        #03060f;
+    }
+    body::before {
+      opacity: 1;
+      background-image:
+        radial-gradient(1px 1px at 20px 30px, #fff, transparent),
+        radial-gradient(1px 1px at 90px 140px, rgba(255,255,255,.8), transparent),
+        radial-gradient(1.5px 1.5px at 160px 60px, #fff, transparent),
+        radial-gradient(1px 1px at 230px 190px, rgba(255,255,255,.6), transparent),
+        radial-gradient(1px 1px at 300px 110px, rgba(190,230,255,.9), transparent),
+        radial-gradient(1.5px 1.5px at 360px 250px, rgba(255,255,255,.7), transparent);
+      background-size: 400px 300px;
+      animation: drift 120s linear infinite;
+    }
+    @keyframes drift { to { background-position: -400px 300px; } }
+    .brand, .viewer-title, .slide-picker-title { color: var(--ink); }
+    .brand-logo { border-color: rgba(255,255,255,.35); }
+    .cover-link, .page-label {
+      border-color: var(--line);
+      background: rgba(10,16,34,.6);
+      color: #cdd5ea;
+    }
+    .page-number { background: rgba(127,227,255,.16); color: var(--cyan); }
+    .eyebrow { color: var(--cyan); }
+    .eyebrow::before { background: var(--cyan); }
+
+    .lesson-grid .lesson-card,
+    .lesson-grid .lesson-card.text-only {
+      border: 1px solid rgba(127,227,255,.22);
+      background:
+        radial-gradient(circle at 85% 0%, rgba(127,227,255,.16), transparent 45%),
+        radial-gradient(circle at 0% 100%, rgba(185,173,255,.14), transparent 50%),
+        linear-gradient(160deg, rgba(16,26,52,.92), rgba(6,10,22,.92));
+      box-shadow: 0 0 0 1px rgba(255,255,255,.03) inset, 0 20px 60px rgba(0,0,0,.45);
+    }
+    .lesson-grid .lesson-card.text-only::before {
+      border-color: rgba(127,227,255,.22);
+      box-shadow: 0 0 40px rgba(127,227,255,.12);
+    }
+    .lesson-grid .lesson-card:hover,
+    .lesson-grid .lesson-card:focus-visible {
+      border-color: rgba(127,227,255,.7);
+      box-shadow: 0 0 0 1px rgba(127,227,255,.35), 0 0 46px rgba(127,227,255,.28), 0 24px 70px rgba(0,0,0,.5);
+      outline: none;
+    }
+    .lesson-grid .lesson-card [class$="-title"] { color: var(--ink); }
+    .lesson-grid .lesson-card.prompt.section {
+      background:
+        radial-gradient(ellipse at 50% 120%, rgba(127,227,255,.28), transparent 60%),
+        linear-gradient(90deg, rgba(20,34,70,.95), rgba(8,12,28,.95) 50%, rgba(36,24,70,.95));
+    }
+    .lesson-grid .lesson-card.prompt.section .prompt-title {
+      padding: .08em 0 .18em;
+      background: linear-gradient(90deg, #b9adff, #7fe3ff 55%, #ffb8cf);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .footer { color: #8892ad; border-top-color: var(--line); }
+
+    .viewer {
+      background:
+        radial-gradient(ellipse at 85% 0%, rgba(80,140,255,.18), transparent 40%),
+        #03060f;
+    }
+    .viewer-bar, .thumbnail-bar {
+      background: rgba(6,10,24,.88);
+      border-color: var(--line);
+    }
+    .back-button, .slide-menu-button, .fullscreen-button, .nav-button {
+      border-color: rgba(127,227,255,.28);
+      background: rgba(16,26,52,.85);
+      color: #dfe6f7;
+    }
+    .back-button:hover, .back-button:focus-visible, .slide-menu-button:hover, .slide-menu-button:focus-visible,
+    .fullscreen-button:hover, .fullscreen-button:focus-visible,
+    .nav-button:hover:not(:disabled), .nav-button:focus-visible:not(:disabled) {
+      background: rgba(127,227,255,.2);
+      outline: 2px solid rgba(127,227,255,.45);
+    }
+    .slide-frame {
+      border-color: rgba(127,227,255,.25);
+      background: #0b1124;
+      box-shadow: 0 0 0 1px rgba(127,227,255,.08), 0 0 60px rgba(127,227,255,.12), 0 24px 70px rgba(0,0,0,.6);
+    }
+    .thumb { background: #10182e; }
+    .thumb-label, .slide-picker-item-label {
+      color: #cfeeff;
+      background: linear-gradient(145deg, #121c38, #0a1022);
+    }
+    .thumb.active { border-color: var(--cyan); box-shadow: 0 0 0 3px rgba(127,227,255,.25); }
+    .slide-picker { background: rgba(2,4,10,.78); }
+    .slide-picker-panel { background: #0a1022; border-color: var(--line); }
+    .slide-picker-close { border-color: #cfeeff; color: #cfeeff; }
+    .slide-picker-item { border-color: rgba(127,227,255,.2); background: #10182e; }
+    .slide-picker-item.active { border-color: var(--cyan); }
+    .profile-site-open { background: rgba(16,26,52,.9); color: #dfe6f7; }
+    .viewer:fullscreen { background: #03060f; }
+    @media (prefers-reduced-motion: reduce) { body::before { animation: none; } }
+  </style>
 </head>
 <body>
   <noscript>
