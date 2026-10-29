@@ -1,0 +1,37 @@
+<!doctype html><html lang="th"><head><!-- space-skin --><script>// Space skin: turns a light course slide into the dark space theme of the talk cover.
+// Inlined into each copied slide (scripts/apply-space-skin.py), so it also works in pages that use <base href>.
+(() => {
+  for (const name of ["replaceState", "pushState"]) {
+    const original = history[name].bind(history);
+    // Copied pages keep a <base href> to their source site, so URL updates there would throw.
+    history[name] = (...args) => { try { return original(...args); } catch (error) { return undefined; } };
+  }
+  const css = `
+    html, body { background: #000 !important; }
+    /* Filter the top-level children, not body: a filtered body would become the containing block of fixed viewers. */
+    body > * { filter: invert(1) hue-rotate(180deg); }
+    body img, body video, body iframe, body picture, body svg image,
+    body .bgi, body [style*="background-image"], body [style*="url("] { filter: invert(1) hue-rotate(180deg) !important; }
+    /* Media inside an already re-inverted box would flip back to a negative. */
+    :is(body .bgi, body [style*="background-image"], body [style*="url("]) :is(img, video, iframe, picture, svg image) { filter: none !important; }
+    #space-skin-tint {
+      position: fixed; inset: 0; z-index: 2147483647; pointer-events: none; mix-blend-mode: screen;
+      background:
+        radial-gradient(ellipse at 50% 45%, rgba(0,0,0,.55), rgba(0,0,0,.15) 75%),
+        url("https://agentic-ai-for-everything.vercel.app/assets/space/deep-field.jpg") center / cover;
+      opacity: .5;
+    }`;
+  const style = document.createElement("style");
+  style.id = "space-skin";
+  style.textContent = css;
+  document.head.append(style);
+  const addTint = () => {
+    if (document.getElementById("space-skin-tint")) return;
+    const tint = document.createElement("div");
+    tint.id = "space-skin-tint";
+    document.documentElement.append(tint);
+  };
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", addTint, { once: true });
+  else addTint();
+})();
+</script><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ทริกเล็กน้อย: Shift + Enter</title><link rel="stylesheet" href="../advance/companion.css"></head><body><main id="stage" class="centered-summary"><div class="eyebrow"><span>ทริกเล็กน้อย · เขียน Prompt ให้อ่านง่าย</span><span>GEN AI SPACE</span></div><h1>ขึ้นบรรทัดใหม่ก่อน<br><em>ยังไม่ต้องส่งข้อความ</em></h1><p class="lead">กด <strong>Shift ค้างไว้ แล้วกด Enter</strong> เพื่อแยกงาน บริบท และผลลัพธ์คนละบรรทัด</p><figure class="diagram" style="margin-left:0;margin-right:0" aria-label="ภาพจำลองช่องพิมพ์ก่อนและหลังกด Shift บวก Enter"><div class="chat"><b>1 · พิมพ์บรรทัดแรก</b><div class="input">ช่วยสรุปบันทึกประชุมนี้<span class="cursor"></span></div><div class="keyhint">กด <kbd>Shift</kbd> + <kbd>Enter</kbd></div></div><div class="arrow" aria-hidden="true">→</div><div class="chat"><b>2 · พิมพ์ต่อในบรรทัดใหม่</b><div class="input">ช่วยสรุปบันทึกประชุมนี้<br>แยกงานที่ต้องทำและคนรับผิดชอบ<span class="cursor"></span></div><div class="keyhint">ข้อความยังอยู่ในช่องพิมพ์ ยังไม่ถูกส่ง</div></div></figure><p class="closing">พิมพ์ครบ ค่อยกด Enter เพื่อส่ง<br>ภาพจำลองสำหรับสาธิต · ปุ่มส่งอาจต่างกันตามแอปและการตั้งค่า</p><footer>GEN AI SPACE</footer></main><script>function fit(){document.getElementById('stage').style.transform='translate(-50%,-50%) scale('+Math.min(innerWidth/1920,innerHeight/1080)+')'}addEventListener('resize',fit);fit();</script></body></html>
