@@ -409,7 +409,7 @@
     </main>
 
     <footer class="footer">
-      <p class="credit">Agentic AI for Everything · Gen AI Space · 2026</p>
+      <p class="credit">Agentic AI for Everything · Gen AI Space · 2026 · Sky: ESO/S. Brunier · Deep field: NASA, ESA, Hubble</p>
       <button class="motion-control" id="motionControl" type="button" aria-pressed="false">หยุดโลกหมุน</button>
     </footer>
   </div>
@@ -426,7 +426,7 @@
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
       renderer.setClearColor(0x03060f, 1);
       const scene = new THREE.Scene();
-      const camera = new THREE.PerspectiveCamera(35, 1, .1, 1000);
+      const camera = new THREE.PerspectiveCamera(35, 1, .1, 1200);
       camera.position.set(0, 0, 9);
 
       const loader = new THREE.TextureLoader();
@@ -504,6 +504,15 @@
       );
       scene.add(atmosphere);
 
+      // Real sky: ESO Milky Way panorama wrapped on a sphere around the scene.
+      const skyTexture = tex("../space/milky-way.jpg");
+      const sky = new THREE.Mesh(
+        new THREE.SphereGeometry(500, 64, 32),
+        new THREE.MeshBasicMaterial({ map: skyTexture, side: THREE.BackSide })
+      );
+      sky.rotation.set(.5, 0, .35);
+      scene.add(sky);
+
       // Star field.
       const starCount = 2600;
       const starPos = new Float32Array(starCount * 3);
@@ -569,6 +578,7 @@
         grid.rotation.y = earth.rotation.y;
         clouds.rotation.y += dt * (turn + .02);
         stars.rotation.y += dt * .004;
+        sky.rotation.y += dt * .003;
         earthGroup.rotation.x += (tilt - earthGroup.rotation.x) * .08;
         renderer.render(scene, camera);
         requestAnimationFrame(frame);

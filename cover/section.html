@@ -18,8 +18,8 @@
       color: var(--ink);
       font-family: "Manrope", "Noto Sans Thai", sans-serif;
       background:
-        radial-gradient(ellipse at 82% 0%, rgba(40,100,210,.34), transparent 55%),
-        radial-gradient(ellipse at 0% 100%, rgba(120,90,220,.22), transparent 55%),
+        linear-gradient(90deg, rgba(3,6,15,.85), rgba(3,6,15,.25)),
+        url("assets/space/deep-field.jpg") center / cover,
         #03060f;
     }
     body::before {
@@ -73,7 +73,6 @@
   </style>
 </head>
 <body>
-  <div class="orb" aria-hidden="true"></div>
   <main>
     <div class="num" id="num"></div>
     <h1 id="title"></h1>
