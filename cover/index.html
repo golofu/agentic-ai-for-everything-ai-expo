@@ -56,27 +56,6 @@
       background: linear-gradient(90deg, rgba(3,6,15,.86) 0%, rgba(3,6,15,.55) 34%, rgba(3,6,15,0) 58%);
     }
 
-    .globe-word {
-      position: fixed;
-      z-index: -1;
-      left: 0;
-      top: 0;
-      transform: translate(-50%, -50%);
-      margin: 0;
-      pointer-events: none;
-      color: #fff;
-      font-family: var(--display);
-      font-size: var(--word-size, 64px);
-      font-weight: 800;
-      letter-spacing: -.04em;
-      line-height: 1;
-      white-space: nowrap;
-      text-shadow: 0 0 24px rgba(127,227,255,.75), 0 0 64px rgba(127,227,255,.35), 0 3px 0 rgba(0,0,0,.4);
-      opacity: 0;
-      transition: opacity 1.2s ease;
-    }
-
-    .globe-word.ready { opacity: 1; }
 
     .page {
       width: min(1500px, 100%);
@@ -364,7 +343,6 @@
 <body>
   <canvas id="globe" aria-hidden="true"></canvas>
   <div class="wash" aria-hidden="true"></div>
-  <p class="globe-word" id="globeWord" aria-hidden="true">Gen AI Space</p>
 
   <div class="page">
     <header class="topbar">
@@ -410,7 +388,6 @@
 
     <footer class="footer">
       <p class="credit">Agentic AI for Everything · Gen AI Space · 2026 · Sky: ESO/S. Brunier · Deep field: NASA, ESA, Hubble</p>
-      <button class="motion-control" id="motionControl" type="button" aria-pressed="false">หยุดโลกหมุน</button>
     </footer>
   </div>
 
@@ -418,8 +395,6 @@
   <script>
     (() => {
       const canvas = document.getElementById("globe");
-      const word = document.getElementById("globeWord");
-      const motionControl = document.getElementById("motionControl");
       if (!window.THREE) return;
 
       const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false });
@@ -433,7 +408,6 @@
       const tex = name => loader.load(`assets/earth/${name}`);
 
       const earthGroup = new THREE.Group();
-      earthGroup.rotation.z = -23.4 * Math.PI / 180;
       scene.add(earthGroup);
 
       const earth = new THREE.Mesh(
@@ -490,6 +464,40 @@
       );
       earthGroup.add(grid);
 
+      // "Gen AI Space" wrapped around the equator so it turns with the earth.
+      const bandCanvas = document.createElement("canvas");
+      bandCanvas.width = 4096;
+      bandCanvas.height = 188;  // matches the band: circumference 2π·2.16 ÷ height .62
+      const bc = bandCanvas.getContext("2d");
+      const label = "Gen AI Space";
+      const drawBand = () => {
+        bc.clearRect(0, 0, bandCanvas.width, bandCanvas.height);
+        bc.font = "800 128px Manrope, 'Noto Sans Thai', sans-serif";
+        bc.textBaseline = "middle";
+        const slot = bandCanvas.width / 3;
+        for (let i = 0; i < 3; i++) {
+          const x = i * slot + (slot - bc.measureText(label).width) / 2;
+          bc.shadowColor = "rgba(127,227,255,.95)";
+          bc.shadowBlur = 22;
+          bc.fillStyle = "#ffffff";
+          bc.fillText(label, x, bandCanvas.height / 2);
+          bc.shadowBlur = 0;
+          bc.fillStyle = "rgba(159,234,255,.85)";
+          bc.beginPath();
+          bc.arc(i * slot, bandCanvas.height / 2, 8, 0, Math.PI * 2);
+          bc.fill();
+        }
+      };
+      drawBand();
+      const bandTexture = new THREE.CanvasTexture(bandCanvas);
+      bandTexture.anisotropy = renderer.capabilities.getMaxAnisotropy();
+      const band = new THREE.Mesh(
+        new THREE.CylinderGeometry(2.16, 2.16, .62, 160, 1, true),
+        new THREE.MeshBasicMaterial({ map: bandTexture, transparent: true, depthWrite: false, side: THREE.FrontSide })
+      );
+      earthGroup.add(band);
+      document.fonts.load("800 128px Manrope").then(() => { drawBand(); bandTexture.needsUpdate = true; });
+
       // Atmosphere rim glow.
       const atmosphere = new THREE.Mesh(
         new THREE.SphereGeometry(2.32, 64, 64),
@@ -545,56 +553,42 @@
         globeX = wide ? halfW - 2.3 * scale - halfW * .07 : 0;
         globeY = wide ? -.05 : halfH * .45;
         [earthGroup, atmosphere].forEach(o => { o.position.set(globeX, globeY, 0); o.scale.setScalar(scale); });
-        const pxPerUnit = h / (halfH * 2);
-        word.style.setProperty("--word-size", `${Math.round(2 * scale * pxPerUnit * .2)}px`);
-        const v = new THREE.Vector3(globeX, globeY, 0).project(camera);
-        word.style.left = `${(v.x + 1) / 2 * w}px`;
-        word.style.top = `${(1 - v.y) / 2 * h}px`;
       }
 
-      let running = true;
       let last = performance.now();
       // Drag anywhere outside links/buttons to spin the globe; it eases back to the auto spin.
-      let dragging = false, dragX = 0, dragY = 0, spin = 0, tilt = 0;
+      let dragging = false, dragX = 0, spin = 0;
       window.addEventListener("pointerdown", e => {
         if (e.target.closest("a, button")) return;
-        dragging = true; dragX = e.clientX; dragY = e.clientY;
+        dragging = true; dragX = e.clientX;
         document.body.style.cursor = "grabbing";
       });
       window.addEventListener("pointermove", e => {
         if (!dragging) return;
         spin = (e.clientX - dragX) * .25;
-        tilt = Math.max(-.5, Math.min(.5, tilt + (e.clientY - dragY) * .004));
-        dragX = e.clientX; dragY = e.clientY;
+        dragX = e.clientX;
       });
       window.addEventListener("pointerup", () => { dragging = false; document.body.style.cursor = ""; });
       function frame(now) {
         const dt = Math.min(.05, (now - last) / 1000);
         last = now;
-        const turn = (running ? .12 : 0) + spin;
+        const turn = .12 + spin;
         spin *= dragging ? .5 : .94;
         earth.rotation.y += dt * turn;
         lights.rotation.y = earth.rotation.y;
         grid.rotation.y = earth.rotation.y;
+        band.rotation.y = earth.rotation.y;
         clouds.rotation.y += dt * (turn + .02);
         stars.rotation.y += dt * .004;
         sky.rotation.y += dt * .003;
-        earthGroup.rotation.x += (tilt - earthGroup.rotation.x) * .08;
         renderer.render(scene, camera);
         requestAnimationFrame(frame);
       }
 
-      function syncControl() {
-        motionControl.textContent = running ? "หยุดโลกหมุน" : "ให้โลกหมุน";
-        motionControl.setAttribute("aria-pressed", String(!running));
-      }
-      motionControl.addEventListener("click", () => { running = !running; syncControl(); });
 
       window.addEventListener("resize", layout);
       layout();
-      syncControl();
       requestAnimationFrame(frame);
-      setTimeout(() => word.classList.add("ready"), 500);
     })();
   </script>
 </body>
