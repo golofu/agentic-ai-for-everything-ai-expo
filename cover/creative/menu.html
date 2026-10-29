@@ -551,6 +551,18 @@ body { background: #f6f4ef; color: var(--ink); }
 .viewer:fullscreen .strip, .viewer:fullscreen .vbar, .viewer:fullscreen .ov-panel { display: none !important; }
 .viewer:fullscreen .demo { inset: 0 !important; }
 .viewer:fullscreen .stage { width: min(100vw, calc(100vh * 16 / 9)) !important; }
+.viewer.fake-fs .strip, .viewer.fake-fs .vbar, .viewer.fake-fs .ov-panel { display: none !important; }
+.viewer.fake-fs .demo { inset: 0 !important; }
+.viewer.fake-fs .stage { width: min(100vw, calc(100dvh * 16 / 9)) !important; }
+#fs-exit { display: none; position: fixed; z-index: 70; right: 10px; top: 10px; padding: 6px 12px; border: 0; border-radius: 16px; background: rgba(0,0,0,.55); color: #fff; font: 400 13px "Kanit", sans-serif; }
+.viewer.fake-fs #fs-exit { display: block; }
+body.fake-fs-on { overflow: hidden; }
+@media (orientation: portrait) {
+  .viewer.fake-fs .demo { overflow: visible; }
+  .viewer.fake-fs .stage { flex: none; width: min(100dvh, calc(100dvw * 16 / 9)) !important; rotate: 90deg; }
+  .viewer.fake-fs #fs-exit { right: -14px; top: auto; bottom: 70px; transform: rotate(90deg); }
+}
+
 
 /* ===== round 3 ===== */
 /* drawing captions */
@@ -763,6 +775,23 @@ body { background: #f6f4ef; color: var(--ink); }
 [data-lesson="ai-edit-video"] .aev-run .aev-vids.wide video { height:auto; }
 [data-lesson="ai-edit-video"] .aev-run .aev-vids figcaption { font-size:1.05cqw;margin-top:.4cqw; }
 [data-lesson="ai-edit-video"] .aev-res { text-align:center;font:400 1.1cqw "Kanit";color:#3a322a;margin:.8cqw 0 0 !important; }
+[data-lesson="ai-edit-video"] .aev-c2 { display:flex;flex-direction:column;gap:.7cqw;padding:1.2cqw 1.4cqw; }
+[data-lesson="ai-edit-video"] .aev-c2 h4 { margin:0 !important; }
+[data-lesson="ai-edit-video"] .aev-t2 { display:grid;grid-template-columns:auto 1fr;gap:.2cqw .8cqw;align-items:center;border-bottom:.06cqw solid #ece5da;padding-bottom:.6cqw; }
+[data-lesson="ai-edit-video"] .aev-t2:last-child { border-bottom:0; }
+[data-lesson="ai-edit-video"] .aev-t2n { margin:0 !important;font:500 .95cqw "Kanit";color:#514267;display:flex;align-items:center;gap:.4cqw;white-space:nowrap; }
+[data-lesson="ai-edit-video"] .aev-t2n b { width:1.5cqw;height:1.5cqw;border-radius:50%;background:#5b3fc4;color:#fff;display:grid;place-items:center;font:600 .9cqw "Kanit"; }
+[data-lesson="ai-edit-video"] .aev-t2me { justify-self:start;background:#5b3fc4;color:#fff;border-radius:.8cqw .8cqw .8cqw .2cqw;padding:.3cqw .9cqw;font:500 1.15cqw "Kanit"; }
+[data-lesson="ai-edit-video"] .aev-t2mean { grid-column:2;margin:0 !important;font:300 .98cqw/1.4 "Kanit";color:#3a322a; }
+[data-lesson="ai-edit-video"] .aev-t2ai { grid-column:2;font:400 .98cqw/1.4 "Kanit";color:#2f7a52;display:flex;align-items:center;gap:.5cqw; }
+[data-lesson="ai-edit-video"] .aev-t2ai span { background:#e3f1e8;border-radius:.6cqw;padding:0 .5cqw;font:600 .8cqw "Kanit"; }
+[data-lesson="ai-edit-video"] .aev-t2ai::before { content:"→";color:#2f7a52; }
+[data-lesson="ai-edit-video"] .aev-say { display:grid !important;grid-template-columns:1fr auto;align-items:center;gap:.25cqw .6cqw;background:#fff !important;color:#29231e !important;border:.12cqw solid #c9bfe6;border-radius:.9cqw !important;padding:.45cqw .6cqw .5cqw 1cqw !important;box-shadow:0 .2cqw .7cqw #5b3fc41a; }
+[data-lesson="ai-edit-video"] .aev-say > span { grid-column:1/-1;font-size:0 !important;color:#8a7fb0 !important; }
+[data-lesson="ai-edit-video"] .aev-say > span::after { content:"💬 พิมพ์ในช่องแชตของ Claude Code / Codex แล้วกด Enter";font:400 .92cqw "Kanit"; }
+[data-lesson="ai-edit-video"] .aev-say > b { font:500 1.15cqw/1.4 "Kanit" !important;color:#29231e !important; }
+[data-lesson="ai-edit-video"] .aev-say > b::after { content:"";display:inline-block;width:.1cqw;height:1.1cqw;background:#5b3fc4;margin-left:.2cqw;vertical-align:middle;animation:aevCaret 1s steps(1) infinite; }
+@keyframes aevCaret { 50% { opacity:0; } }
 [data-lesson="ai-edit-video"] .aev-main.aev-chat6 { grid-template-columns:30fr 70fr;gap:1.2cqw; }
 [data-lesson="ai-edit-video"] .aev-c6l { padding:1.2cqw 1.3cqw; }
 [data-lesson="ai-edit-video"] .aev-c6h { font:500 1.12cqw/1.4 "Kanit";color:#29231e;margin:0 0 .5cqw !important;display:flex;gap:.6cqw;align-items:flex-start; }
@@ -2451,22 +2480,27 @@ resources/brand.md (แม่แบบให้ผู้ใช้กรอก �
 [data-lesson="motion-graphic"] .mgx-btn i::after { content: ""; position: absolute; left: .78cqw; top: .55cqw; border-left: .65cqw solid #ff6b2c; border-top: .45cqw solid transparent; border-bottom: .45cqw solid transparent; }
 [data-lesson="motion-graphic"] .play .mgx-btn { animation: mgxPulse 2.4s 2s ease-in-out 3; }
 @keyframes mgxPulse { 50% { box-shadow: 0 0 0 .5cqw rgba(255,107,44,.25), 0 .6cqw 1.6cqw rgba(255,107,44,.35); } }
-[data-lesson="motion-graphic"] .mgx-ov { position: absolute; inset: 0; z-index: 30; display: none; align-items: center; justify-content: center; background: rgba(20,16,12,.82); }
+[data-lesson="motion-graphic"] .mgx-ov { position: absolute; inset: 0; z-index: 30; display: none; align-items: center; justify-content: center; background: rgba(20,16,12,.95); }
 [data-lesson="motion-graphic"] .mgx-ov.open { display: flex; }
-[data-lesson="motion-graphic"] .stage .mgx-ov video { position: relative; inset: auto; width: 76cqw; height: 42.75cqw; object-fit: contain; filter: none; border-radius: 1cqw; box-shadow: 0 1.5cqw 4cqw rgba(0,0,0,.5); background: #000; }
+[data-lesson="motion-graphic"] .mgx-ov { flex-direction: column; gap: 1.6cqw; }
+[data-lesson="motion-graphic"] .mgx-h { position: relative; color: #fff; font: 600 2.2cqw "Kanit"; text-shadow: none; }
+[data-lesson="motion-graphic"] .mgx-grid { position: relative; display: flex; gap: 1.4cqw; }
+[data-lesson="motion-graphic"] .mgx-grid figure { position: relative; margin: 0; width: 29cqw; }
+[data-lesson="motion-graphic"] .stage .mgx-grid video { position: relative; inset: auto; display: block; width: 29cqw; height: 16.31cqw; object-fit: cover; filter: none; border-radius: .8cqw; box-shadow: 0 1cqw 3cqw rgba(0,0,0,.5); background: #000; }
+[data-lesson="motion-graphic"] .mgx-grid figcaption { position: relative; margin-top: .7cqw; color: #f1ece4; font: 400 1.3cqw "Kanit"; text-align: center; text-shadow: none; }
 [data-lesson="motion-graphic"] .mgx-x { position: absolute; right: 2.5cqw; top: 6.5cqw; z-index: 31; padding: .4cqw 1.2cqw; border: 0; border-radius: 2cqw; background: #fff; font: 500 1.1cqw "Kanit"; cursor: pointer; }
-</style><button class="c mgx-btn noadv" style="right:4cqw;top:8cqw" onclick="event.stopPropagation();const o=this.parentNode.querySelector('.mgx-ov');o.classList.add('open');const v=o.querySelector('video');if(!v.getAttribute('src'))v.src=v.dataset.v;v.currentTime=0;v.play()"><i></i>ดูคลิป: ติดตั้ง three.js แล้วได้อะไร</button>
-<div class="c mgx-ov noadv" onclick="event.stopPropagation();if(event.target===this){this.classList.remove('open');this.querySelector('video').pause()}"><video data-v="assets/motion-graphic/explainers/three-explainer.mp4" poster="assets/motion-graphic/explainers/three-explainer.jpg" muted playsinline controls loop preload="none"></video><button class="mgx-x" onclick="event.stopPropagation();const o=this.parentNode;o.classList.remove('open');o.querySelector('video').pause()">ปิด ✕</button></div>
+</style><button class="c mgx-btn noadv" style="right:4cqw;top:8cqw" onclick="event.stopPropagation();const o=this.parentNode.querySelector('.mgx-ov');o.classList.add('open');o.querySelectorAll('video').forEach(v=>{if(!v.getAttribute('src'))v.src=v.dataset.v;v.currentTime=0;v.play()})"><i></i>ดูตัวอย่างผลงาน three.js 3 แบบ</button>
+<div class="c mgx-ov noadv" onclick="event.stopPropagation();if(event.target===this){this.classList.remove('open');this.querySelectorAll('video').forEach(v=>v.pause())}"><div class="mgx-h">ติดตั้ง three.js แล้วทำได้แบบนี้</div><div class="mgx-grid"><figure><video data-v="assets/motion-graphic/examples/t1.mp4" poster="assets/motion-graphic/examples/t1.jpg" muted playsinline loop preload="none"></video><figcaption>โลโก้ 3D หมุน</figcaption></figure><figure><video data-v="assets/motion-graphic/examples/t2.mp4" poster="assets/motion-graphic/examples/t2.jpg" muted playsinline loop preload="none"></video><figcaption>ฉากอวกาศ + อนุภาคแสง</figcaption></figure><figure><video data-v="assets/motion-graphic/examples/t3.mp4" poster="assets/motion-graphic/examples/t3.jpg" muted playsinline loop preload="none"></video><figcaption>สินค้าลอยหมุน</figcaption></figure></div><button class="mgx-x" onclick="event.stopPropagation();const o=this.parentNode;o.classList.remove('open');o.querySelectorAll('video').forEach(v=>v.pause())">ปิด ✕</button></div>
 <div class="grain"></div><div class="bar t"></div><div class="bar b"></div><div class="sc">SC 11 · MOTION GRAPHIC</div><div class="tc" data-clock>00:00:00:00</div></div></section>
 
 
 <section class="demo" data-lesson="motion-graphic"><header><span class="num">12</span><h2>ขั้น 3 · Lottie ไอคอนขยับสำเร็จรูป</h2><button class="replay">เล่นใหม่</button></header>
 <div class="stage dim"><video data-src="assets/motion/bg/motion-graphic--24-student-laptop.mp4" muted loop playsinline preload="none"></video><div class="vig"></div>
-<div class="c mg-flow" style="left:5cqw;top:8.3cqw;width:90cqw"><div class="mg-k a fi" style="animation-delay:.7s">ขั้นที่ 3 · เครื่องมือเสริม</div><div class="mg-t a bi" style="font-size:2.8cqw;margin-top:.3cqw;animation-delay:.9s">Lottie · ไอคอนขยับ<b>สำเร็จรูป</b> (ติดตั้งให้แล้ว)</div></div><div class="c mg-lead a fi" style="left:5cqw;top:15.4cqw;width:90cqw;animation-delay:1.2s">ติดตั้งให้แล้วตอนสร้างโฟลเดอร์ · เราแค่หาไฟล์ Lottie มาใส่ใน resources/ แล้วบอก Claude ว่าจะใช้ตรงไหน</div>
+<a class="c noadv a fi" href="https://lottiefiles.com/" target="_blank" rel="noopener" title="เปิดเว็บ LottieFiles" style="left:5cqw;top:8.4cqw;width:5.4cqw;height:5.4cqw;animation-delay:.6s"><img src="assets/motion-graphic/logos/lottiefiles.svg" alt="LottieFiles" style="position:relative;display:block;width:100%;height:100%"></a><div class="c mg-flow" style="left:11.8cqw;top:8.3cqw;width:64cqw"><div class="mg-k a fi" style="animation-delay:.7s">ขั้นที่ 3 · เครื่องมือเสริม · <a class="noadv" href="https://lottiefiles.com/" target="_blank" rel="noopener" style="position:relative;color:#c2571a;text-decoration:underline">lottiefiles.com ↗</a></div><div class="mg-t a bi" style="font-size:2.8cqw;margin-top:.3cqw;animation-delay:.9s">Lottie · ไอคอนขยับ<b>สำเร็จรูป</b> (ติดตั้งให้แล้ว)</div></div><div class="c mg-lead a fi" style="left:5cqw;top:15.4cqw;width:90cqw;animation-delay:1.2s">ติดตั้งให้แล้วตอนสร้างโฟลเดอร์ · เราแค่หาไฟล์ Lottie มาใส่ใน resources/ แล้วบอก Claude ว่าจะใช้ตรงไหน</div>
 <div class="mg-card a fu" style="left:4cqw;top:19.6cqw;width:38cqw;height:29cqw;display:flex;flex-direction:column;animation-delay:1.5s"><span class="mg-h4">Lottie คืออะไร</span><span class="mg-lead" style="font-size:1.12cqw">ไฟล์แอนิเมชันเล็กๆ ที่นักออกแบบทำไว้แล้ว เอามาวางในคลิปได้ทันที ขยายเท่าไหร่ก็คม ไฟล์เล็ก</span><span class="mg-h4 sp">เหมาะกับ</span><div class="mg-li dot" style="font-size:1.12cqw"><i></i><span>ไอคอนขยับ เช่น จรวดพุ่ง หลอดไฟติด กระดิ่งสั่น</span></div><div class="mg-li dot" style="font-size:1.12cqw"><i></i><span>เครื่องหมายถูกเด้ง ลูกศรชี้ วงโหลด</span></div><div class="mg-li dot" style="font-size:1.12cqw"><i></i><span>ตัวการ์ตูนเล็กๆ ประกอบคลิปอธิบาย</span></div><div class="mg-made" style="margin-top:auto">ถ้าเครื่องยังไม่มี Node.js ตอนสร้างโฟลเดอร์ ให้ติดตั้ง Remotion ก่อน แล้วพิมพ์ “ติดตั้งเครื่องมือเสริม” ในโฟลเดอร์งาน (หน้า 11)</div></div>
 <div class="mg-card a fu" style="left:44cqw;top:19.6cqw;width:52cqw;height:29cqw;display:flex;flex-direction:column;animation-delay:1.8s"><span class="mg-h4">หาไฟล์ Lottie ฟรี</span><div class="mg-li" style="font-size:1.1cqw"><i>1</i><span>เข้าเว็บ LottieFiles หน้า Free Animations (ปุ่มด้านล่าง) ถ้าเว็บให้ล็อกอิน สมัครฟรีได้</span></div><div class="mg-li" style="font-size:1.1cqw"><i>2</i><span>ค้นเป็นภาษาอังกฤษ เช่น success, rocket, loading แล้วกดดูตัวที่ชอบ</span></div><div class="mg-li" style="font-size:1.1cqw"><i>3</i><span>กด Download ถ้ามีให้เลือกแบบไฟล์ เลือก Lottie JSON</span></div><div class="mg-li" style="font-size:1.1cqw"><i>4</i><span>ย้ายไฟล์ไปไว้ใน resources/ ตั้งชื่อให้รู้ว่าเป็นอะไร เช่น lottie-success.json</span></div><div class="mg-li" style="font-size:1.1cqw"><i>5</i><span>ตอนสั่งงาน บอก Claude ว่าใช้ไฟล์ไหน ตรงไหนของคลิป เช่น “ใช้ lottie-success.json ตอนจบคลิป”</span></div><div style="margin-top:auto;display:flex;align-items:center;gap:1.4cqw"><a class="mg-btn" style="font-size:1.25cqw;padding:.6cqw 1.8cqw" href="https://lottiefiles.com/free-animations" target="_blank" rel="noopener">เปิด LottieFiles</a><span class="mg-hint" style="flex:1 1 auto">ไฟล์ฟรีใช้ได้โดยไม่บังคับใส่เครดิต แต่ควรใส่ชื่อผู้สร้าง และเช็กสัญญาอนุญาตในหน้าดาวน์โหลดทุกครั้ง</span></div></div>
-<button class="c mgx-btn noadv" style="right:4cqw;top:8cqw" onclick="event.stopPropagation();const o=this.parentNode.querySelector('.mgx-ov');o.classList.add('open');const v=o.querySelector('video');if(!v.getAttribute('src'))v.src=v.dataset.v;v.currentTime=0;v.play()"><i></i>ดูคลิป: ติดตั้ง Lottie แล้วได้อะไร</button>
-<div class="c mgx-ov noadv" onclick="event.stopPropagation();if(event.target===this){this.classList.remove('open');this.querySelector('video').pause()}"><video data-v="assets/motion-graphic/explainers/lottie-explainer.mp4" poster="assets/motion-graphic/explainers/lottie-explainer.jpg" muted playsinline controls loop preload="none"></video><button class="mgx-x" onclick="event.stopPropagation();const o=this.parentNode;o.classList.remove('open');o.querySelector('video').pause()">ปิด ✕</button></div>
+<button class="c mgx-btn noadv" style="right:4cqw;top:8cqw" onclick="event.stopPropagation();const o=this.parentNode.querySelector('.mgx-ov');o.classList.add('open');o.querySelectorAll('video').forEach(v=>{if(!v.getAttribute('src'))v.src=v.dataset.v;v.currentTime=0;v.play()})"><i></i>ดูตัวอย่างผลงาน Lottie 3 แบบ</button>
+<div class="c mgx-ov noadv" onclick="event.stopPropagation();if(event.target===this){this.classList.remove('open');this.querySelectorAll('video').forEach(v=>v.pause())}"><div class="mgx-h">ติดตั้ง Lottie แล้วทำได้แบบนี้</div><div class="mgx-grid"><figure><video data-v="assets/motion-graphic/examples/l1.mp4" poster="assets/motion-graphic/examples/l1.jpg" muted playsinline loop preload="none"></video><figcaption>ติ๊กถูก ชำระเงินสำเร็จ</figcaption></figure><figure><video data-v="assets/motion-graphic/examples/l2.mp4" poster="assets/motion-graphic/examples/l2.jpg" muted playsinline loop preload="none"></video><figcaption>หัวใจ กดถูกใจ</figcaption></figure><figure><video data-v="assets/motion-graphic/examples/l3.mp4" poster="assets/motion-graphic/examples/l3.jpg" muted playsinline loop preload="none"></video><figcaption>จรวด เปิดตัวแอป</figcaption></figure></div><button class="mgx-x" onclick="event.stopPropagation();const o=this.parentNode;o.classList.remove('open');o.querySelectorAll('video').forEach(v=>v.pause())">ปิด ✕</button></div>
 <div class="grain"></div><div class="bar t"></div><div class="bar b"></div><div class="sc">SC 12 · MOTION GRAPHIC</div><div class="tc" data-clock>00:00:00:00</div></div></section>
 
 
@@ -2474,9 +2508,7 @@ resources/brand.md (แม่แบบให้ผู้ใช้กรอก �
 <div class="stage dim"><video data-src="assets/motion/bg/motion-graphic--37-earbuds-studio-gen.mp4" muted loop playsinline preload="none"></video><div class="vig"></div>
 <div class="c mg-flow" style="left:5cqw;top:8.3cqw;width:90cqw"><div class="mg-k a fi" style="animation-delay:.7s">ขั้นที่ 3 · เครื่องมือช่วยตัดต่อ</div><div class="mg-t a bi" style="font-size:2.8cqw;margin-top:.3cqw;animation-delay:.9s">FrameJam · <b>ชี้ตรงไหน แก้ตรงนั้น</b></div></div><div class="c mg-lead a fi" style="left:5cqw;top:15.4cqw;width:90cqw;animation-delay:1.2s">ปลั๊กอินฟรีที่ต่อกับ Claude ใช้คู่กับ HyperFrames หรือ Remotion · ไม่ได้ทำคลิปเอง แต่ช่วยขั้นตรวจและสั่งแก้ให้เร็วขึ้น</div>
 <div class="mg-card a fu" style="left:4cqw;top:19.6cqw;width:36cqw;height:29cqw;display:flex;flex-direction:column;animation-delay:1.5s"><span class="mg-h4">ช่วยอะไร</span><div class="mg-li" style="font-size:1.1cqw"><i>1</i><span><b>เลือกสไตล์จากตัวอย่าง</b> มีคลิปตัวอย่าง 30 แบบ ชี้แบบที่ชอบ ไม่ต้องอธิบายหน้าตาเป็นคำยาวๆ</span></div><div class="mg-li" style="font-size:1.1cqw"><i>2</i><span><b>คลิกเฟรมแล้วติชม</b> หยุดคลิป คลิกจุดที่ไม่ชอบ หรือลากเลือกช่วงเวลา แล้วพิมพ์ว่าจะแก้อะไร</span></div><div class="mg-li" style="font-size:1.1cqw"><i>3</i><span><b>กด Finish review</b> Claude ได้ทุกคอมเมนต์พร้อมเวลาและภาพจุดที่คลิก แล้วทำเวอร์ชันใหม่ให้ เทียบ v1 v2 ได้</span></div><div class="mg-made" style="margin-top:auto">ฟรี ไม่ต้องสมัคร ไฟล์อยู่ในเครื่องเรา ไม่อัปโหลดขึ้นเว็บ · ต้องมี Node.js 22 ขึ้นไปและ FFmpeg (ติดตั้ง HyperFrames แล้วมีครบ)</div></div>
-<div class="c a fu" style="left:44cqw;top:19.6cqw;width:44cqw;animation-delay:1.8s"><img src="assets/motion-graphic/framejam/review.jpg" alt="หน้าตรวจคลิปของ FrameJam: คลิปพร้อมไทม์ไลน์ ช่วงเวลาที่เลือก และคอมเมนต์ด้านขวา" style="position:relative;display:block;width:100%;border-radius:.8cqw;box-shadow:0 .8cqw 2.4cqw rgba(0,0,0,.22)"><span class="mg-hint" style="position:relative;display:block;margin-top:.4cqw">หน้าตรวจคลิป: คลิกที่ภาพหรือลากบนไทม์ไลน์ แล้วพิมพ์ว่าจะแก้อะไร · ภาพจาก github.com/moritzkremb/framejam (MIT)</span></div>
-<button class="c mgx-btn noadv" style="right:4cqw;top:8cqw" onclick="event.stopPropagation();const o=this.parentNode.querySelector('.mgx-ov');o.classList.add('open');const v=o.querySelector('video');if(!v.getAttribute('src'))v.src=v.dataset.v;v.currentTime=0;v.play()"><i></i>ดูคลิป: ติดตั้ง FrameJam แล้วได้อะไร</button>
-<div class="c mgx-ov noadv" onclick="event.stopPropagation();if(event.target===this){this.classList.remove('open');this.querySelector('video').pause()}"><video data-v="assets/motion-graphic/explainers/framejam-explainer.mp4" poster="assets/motion-graphic/explainers/framejam-explainer.jpg" muted playsinline controls loop preload="none"></video><button class="mgx-x" onclick="event.stopPropagation();const o=this.parentNode;o.classList.remove('open');o.querySelector('video').pause()">ปิด ✕</button></div>
+<div class="c a fu" style="left:44cqw;top:19.6cqw;width:44cqw;animation-delay:1.8s"><video data-src="assets/motion-graphic/examples/framejam-story.mp4" poster="assets/motion-graphic/examples/framejam-story.jpg" muted loop playsinline preload="none" aria-label="ตัวอย่างการใช้ FrameJam" style="position:relative;inset:auto;display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:contain;filter:none;border-radius:.8cqw;box-shadow:0 .8cqw 2.4cqw rgba(0,0,0,.22);background:#f7f2ea"></video><span class="mg-hint" style="position:relative;display:block;margin-top:.4cqw">ตัวอย่างการใช้งาน (ภาพจำลอง): แบบเดิมต้องพิมพ์อธิบายยาว · FrameJam คลิกตรงจุดบนคลิป AI แก้ตรงจุด · หน้าจอจริง github.com/moritzkremb/framejam</span></div>
 <div class="grain"></div><div class="bar t"></div><div class="bar b"></div><div class="sc">SC 13 · MOTION GRAPHIC</div><div class="tc" data-clock>00:00:00:00</div></div></section>
 
 
@@ -5028,7 +5060,7 @@ document.addEventListener("click", e => {
 <section class="demo" data-lesson="ai-edit-video"><header><span class="num">02</span><h2>ใครทำอะไร</h2><button class="replay">เล่นใหม่</button></header>
 <div class="stage dim aev-stage aev-n2"><video data-src="assets/ai-edit-video/bg/editing-desk.mp4" poster="assets/ai-edit-video/cover.jpg" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><div class="vig"></div>
 <div class="c aev-head"><span class="aev-k">AI EDIT VIDEO · CLAUDE CODE / CODEX</span><h3 class="aev-title">ใครทำอะไร</h3><p class="aev-sub">คุณพิมพ์แค่ 3 แบบ ที่เหลือ AI ทำตามกติกาในโฟลเดอร์</p></div>
-<div class="c aev-main"><div class="aev-card noadv"><table><thead><tr><th>ใคร</th><th>ทำอะไร</th></tr></thead><tbody><tr><td>คุณ</td><td>วางคลิป · พิมพ์ ตัด · อ่านแผน · พิมพ์ อนุมัติ · ดูผล</td></tr><tr><td>AI (Claude Code / Codex)</td><td>อ่านกติกาและสไตล์ของโฟลเดอร์ · ตรวจไฟล์ · ถอดเสียง · วางแผน · ตัด · ใส่ซับ · ส่งออก</td></tr><tr><td>ffmpeg-skill</td><td>เครื่องมือตัดต่อที่ AI ใช้: ตัด ซับ เพลง กรอบภาพ ส่งออก</td></tr></tbody></table><p class="aev-note">สไตล์การตัดอยู่ใน README.md ของแต่ละโฟลเดอร์ อยากเปลี่ยนก็แก้ไฟล์นั้น ไม่ต้องสั่งใหม่</p></div><div class="aev-card noadv"><h4>ทุกอย่างที่คุณพิมพ์ในบทนี้</h4><div class="aev-say"><span>คุณพิมพ์</span><b>ตัด 02</b><button class="cp aev-copy" data-p="ตัด 02">คัดลอก</button></div><div class="aev-say"><span>คุณพิมพ์</span><b>อนุมัติ</b><button class="cp aev-copy" data-p="อนุมัติ">คัดลอก</button></div><div class="aev-say"><span>คุณพิมพ์</span><b>ช่วง 0–4 วิ ซับทับหน้า ย้ายซับลงมาอีก</b><button class="cp aev-copy" data-p="ช่วง 0–4 วิ ซับทับหน้า ย้ายซับลงมาอีก">คัดลอก</button></div></div></div><div class="grain"></div><div class="bar t"></div><div class="bar b"></div><div class="sc">SC 02 · AI EDIT VIDEO</div><div class="tc" data-clock>00:00:00:00</div></div></section>
+<div class="c aev-main"><div class="aev-card noadv"><table><thead><tr><th>ใคร</th><th>ทำอะไร</th></tr></thead><tbody><tr><td>คุณ</td><td>วางคลิป · พิมพ์ ตัด · อ่านแผน · พิมพ์ อนุมัติ · ดูผล</td></tr><tr><td>AI (Claude Code / Codex)</td><td>อ่านกติกาและสไตล์ของโฟลเดอร์ · ตรวจไฟล์ · ถอดเสียง · วางแผน · ตัด · ใส่ซับ · ส่งออก</td></tr><tr><td>ffmpeg-skill</td><td>เครื่องมือตัดต่อที่ AI ใช้: ตัด ซับ เพลง กรอบภาพ ส่งออก</td></tr></tbody></table><p class="aev-note">สไตล์การตัดอยู่ใน README.md ของแต่ละโฟลเดอร์ อยากเปลี่ยนก็แก้ไฟล์นั้น ไม่ต้องสั่งใหม่</p></div><div class="aev-card noadv aev-c2"><h4>ตลอดบทนี้ คุณคุยกับ AI แค่ 3 ครั้ง</h4><div class="aev-t2"><p class="aev-t2n"><b>1</b>คุณพิมพ์ในแชต</p><div class="aev-t2me">ตัด 02</div><p class="aev-t2mean">หมายถึง: "ช่วยตัดคลิปในโฟลเดอร์ 02_พูดหน้ากล้อง ให้หน่อย" (02 คือเลขหน้าชื่อโฟลเดอร์)</p><div class="aev-t2ai"><span>AI</span>ส่งแผนการตัดมาให้ดูก่อน ยังไม่ตัดจริง</div></div><div class="aev-t2"><p class="aev-t2n"><b>2</b>คุณพิมพ์ในแชต</p><div class="aev-t2me">อนุมัติ</div><p class="aev-t2mean">หมายถึง: "แผนนี้โอเค ตัดได้เลย"</p><div class="aev-t2ai"><span>AI</span>ตัดคลิปให้ ได้ไฟล์ final-v1.mp4</div></div><div class="aev-t2"><p class="aev-t2n"><b>3</b>คุณพิมพ์ในแชต</p><div class="aev-t2me">ช่วง 0–4 วิ ซับทับหน้า ย้ายซับลงมาอีก</div><p class="aev-t2mean">หมายถึง: "ตรงนี้ยังไม่ชอบ ช่วยแก้" (พิมพ์ภาษาพูดได้เลย)</p><div class="aev-t2ai"><span>AI</span>แก้ให้ ได้ไฟล์ใหม่ final-v2.mp4</div></div></div></div><div class="grain"></div><div class="bar t"></div><div class="bar b"></div><div class="sc">SC 02 · AI EDIT VIDEO</div><div class="tc" data-clock>00:00:00:00</div></div></section>
 <section class="demo" data-lesson="ai-edit-video"><header><span class="num">03</span><h2>ก่อนตัด ถามตัวเอง 3 ข้อ</h2><button class="replay">เล่นใหม่</button></header>
 <div class="stage dim aev-stage aev-n3"><video data-src="assets/ai-edit-video/bg/editing-desk.mp4" poster="assets/ai-edit-video/cover.jpg" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><div class="vig"></div>
 <div class="c aev-head"><span class="aev-k">AI EDIT VIDEO · CLAUDE CODE / CODEX</span><h3 class="aev-title">ก่อนตัด ถามตัวเอง 3 ข้อ</h3><p class="aev-sub">เริ่มจากอารมณ์ เรื่อง และจังหวะ ก่อนสั่ง AI</p></div>
@@ -5903,7 +5935,7 @@ Ranger พาไป ทุกเส้นทาง
 <div class="grain"></div><div class="bar t"></div><div class="bar b"></div><div class="sc">SC 16 · AI LOGO</div><div class="tc" data-clock>00:00:00:00</div></div></section>
  <div class="ov-panel" id="ovp"><div class="ov-head"><h3>ทุกหน้า</h3><span>เลือกหน้าที่ต้องการ</span></div><div class="ov-grid" id="ovg"></div></div>
   <div class="strip" id="strip"></div>
-  <div class="vbar"><div class="vb-l"><span class="ttl" id="vttl"></span><span class="cnt" id="cnt"></span></div><div class="vb-c"><button id="prev">ก่อนหน้า</button><button id="home">เมนู</button><button id="next">ถัดไป</button></div><div class="vb-r"><button id="all">ทุกหน้า</button><button id="fs">เต็มจอ</button></div></div>
+  <button id="fs-exit" type="button">ออกจากเต็มจอ</button><div class="vbar"><div class="vb-l"><span class="ttl" id="vttl"></span><span class="cnt" id="cnt"></span></div><div class="vb-c"><button id="prev">ก่อนหน้า</button><button id="home">เมนู</button><button id="next">ถัดไป</button></div><div class="vb-r"><button id="all">ทุกหน้า</button><button id="fs">เต็มจอ</button></div></div>
 </div>
 
 
@@ -6034,7 +6066,19 @@ document.getElementById("next").onclick = () => show(cur + 1);
 document.getElementById("prev").onclick = () => show(cur - 1);
 document.getElementById("home").onclick = closeViewer;
 document.getElementById("all").onclick = toggleOverview;
-document.getElementById("fs").onclick = () => document.fullscreenElement ? document.exitFullscreen() : viewer.requestFullscreen();
+// Full screen: real Fullscreen API where it exists; iPhone Safari has none for page elements, so fall back to a
+// CSS full screen (.fake-fs) that hides the bars and, in portrait, turns the slide sideways to fill the phone.
+const fsDoc = () => document.fullscreenElement || document.webkitFullscreenElement;
+const fakeFs = on => { viewer.classList.toggle("fake-fs", on); document.body.classList.toggle("fake-fs-on", on); };
+function toggleFs() {
+  if (viewer.classList.contains("fake-fs")) return fakeFs(false);
+  if (fsDoc()) return (document.exitFullscreen || document.webkitExitFullscreen).call(document);
+  const req = viewer.requestFullscreen || viewer.webkitRequestFullscreen;
+  if (req) { try { const r = req.call(viewer); if (r && r.catch) r.catch(() => fakeFs(true)); return; } catch (e) {} }
+  fakeFs(true);
+}
+document.getElementById("fs").onclick = toggleFs;
+document.getElementById("fs-exit").onclick = e => { e.stopPropagation(); fakeFs(false); };
 allSlides.forEach(sl => sl.querySelector(".stage").addEventListener("click", e => { if (!e.target.closest("button, a, video[controls], .noadv")) show(cur + 1); }));
 addEventListener("keydown", e => {
   if (!viewer.classList.contains("open")) return;
@@ -6042,7 +6086,8 @@ addEventListener("keydown", e => {
   if (e.key === "g" || e.key === "G") return toggleOverview();
   if (e.key === "ArrowRight" || e.key === " " || e.key === "PageDown") { e.preventDefault(); show(cur + 1); }
   if (e.key === "ArrowLeft" || e.key === "PageUp") show(cur - 1);
-  if (e.key === "Escape" && !document.fullscreenElement) closeViewer();
+  if (e.key === "Escape" && viewer.classList.contains("fake-fs")) return fakeFs(false);
+  if (e.key === "Escape" && !fsDoc()) closeViewer();
   if (e.key === "r") run(slides[cur].querySelector(".stage"));
 });
 document.querySelectorAll(".grid").forEach(g => [...g.children].forEach((c, i) => c.style.animationDelay = (1.6 + i * .12) + "s"));
