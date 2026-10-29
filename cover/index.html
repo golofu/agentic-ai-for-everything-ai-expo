@@ -543,18 +543,33 @@
         word.style.top = `${(1 - v.y) / 2 * h}px`;
       }
 
-      let running = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      let running = true;
       let last = performance.now();
+      // Drag anywhere outside links/buttons to spin the globe; it eases back to the auto spin.
+      let dragging = false, dragX = 0, dragY = 0, spin = 0, tilt = 0;
+      window.addEventListener("pointerdown", e => {
+        if (e.target.closest("a, button")) return;
+        dragging = true; dragX = e.clientX; dragY = e.clientY;
+        document.body.style.cursor = "grabbing";
+      });
+      window.addEventListener("pointermove", e => {
+        if (!dragging) return;
+        spin = (e.clientX - dragX) * .25;
+        tilt = Math.max(-.5, Math.min(.5, tilt + (e.clientY - dragY) * .004));
+        dragX = e.clientX; dragY = e.clientY;
+      });
+      window.addEventListener("pointerup", () => { dragging = false; document.body.style.cursor = ""; });
       function frame(now) {
         const dt = Math.min(.05, (now - last) / 1000);
         last = now;
-        if (running) {
-          earth.rotation.y += dt * .09;
-          lights.rotation.y = earth.rotation.y;
-          grid.rotation.y = earth.rotation.y;
-          clouds.rotation.y += dt * .115;
-          stars.rotation.y += dt * .004;
-        }
+        const turn = (running ? .12 : 0) + spin;
+        spin *= dragging ? .5 : .94;
+        earth.rotation.y += dt * turn;
+        lights.rotation.y = earth.rotation.y;
+        grid.rotation.y = earth.rotation.y;
+        clouds.rotation.y += dt * (turn + .02);
+        stars.rotation.y += dt * .004;
+        earthGroup.rotation.x += (tilt - earthGroup.rotation.x) * .08;
         renderer.render(scene, camera);
         requestAnimationFrame(frame);
       }
