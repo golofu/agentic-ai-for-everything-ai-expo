@@ -2473,6 +2473,9 @@
         motionDir: "install-skill",
         // 301 = all ways per app; Claude: 302 upload, 306 via chat; ChatGPT: 303 upload, 307 via chat; 305 = Record a skill; 304 = file checklist
         pages: [
+          // Work lesson Skill pages 1-2 first: what a Skill is
+          { type: "slide", page: 86, motion: "skill/slide-086.html" },
+          { type: "slide", page: 87, motion: "skill/slide-087.html" },
           { type: "slide", page: 301 },
           { type: "slide", page: 302, motion: "install-skill/demo-claude.html" },
           { type: "slide", page: 306, motion: "install-skill/demo-claude-chat.html" },
