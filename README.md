@@ -6,3 +6,5 @@
 - Cover: three.js globe (assets/earth textures from three.js examples) + Gen AI Space word.
 - Contents + lesson viewer background: cover/assets/space-bg.js (earth turning in place, orbiting stars; falls back to the CSS sky without WebGL).
 - TODO: meeting-recap-pro step-by-step pages (real Claude Desktop run); VaroCoin claim slide (Boss writes).
+
+- The talk copy of cover/vibe/deck-04.html is trimmed to 9 steps; re-running scripts/apply-space-skin.py would undo this on refetch without its trim_talk_deck function, which reapplies the trim.
