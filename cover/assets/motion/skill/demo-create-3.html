@@ -32,6 +32,8 @@ h1{position:absolute;left:270px;top:26px;font:800 50px/1.3 Manrope,'Noto Sans Th
 /* steps rail */
 .rail{position:absolute;left:180px;top:150px;width:470px;display:flex;flex-direction:column;gap:14px}
 .step{display:grid;grid-template-columns:52px 1fr;gap:14px;align-items:start;padding:14px 18px;border-radius:18px;background:#fff;border:2px solid #e6e2f3;opacity:.35;transform:translateX(-10px);transition:opacity .35s,transform .45s cubic-bezier(.22,1,.36,1),border-color .3s,box-shadow .3s}
+.step{cursor:pointer}
+.step:hover,.step:focus-visible{opacity:1;border-color:var(--violet);outline:none}
 .step.on{opacity:1;transform:none}
 .step.now{border-color:var(--or);box-shadow:0 0 0 6px rgba(240,90,40,.12)}
 .step i{font-style:normal;width:52px;height:52px;border-radius:50%;background:var(--lav);color:var(--vd);display:flex;align-items:center;justify-content:center;font:800 26px Manrope,sans-serif}
@@ -39,10 +41,13 @@ h1{position:absolute;left:270px;top:26px;font:800 50px/1.3 Manrope,'Noto Sans Th
 .step span{display:block;font-size:21px;color:var(--muted);line-height:1.45;margin-top:2px}
 .step code{font-family:'Noto Sans Thai',sans-serif;font-size:21px;background:var(--lav);color:var(--vd);border-radius:8px;padding:1px 8px}
 /* screen */
-.screen{position:absolute;left:690px;top:160px;width:1110px;height:562px;border-radius:18px;background:#fff;border:2px solid #ded9ef;box-shadow:0 18px 40px rgba(40,30,80,.14);overflow:hidden}
+/* The view keeps its 1110x528 coordinate space (all cue positions use it); .clip crops the empty white sides
+   (the screenshot fills x 151-958) and the whole screen is scaled up 1.41x so the clip reads larger. */
+.screen{position:absolute;left:690px;top:150px;width:830px;height:562px;transform:scale(1.41);transform-origin:0 0;border-radius:18px;background:#fff;border:2px solid #ded9ef;box-shadow:0 18px 40px rgba(40,30,80,.14);overflow:hidden}
 .bar{height:34px;background:#f1eff8;display:flex;align-items:center;gap:8px;padding-left:14px;font:600 16px Manrope,sans-serif;color:var(--muted)}
 .bar i{width:11px;height:11px;border-radius:50%;background:#d9d5e8;display:inline-block}
-.view{position:absolute;left:0;top:34px;right:0;bottom:0;overflow:hidden;background:#fff}
+.clip{position:absolute;left:0;top:34px;right:0;bottom:0;overflow:hidden;background:#fff}
+.view{position:absolute;left:-140px;top:0;width:1110px;height:100%;overflow:hidden;background:#fff}
 #frames{position:absolute;inset:0;transform-origin:0 0;transition:transform 1s cubic-bezier(.4,0,.2,1)}
 .fr{position:absolute;left:0;top:0;width:100%;height:100%;object-fit:contain;object-position:center top;opacity:0;transition:opacity .45s}
 .fr.on{opacity:1}
@@ -53,13 +58,13 @@ h1{position:absolute;left:270px;top:26px;font:800 50px/1.3 Manrope,'Noto Sans Th
 .ring{position:absolute;z-index:4;border:5px solid var(--or);border-radius:16px;box-shadow:0 0 0 8px rgba(240,90,40,.14);opacity:0;transition:opacity .25s}
 .ring.on{opacity:1}
 /* prompt strip */
-.prompt{position:absolute;left:690px;top:750px;width:1110px;display:grid;grid-template-columns:auto 1fr auto;gap:18px;align-items:center;background:#fff;border:2px solid #ded9ef;border-radius:18px;padding:14px 20px}
+.prompt{position:absolute;left:690px;top:964px;width:1170px;display:grid;grid-template-columns:auto 1fr auto;gap:18px;align-items:center;background:#fff;border:2px solid #ded9ef;border-radius:18px;padding:8px 20px}
 .prompt .lab{font:700 20px 'Noto Sans Thai',sans-serif;color:#fff;background:var(--vd);border-radius:10px;padding:4px 12px;white-space:nowrap}
-.prompt p{font-size:26px;line-height:1.5;white-space:pre-wrap;max-height:160px;overflow:hidden}
+.prompt p{font-size:24px;line-height:1.45;white-space:pre-wrap;max-height:70px;overflow:hidden}
 .copy{font:600 22px 'Noto Sans Thai',sans-serif;background:#fff;color:var(--vd);border:2px solid #5d518e55;border-radius:12px;padding:10px 20px;cursor:pointer;white-space:nowrap}
 .copy:hover,.copy:focus-visible{background:var(--vd);color:#fff}
-.note{position:absolute;left:690px;top:950px;width:1110px;width:1620px;font-size:19px;color:var(--muted);line-height:1.5}
-#replay{position:absolute;right:38px;bottom:24px;z-index:9;padding:8px 18px;font:20px/1.2 'Itim','Noto Sans Thai',cursive;color:var(--vd);background:rgba(251,252,255,.85);border:2px solid rgba(93,81,142,.55);border-radius:255px 15px 225px 15px/15px 225px 15px 255px;cursor:pointer;opacity:.5}
+.note{position:absolute;left:180px;top:1000px;width:470px;font-size:19px;color:var(--muted);line-height:1.5}
+#replay-unused{position:absolute;right:38px;bottom:24px;z-index:9;padding:8px 18px;font:20px/1.2 'Itim','Noto Sans Thai',cursive;color:var(--vd);background:rgba(251,252,255,.85);border:2px solid rgba(93,81,142,.55);border-radius:255px 15px 225px 15px/15px 225px 15px 255px;cursor:pointer;opacity:.5}
 #replay:hover,#replay:focus-visible{opacity:1}
 .noanim *{transition:none!important}
 </style>
@@ -73,25 +78,24 @@ h1{position:absolute;left:270px;top:26px;font:800 50px/1.3 Manrope,'Noto Sans Th
   <section class="rail" id="rail"></section>
   <section class="screen">
     <div class="bar"><i></i><i></i><i></i>&nbsp;Claude · ภาพจริงจากการใช้งาน</div>
-    <div class="view" id="view">
+    <div class="clip"><div class="view" id="view">
       <div id="frames"><img class="fr on" src="media/demo-create-3-f1.jpg" alt=""><img class="fr" src="media/demo-create-3-f2.jpg" alt=""><img class="fr" src="media/demo-create-3-f3.jpg" alt=""><img class="fr" src="media/demo-create-3-f4.jpg" alt=""><img class="fr" src="media/demo-create-3-f5.jpg" alt=""><img class="fr" src="media/demo-create-3-f6.jpg" alt=""><img class="fr" src="media/demo-create-3-f7.jpg" alt=""></div>
-    </div>
+    </div></div>
     <div class="speed" id="speed">AI กำลังทำงาน · ข้ามเวลา ⏩</div>
   </section>
   <section class="prompt"><span class="lab">ทางเข้า</span><p id="prompt-text">Customize &gt; Add &gt; Upload skill &gt; เลือกไฟล์ .zip &gt; Upload</p><button class="copy" type="button" id="copy">คัดลอก Prompt</button></section>
   <p class="note">ภาพจริงจาก Claude Desktop · ข้อมูลตัวอย่าง · ตัวอย่าง document-reader-direct</p>
-  <button id="replay" type="button">เล่นใหม่</button>
 </main>
 <script>
 function fit(){document.getElementById('stage').style.transform='translate(-50%,-50%) scale('+Math.min(innerWidth/1920,innerHeight/1080)+')'}addEventListener('resize',fit);fit();
 // CUES: steps = rail cards; events (t in video seconds): {t, step} highlights a step, {t, zoom:[scale,x,y]} zooms the screen
 // (x,y = top-left of the visible area in screen pixels of the 1110x660 view), {t, call:"text", at:[x,y]}, {t, ring:[x,y,w,h]},
 // {t, speed:true|false}, {t, clear:true} removes callouts/rings.
-const CUES={"steps": [{"b": "เข้าคลัง Skill", "s": "ใส่รหัสผ่านจากในคลาส แล้วโหลดไฟล์ .zip"}, {"b": "Customize แล้วกด Add", "s": "เลือก <code>Upload skill</code>"}, {"b": "เลือกไฟล์ .zip", "s": "ตรวจชื่อ Skill แล้วกด <code>Upload</code>"}, {"b": "เรียกใช้ในแชทใหม่", "s": "พิมพ์ <code>/</code> แล้วเลือกชื่อ Skill"}], "events": [{"t": 0.4, "clear": true, "ring": [464.1, 280.7, 177.8, 30.8], "frame": 0, "zoom": [1.8, 245.8, 117.3], "step": 0}, {"t": 0.9, "call": "ใส่รหัสผ่านที่ได้รับในคลาส", "at": [256.9, 334.0]}, {"t": 2.8, "clear": true, "ring": [446.0, 148.7, 215.1, 231.2], "zoom": [1.8, 245.8, 117.3], "step": 0}, {"t": 3.3, "call": "แล้วดาวน์โหลดไฟล์ .zip ของ Skill", "at": [268.0, 339.5]}, {"t": 5.4, "clear": true, "ring": [823.5, 72.3, 49.6, 21.8], "frame": 1, "zoom": [2, 371.1, 0], "step": 1, "type": true}, {"t": 5.9, "call": "เปิด Customize แล้วกด Add", "at": [561.1, 95.0]}, {"t": 7.6, "clear": true, "ring": [783.7, 94.2, 84.6, 19.1], "zoom": [2, 371.1, 0], "step": 1}, {"t": 8.1, "call": "เลือก Upload skill", "at": [611.1, 150.0]}, {"t": 10.0, "clear": true, "ring": [373.4, 130.5, 499.2, 66.0], "frame": 2, "zoom": [2, 344.8, 30.0], "step": 2}, {"t": 10.5, "call": "ลากไฟล์ .zip มาวาง หรือกด browse", "at": [373.4, 204.5]}, {"t": 12.6, "clear": true, "ring": [372, 130, 500, 32], "frame": 3, "zoom": [1.8, 300, 90], "step": 2}, {"t": 13.1, "call": "เลือกไฟล์ .zip ที่โหลดมา", "at": [380, 176]}, {"t": 14.8, "clear": true, "ring": [372, 346, 44, 20], "zoom": [1.8, 300, 90], "step": 2}, {"t": 15.3, "call": "ตรวจชื่อ Skill แล้วกด Upload", "at": [440, 322]}, {"t": 17.2, "clear": true, "ring": [374.5, 73.2, 499.5, 53.3], "frame": 4, "zoom": [2, 346.5, 0], "step": 2}, {"t": 17.7, "call": "ติดตั้งแล้ว สวิตช์เปิด มี 9 ไฟล์", "at": [374.5, 134.5]}, {"t": 19.8, "clear": true, "ring": [383.1, 191.4, 125.3, 20.0], "frame": 5, "zoom": [2.4, 285.8, 108.9], "step": 3}, {"t": 20.3, "call": "พิมพ์ / แล้วเลือกชื่อ Skill", "at": [381.6, 156.8]}, {"t": 22.2, "clear": true, "ring": [433.2, 34.1, 312.1, 28.6], "frame": 6, "zoom": [2, 284.7, 0], "step": 3}, {"t": 22.7, "call": "เลือก Skill แล้วพิมพ์ข้อความต่อ", "at": [433.2, 70.7]}, {"t": 24.6, "clear": true, "ring": [362.7, 94.8, 368.2, 83.2], "zoom": [2, 284.7, 22.4], "step": 3, "final": true}, {"t": 25.1, "call": "Claude ใช้ Skill ตรวจให้ พบคำผิด 1 จุด", "at": [534.7, 84.9], "final": true}]};
+const CUES={"steps": [{"b": "เข้าคลัง Skill", "s": "ใส่รหัสผ่านจากในคลาส แล้วโหลดไฟล์ .zip"}, {"b": "Customize แล้วกด Add", "s": "เลือก <code>Upload skill</code>"}, {"b": "เลือกไฟล์ .zip", "s": "ตรวจชื่อ Skill แล้วกด <code>Upload</code>"}, {"b": "เรียกใช้ในแชทใหม่", "s": "พิมพ์ <code>/</code> แล้วเลือกชื่อ Skill"}], "events": [{"t": 0.4, "clear": true, "ring": [464.1, 280.7, 177.8, 30.8], "frame": 0, "zoom": [1.8, 245.8, 117.3], "step": 0}, {"t": 0.9, "call": "ใส่รหัสผ่านที่ได้รับในคลาส", "at": [256.9, 334.0]}, {"t": 2.8, "clear": true, "ring": [446.0, 148.7, 215.1, 231.2], "zoom": [1.8, 245.8, 117.3], "step": 0}, {"t": 3.3, "call": "แล้วดาวน์โหลดไฟล์ .zip ของ Skill", "at": [268.0, 339.5]}, {"t": 5.4, "clear": true, "ring": [823.5, 72.3, 49.6, 21.8], "frame": 1, "zoom": [2, 570.8, 0], "step": 1, "type": true}, {"t": 5.9, "call": "เปิด Customize แล้วกด Add", "at": [561.1, 95.0]}, {"t": 7.6, "clear": true, "ring": [783.7, 94.2, 84.6, 19.1], "zoom": [2, 548.5, 0], "step": 1}, {"t": 8.1, "call": "เลือก Upload skill", "at": [611.1, 150.0]}, {"t": 10.0, "clear": true, "ring": [373.4, 130.5, 499.2, 66.0], "frame": 2, "zoom": [1.539, 262.5, 0], "step": 2}, {"t": 10.5, "call": "ลากไฟล์ .zip มาวาง หรือกด browse", "at": [373.4, 204.5]}, {"t": 12.6, "clear": true, "ring": [372, 130, 500, 32], "frame": 3, "zoom": [1.537, 260.9, 0], "step": 2}, {"t": 13.1, "call": "เลือกไฟล์ .zip ที่โหลดมา", "at": [380, 176]}, {"t": 14.8, "clear": true, "ring": [372, 346, 44, 20], "zoom": [1.8, 85.7, 90], "step": 2}, {"t": 15.3, "call": "ตรวจชื่อ Skill แล้วกด Upload", "at": [440, 322]}, {"t": 17.2, "clear": true, "ring": [374.5, 73.2, 499.5, 53.3], "frame": 4, "zoom": [1.538, 263.5, 0], "step": 2}, {"t": 17.7, "call": "ติดตั้งแล้ว สวิตช์เปิด มี 9 ไฟล์", "at": [374.5, 134.5]}, {"t": 19.8, "clear": true, "ring": [383.1, 191.4, 125.3, 20.0], "frame": 5, "zoom": [2.4, 285.8, 108.9], "step": 3}, {"t": 20.3, "call": "พิมพ์ / แล้วเลือกชื่อ Skill", "at": [381.6, 156.8]}, {"t": 22.2, "clear": true, "ring": [433.2, 34.1, 312.1, 28.6], "frame": 6, "zoom": [2, 284.7, 0], "step": 3}, {"t": 22.7, "call": "เลือก Skill แล้วพิมพ์ข้อความต่อ", "at": [433.2, 70.7]}, {"t": 24.6, "clear": true, "ring": [362.7, 94.8, 368.2, 83.2], "zoom": [2, 284.7, 22.4], "step": 3, "final": true}, {"t": 25.1, "call": "Claude ใช้ Skill ตรวจให้ พบคำผิด 1 จุด", "at": [534.7, 84.9], "final": true}]};
 // frames-based timeline: events {t (s), frame:i, zoom:[k,x,y], call:"..", at:[x,y], ring:[x,y,w,h], step:i, speed:bool, clear:true, type:true}
 const $=s=>document.querySelector(s), stage=$('#stage'), view=$('#view'), box=$('#frames'), frames=[...document.querySelectorAll('.fr')];
 const rail=$('#rail');
-CUES.steps.forEach((s,i)=>{const d=document.createElement('div');d.className='step';d.innerHTML='<i>'+(i+1)+'</i><div><b>'+s.b+'</b><span>'+s.s+'</span></div>';rail.appendChild(d)});
+CUES.steps.forEach((s,i)=>{const d=document.createElement('div');d.className='step';d.innerHTML='<i>'+(i+1)+'</i><div><b>'+s.b+'</b><span>'+s.s+'</span></div>';d.tabIndex=0;d.setAttribute('role','button');d.setAttribute('aria-label','เล่นขั้นที่ '+(i+1)+' '+s.b);rail.appendChild(d)});
 const steps=[...rail.children], ptxt=$('#prompt-text'), FULL=ptxt.textContent;
 let timers=[];
 let cz=[1,0,0];
@@ -104,21 +108,25 @@ function overlay(e){
   if(e.zoom)zoom(e.zoom);
   if(e.type)typeIt();
   // call/ring coords are in un-zoomed view pixels; they follow the current zoom
-  if(e.call){const c=document.createElement('div');c.className='call';c.textContent=e.call;const [k,x,y]=cz;c.style.left=Math.max(8,Math.min(1106-300,(e.at[0]-x)*k))+'px';c.style.top=Math.max(8,Math.min(470,(e.at[1]-y)*k))+'px';view.appendChild(c);requestAnimationFrame(()=>c.classList.add('on'));}
+  if(e.call){const c=document.createElement('div');c.className='call';c.textContent=e.call;const [k,x,y]=cz;c.style.left=Math.max(148,Math.min(970-c.textContent.length*13-40,(e.at[0]-x)*k))+'px';c.style.top=Math.max(8,Math.min(470,(e.at[1]-y)*k))+'px';view.appendChild(c);requestAnimationFrame(()=>c.classList.add('on'));}
   if(e.ring){const r=document.createElement('div');r.className='ring';Object.assign(r.style,{left:e.ring[0]+'px',top:e.ring[1]+'px',width:e.ring[2]+'px',height:e.ring[3]+'px',borderWidth:(5/cz[0])+'px',borderRadius:(14/cz[0])+'px',boxShadow:'0 0 0 '+(7/cz[0])+'px rgba(240,90,40,.14)'});box.appendChild(r);requestAnimationFrame(()=>r.classList.add('on'));}
   if(e.speed!==undefined)$('#speed').classList.toggle('on',!!e.speed);
   if(e.step!==undefined)steps.forEach((s,i)=>{s.classList.toggle('on',i<=e.step);s.classList.toggle('now',i===e.step)});
 }
 function reset(){timers.forEach(t=>{clearTimeout(t);clearInterval(t)});timers=[];stage.querySelectorAll('.call,.ring').forEach(n=>n.remove());zoom([1,0,0]);show(0);steps.forEach(s=>s.classList.remove('on','now'));$('#speed').classList.remove('on');ptxt.textContent=FULL;}
-function play(){reset();CUES.events.forEach(e=>timers.push(setTimeout(()=>overlay(e),e.t*1000)));}
+function play(t0=0){reset();
+  // jump: replay the state (frame, zoom, step) of everything before t0 at once, then run the rest on time
+  CUES.events.filter(e=>e.t<t0).forEach(e=>{const f={...e};delete f.call;delete f.ring;delete f.type;overlay(f)});
+  CUES.events.filter(e=>e.t>=t0).forEach(e=>timers.push(setTimeout(()=>overlay(e),(e.t-t0)*1000)));}
+steps.forEach((d,i)=>{const go=()=>{document.body.classList.remove('noanim');const e=CUES.events.find(e=>e.step===i);play(e?e.t:0)};
+  d.addEventListener('click',go);d.addEventListener('keydown',k=>{if(k.key==='Enter'||k.key===' '){k.preventDefault();k.stopPropagation();go()}})});
 const frozen=new URLSearchParams(location.search).has('t');
 if(frozen){document.body.classList.add('noanim');reset();CUES.events.forEach(e=>{if(e.final||e.frame!==undefined||e.zoom||e.step!==undefined){const f={...e};delete f.type;delete f.call;delete f.ring;overlay(f)}});CUES.events.filter(e=>e.final).forEach(overlay);steps.forEach(s=>s.classList.add('on'));$('#speed').classList.remove('on');}
 else{
   // start only after fonts and every frame image are ready, so rings never land on a blank screen
   const imgs=frames.map(f=>f.complete?Promise.resolve():new Promise(r=>{f.addEventListener('load',r,{once:true});f.addEventListener('error',r,{once:true})}));
-  Promise.all([document.fonts?document.fonts.ready:Promise.resolve(),...imgs]).then(play);
+  Promise.all([document.fonts?document.fonts.ready:Promise.resolve(),...imgs]).then(()=>play());
 }
-$('#replay').addEventListener('click',()=>{document.body.classList.remove('noanim');play()});
 $('#copy').addEventListener('click',async()=>{const text=$('#prompt-text').textContent;let ok=false;try{await navigator.clipboard.writeText(text);ok=true}catch(e){const t=document.createElement('textarea');t.value=text;t.style.cssText='position:fixed;left:-9999px';document.body.append(t);t.select();try{ok=document.execCommand('copy')}catch(_){}t.remove()}$('#copy').textContent=ok?'คัดลอกแล้ว':'คัดลอกไม่สำเร็จ';setTimeout(()=>$('#copy').textContent='คัดลอก Prompt',2200)});
 </script>
 </body>
