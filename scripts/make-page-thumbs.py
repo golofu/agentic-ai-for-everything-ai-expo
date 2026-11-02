@@ -28,6 +28,7 @@ def free_port():
 
 PORT = free_port()  # never reuse a server another tool left running
 BASE = f"http://127.0.0.1:{PORT}/"
+TALK_EDITED_MOTION = ["skill/demo-create-1.html", "skill/demo-create-2.html", "skill/demo-create-3.html", "skill/slide-094.html"]
 MANIFEST = OUT / "manifest.json"  # files this script wrote last time; only these may be deleted as stale
 WAIT_MS = 3500
 
@@ -56,38 +57,47 @@ def main():
             page = browser.new_page(viewport={"width": 1600, "height": 900})
             page.goto(BASE + "menu.html")
             # Same list and slug function the viewer uses; lessons with their own content thumbs are skipped.
+            # Same list and slug function the viewer uses; lessons with their own content thumbs are skipped.
+            # Each thumbnail is shot from inside the viewer (same frame size the audience sees), because
+            # embedded pages lay out differently at full window size than in the viewer's frame.
             items = page.evaluate("""() => {
                 const seen = new Set(), out = [];
-                for (const lesson of Object.values(lessons)) {
+                for (const [key, lesson] of Object.entries(lessons)) {
                     if (lesson.contentThumbDir) continue;
-                    for (const p of lessonPages(lesson)) {
-                        if (p.type !== "profile-site" || !p.href || seen.has(p.href)) continue;
-                        seen.add(p.href);
-                        out.push({ href: p.href, slug: pageThumbSlug(p.href) });
-                    }
+                    lessonPages(lesson).forEach((p, index) => {
+                        if (p.type === "profile-site" && p.href && !seen.has(p.href)) {
+                            seen.add(p.href);
+                            out.push({ key, index, href: p.href, file: `page-thumbs/${pageThumbSlug(p.href)}.jpg` });
+                        } else if (p.motion && TALK_EDITED_MOTION.includes(p.motion) && !seen.has(p.motion)) {
+                            // Motion pages edited for the talk: their course thumbnails show the old layout.
+                            seen.add(p.motion);
+                            out.push({ key, index, href: p.motion, file: "motion/" + p.motion.replace(/([^/]+)\.html$/, "thumbs/$1.jpg") });
+                        }
+                    });
                 }
                 return out;
-            }""")
+            }""".replace("TALK_EDITED_MOTION", json.dumps(TALK_EDITED_MOTION)))
             made = 0
             written = set()
             for item in items:
-                target = OUT / f"{item['slug']}.jpg"
+                target = COVER / "assets" / item["file"]
                 if only_missing and target.exists():
                     continue
-                # A fresh page per item: hash-routed pages (#lesson/N) do not reload on goto with a new hash.
-                shot = browser.new_page(viewport={"width": 1600, "height": 900})
-                shot.goto(BASE + item["href"], wait_until="load")
-                shot.wait_for_timeout(WAIT_MS)
-                png = shot.screenshot()
-                shot.close()
+                page.goto(BASE + "menu.html#" + item["key"])
+                page.reload()
+                page.wait_for_timeout(800)
+                page.evaluate(f"showSlide({item['index']})")
+                page.wait_for_timeout(WAIT_MS)
+                png = page.locator(".slide-frame").first.screenshot()
                 img = Image.open(io.BytesIO(png)).convert("RGB")
                 img = img.resize((320, round(img.height * 320 / img.width)), Image.LANCZOS)
                 img.save(target, "JPEG", quality=80, optimize=True)
                 made += 1
-                written.add(target.name)
-                print(f"{target.name}  <-  {item['href'][:80]}")
+                if item["file"].startswith("page-thumbs/"):
+                    written.add(target.name)
+                print(f"{item['file']}  <-  {item['href'][:80]}")
             browser.close()
-        keep = {f"{i['slug']}.jpg" for i in items}
+        keep = {Path(i["file"]).name for i in items if i["file"].startswith("page-thumbs/")}
         previous = set(json.loads(MANIFEST.read_text(encoding="utf-8"))) if MANIFEST.exists() else set()
         stale = [OUT / name for name in sorted(previous - keep) if (OUT / name).exists()]
         for f in stale:

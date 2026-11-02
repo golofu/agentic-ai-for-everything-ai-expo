@@ -1905,7 +1905,7 @@
       .lesson-grid { grid-template-columns: repeat(12, minmax(0, 1fr)); }
       .lesson-grid > .lesson-card:not(.prompt) { grid-column: span 4; }
       .lesson-grid > .lesson-card.work-card:not(.prompt) { grid-column: span 3; }
-      .lesson-grid .lesson-card.dressed.work-card > span[class$="-title"] { font-size: clamp(1.1rem, 1.75vw, 1.9rem); }
+      .lesson-grid .lesson-card.dressed.work-card > span[class$="-title"] { font-size: clamp(1.1rem, 1.6vw, 1.75rem); white-space: normal; text-align: center; }
     }
     /* assets/space-bg.js set this: the 3D earth and orbiting stars replace the CSS planet and drifting stars. */
     #spaceBg { position: fixed; inset: 0; z-index: -2; width: 100%; height: 100%; pointer-events: none; }
@@ -2024,7 +2024,7 @@
         </button>
 
         <button class="lesson-card setup-work-space text-only" type="button" data-lesson="vibe-code-way" aria-label="เปิดบท Vibe Code Way">
-          <span class="setup-work-space-title">Vibe Code Way<br>จาก Prompt ถึง Create</span>
+          <span class="setup-work-space-title">Vibe Code Way</span>
         </button>
 
       </section>
@@ -2907,7 +2907,7 @@
     }
 
     // Motion pages replace a slide image in place; thumbnails keep the original PNG.
-    const motionAssetRevision = "20261102-review-fixes-3";
+    const motionAssetRevision = "20261102-thumbs-in-viewer";
 
     function motionPath(file) {
       return `assets/motion/${file}?rev=${motionAssetRevision}`;
