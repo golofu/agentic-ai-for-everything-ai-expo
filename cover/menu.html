@@ -1899,15 +1899,17 @@
       .lesson-top-row .lesson-card.dressed { min-height: 190px; }
       .lesson-top-row .card-desc { font-size: .72rem; }
     }
-    @media (min-width: 761px) { .lesson-top-row { grid-template-columns: repeat(5, minmax(0, 1fr)); } }
+    @media (min-width: 761px) { .lesson-top-row { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
     /* Twelve columns so the four Work cards share one row while the other sections keep three. */
     @media (min-width: 981px) {
       .lesson-grid { grid-template-columns: repeat(12, minmax(0, 1fr)); }
       .lesson-grid > .lesson-card:not(.prompt) { grid-column: span 4; }
-      .lesson-grid > .lesson-card.work-card:not(.prompt) { grid-column: span 3; }
-      .lesson-grid .lesson-card.dressed.work-card > span[class$="-title"] { font-size: clamp(1.1rem, 1.6vw, 1.75rem); white-space: normal; text-align: center; }
+      .lesson-grid > .lesson-card.work-card:not(.prompt) { grid-column: span 4; }
+      .lesson-grid .lesson-card.dressed.work-card > span[class$="-title"] { font-size: clamp(1.1rem, 1.6vw, 1.75rem); }
     }
     /* assets/space-bg.js set this: the 3D earth and orbiting stars replace the CSS planet and drifting stars. */
+    /* Card titles break only at their <br>, never inside a word; fitCardTitles() shrinks a title that is too wide. */
+    .lesson-grid .lesson-card > span[class$="-title"] { white-space: nowrap !important; overflow-wrap: normal !important; word-break: keep-all !important; }
     #spaceBg { position: fixed; inset: 0; z-index: -2; width: 100%; height: 100%; pointer-events: none; }
     .space-3d .space-planet, .space-3d .space-stars { display: none; }
     .lesson-grid .lesson-card.prompt.section .prompt-title { filter: drop-shadow(0 1px 2px rgba(2,4,11,.95)) drop-shadow(0 2px 16px rgba(2,4,11,.95)); }
@@ -1970,9 +1972,6 @@
             <span class="install-guide-title">ติดตั้ง<br>Desktop</span>
           </button>
 
-          <button class="lesson-card workshop text-only" type="button" data-lesson="prompt-basics" aria-label="เปิดบท Prompt">
-            <span class="workshop-title">Prompt</span>
-          </button>
 
           <button class="lesson-card history text-only" type="button" data-lesson="install-skill" aria-label="เปิดบท สร้างและติดตั้ง Skill">
             <span class="history-title">Skill<br>สร้าง + ติดตั้ง</span>
@@ -1991,9 +1990,6 @@
           <span class="dept-usecases-title">AI Work Playbook</span>
         </button>
 
-        <button class="lesson-card plugin-scheduled-subagent work-card text-only" type="button" data-lesson="plugin-scheduled-subagent" aria-label="เปิดบท Plugin และ Scheduled">
-          <span class="plugin-scheduled-subagent-title">Plugin<br>+ Scheduled</span>
-        </button>
 
         <button class="lesson-card html-presentation work-card text-only" type="button" data-lesson="html-presentation" aria-label="เปิดบท AI Presentation ด้วย HTML">
           <span class="html-presentation-title">AI Presentation<br>(HTML)</span>
@@ -3896,6 +3892,29 @@
         card.prepend(art);
         card.append(meta);
       });
+
+      // Shrink any card title whose longest line is wider than its card (Thai words must not be split).
+      const fitCardTitles = () => {
+        document.querySelectorAll(".lesson-grid .lesson-card > span[class$='-title']").forEach(title => {
+          title.style.removeProperty("font-size");
+          const card = title.closest(".lesson-card");
+          const range = document.createRange();
+          range.selectNodeContents(title);
+          // Compare real edges (some titles are centred with an offset); "important" beats the top-row !important size.
+          const tooWide = () => {
+            const c = card.getBoundingClientRect(), t = range.getBoundingClientRect();
+            return t.left < c.left + 6 || t.right > c.right - 6;
+          };
+          let size = parseFloat(getComputedStyle(title).fontSize);
+          while (tooWide() && size > 11) {
+            size -= 1;
+            title.style.setProperty("font-size", `${size}px`, "important");
+          }
+        });
+      };
+      fitCardTitles();
+      document.fonts?.ready.then(fitCardTitles);
+      window.addEventListener("resize", fitCardTitles);
     })();
   </script>
   <script defer src="assets/three.min.js"></script>
