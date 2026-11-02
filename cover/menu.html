@@ -2907,7 +2907,7 @@
     }
 
     // Motion pages replace a slide image in place; thumbnails keep the original PNG.
-    const motionAssetRevision = "20261102-review-fixes-2";
+    const motionAssetRevision = "20261102-review-fixes-3";
 
     function motionPath(file) {
       return `assets/motion/${file}?rev=${motionAssetRevision}`;
@@ -3391,16 +3391,20 @@
     function bindEmbeddedPage(frame, page) {
       let win;
       try { win = frame.contentWindow; win.document; } catch { return; }
-      const navKeys = ["ArrowLeft", "ArrowRight", "PageUp", "PageDown"];
+      const navKeys = ["ArrowLeft", "ArrowRight", "PageUp", "PageDown", "Escape"];
       win.addEventListener("keydown", event => {
+        // Escape belongs to an open dialog inside the page first (e.g. an enlarged image).
+        if (event.key === "Escape" && win.document.querySelector("dialog[open]")) return;
         if (!navKeys.includes(event.key) || event.target.closest?.("input, textarea, select, [contenteditable], video[controls], .mgd-ch, .mgd-sp")) return;
         event.preventDefault();
         event.stopImmediatePropagation();
         document.dispatchEvent(new KeyboardEvent("keydown", { key: event.key, shiftKey: event.shiftKey, bubbles: true, cancelable: true }));
       }, true);
-      if (page.href.startsWith("creative/")) {
+      // Creative and Vibe pages turn a click on their stage into "next scene"; on stage that makes the
+      // viewer skip pages or fall out of step. Real controls (and the Vibe overview step nodes) still work.
+      if (page.href.startsWith("creative/") || page.href.startsWith("vibe/")) {
         win.addEventListener("click", event => {
-          if (event.target.closest?.("button, a, input, textarea, select, video[controls], dialog, .noadv")) return;
+          if (event.target.closest?.("button, a, input, textarea, select, video[controls], dialog, .noadv, .vn")) return;
           event.stopImmediatePropagation();
         }, true);
       }
