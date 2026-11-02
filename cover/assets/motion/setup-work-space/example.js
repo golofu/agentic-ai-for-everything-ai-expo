@@ -37,7 +37,7 @@
  }));
  const tabs=[...document.querySelectorAll('[data-app]')];
  function select(tab){tabs.forEach(b=>{const active=b===tab;b.setAttribute('aria-selected',String(active));b.tabIndex=active?0:-1;document.getElementById(b.dataset.app).hidden=!active;});}
- tabs.forEach((b,i)=>{b.addEventListener('click',()=>select(b));b.addEventListener('keydown',e=>{if(['ArrowLeft','ArrowRight','Home','End'].includes(e.key)){e.preventDefault();e.stopPropagation();const j=e.key==='Home'?0:e.key==='End'?1:1-i;select(tabs[j]);tabs[j].focus();}});});
+ tabs.forEach((b,i)=>{b.addEventListener('click',()=>select(b));/* Arrow keys stay with the slide viewer (the speaker clicks a tab, then presses the arrow to go on); Home/End still switch tabs. */b.addEventListener('keydown',e=>{if(['Home','End'].includes(e.key)){e.preventDefault();e.stopPropagation();const j=e.key==='Home'?0:1;select(tabs[j]);tabs[j].focus();}});});
  const dialog=document.getElementById('image-dialog');
  document.querySelectorAll('.shot').forEach(b=>b.addEventListener('click',()=>{dialog.querySelector('img').src=b.dataset.image;dialog.showModal();}));
  document.getElementById('close-dialog').addEventListener('click',()=>dialog.close());

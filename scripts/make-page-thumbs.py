@@ -6,6 +6,8 @@
 #   python scripts/make-page-thumbs.py            (all pages)
 #   python scripts/make-page-thumbs.py --missing  (only pages without a thumbnail yet)
 import io
+import json
+import socket
 import subprocess
 import sys
 import time
@@ -18,13 +20,22 @@ from playwright.sync_api import sync_playwright
 ROOT = Path(__file__).resolve().parent.parent
 COVER = ROOT / "cover"
 OUT = COVER / "assets" / "page-thumbs"
-PORT = 4182
-BASE = f"http://localhost:{PORT}/"
+def free_port():
+    with socket.socket() as s:
+        s.bind(("127.0.0.1", 0))
+        return s.getsockname()[1]
+
+
+PORT = free_port()  # never reuse a server another tool left running
+BASE = f"http://127.0.0.1:{PORT}/"
+MANIFEST = OUT / "manifest.json"  # files this script wrote last time; only these may be deleted as stale
 WAIT_MS = 3500
 
 
-def wait_for_server():
+def wait_for_server(server):
     for _ in range(50):
+        if server.poll() is not None:
+            raise SystemExit("thumbnail server exited before it was ready")
         try:
             urllib.request.urlopen(BASE + "menu.html", timeout=1)
             return
@@ -39,7 +50,7 @@ def main():
     server = subprocess.Popen([sys.executable, "-m", "http.server", str(PORT)], cwd=COVER,
                               stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     try:
-        wait_for_server()
+        wait_for_server(server)
         with sync_playwright() as p:
             browser = p.chromium.launch(channel="chrome")
             page = browser.new_page(viewport={"width": 1600, "height": 900})
@@ -75,9 +86,11 @@ def main():
                 print(f"{target.name}  <-  {item['href'][:80]}")
             browser.close()
         keep = {f"{i['slug']}.jpg" for i in items}
-        stale = [f for f in OUT.glob("*.jpg") if f.name not in keep]
+        previous = set(json.loads(MANIFEST.read_text(encoding="utf-8"))) if MANIFEST.exists() else set()
+        stale = [OUT / name for name in sorted(previous - keep) if (OUT / name).exists()]
         for f in stale:
             f.unlink()
+        MANIFEST.write_text(json.dumps(sorted(keep), indent=1), encoding="utf-8")
         print(f"{made} thumbnails written, {len(stale)} stale removed, {len(items)} pages total")
     finally:
         server.terminate()

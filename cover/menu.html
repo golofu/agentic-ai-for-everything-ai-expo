@@ -2,6 +2,7 @@
 <html lang="th">
 <head>
   <meta charset="utf-8">
+  <link rel="icon" href="assets/gen-ai-space-logo.png">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>สารบัญ — Agentic AI for Everything</title>
   <meta name="description" content="Agentic AI for Everything · AI Expo Thailand 2026 · Gen AI Space">
@@ -2906,7 +2907,7 @@
     }
 
     // Motion pages replace a slide image in place; thumbnails keep the original PNG.
-    const motionAssetRevision = "20261102-playbook-examples";
+    const motionAssetRevision = "20261102-review-fixes";
 
     function motionPath(file) {
       return `assets/motion/${file}?rev=${motionAssetRevision}`;
@@ -2926,7 +2927,8 @@
         if (slideMotion.getAttribute("src")) slideMotion.removeAttribute("src");
         return;
       }
-      slideMotion.title = title;
+      // Example pages share a slide number with their department page, so prefer their own label.
+      slideMotion.title = page.label || title;
       slideMotion.src = src;
     }
 
@@ -2995,7 +2997,7 @@
       if (page.type === "slide") return thumbPath(page);
       if (page.type === "recap-video") return videoPath(`recap/${page.file}-poster.jpg`);
       if (lesson.contentThumbDir) return `assets/motion/${lesson.contentThumbDir}/thumbs/content-${String(index + 1).padStart(2, "0")}.jpg?rev=${motionAssetRevision}`;
-      if (page.type === "profile-site" && page.href) return `assets/page-thumbs/${pageThumbSlug(page.href)}.jpg`;
+      if (page.type === "profile-site" && page.href) return `assets/page-thumbs/${pageThumbSlug(page.href)}.jpg?rev=${motionAssetRevision}`;
       return null;
     }
 
@@ -3383,6 +3385,42 @@
       return wrap;
     }
 
+    // Embedded course pages (local copies, same origin) must not take over navigation on stage:
+    // arrow / page keys pressed inside them drive the viewer, and a click on a Creative stage
+    // must not silently move that page to its next scene while the viewer stays put.
+    function bindEmbeddedPage(frame, page) {
+      let win;
+      try { win = frame.contentWindow; win.document; } catch { return; }
+      const navKeys = ["ArrowLeft", "ArrowRight", "PageUp", "PageDown"];
+      win.addEventListener("keydown", event => {
+        if (!navKeys.includes(event.key) || event.target.closest?.("input, textarea, select, [contenteditable], video[controls], .mgd-ch, .mgd-sp")) return;
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        document.dispatchEvent(new KeyboardEvent("keydown", { key: event.key, shiftKey: event.shiftKey, bubbles: true, cancelable: true }));
+      }, true);
+      if (page.href.startsWith("creative/")) {
+        win.addEventListener("click", event => {
+          if (event.target.closest?.("button, a, input, textarea, select, video[controls], dialog, .noadv")) return;
+          event.stopImmediatePropagation();
+        }, true);
+      }
+    }
+
+    // Vibe decks ask their parent to move: { deckNav: ±1 } (their arrows / buttons) and
+    // { deckGo: n } (a step node on the overview) — n is the deck's own page number (#n).
+    window.addEventListener("message", event => {
+      if (!activeLesson) return;
+      const frame = document.querySelector(".profile-site iframe");
+      if (!frame || event.source !== frame.contentWindow) return;
+      const data = event.data || {};
+      if (typeof data.deckNav === "number") showSlide(activeIndex + Math.sign(data.deckNav));
+      if (typeof data.deckGo === "number") {
+        const deck = frame.getAttribute("src").split("#")[0];
+        const index = lessonPages(lessons[activeLesson]).findIndex(page => page.href === `${deck}#${data.deckGo}`);
+        if (index >= 0) showSlide(index);
+      }
+    });
+
     function createProfileSitePage(page) {
       const wrap = document.createElement("div");
       wrap.className = "profile-site";
@@ -3391,6 +3429,7 @@
       frame.title = page.label;
       frame.loading = "eager";
       frame.referrerPolicy = "no-referrer";
+      frame.addEventListener("load", () => bindEmbeddedPage(frame, page));
       const open = document.createElement("a");
       open.className = "profile-site-open";
       open.href = page.href;
@@ -3854,7 +3893,7 @@
       });
     })();
   </script>
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-  <script defer src="assets/space-bg.js?v=4"></script>
+  <script defer src="assets/three.min.js"></script>
+  <script defer src="assets/space-bg.js?v=5"></script>
 </body>
 </html>

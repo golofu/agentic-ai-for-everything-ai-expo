@@ -16,6 +16,13 @@
   }
   document.body.prepend(canvas);
   document.documentElement.classList.add("space-3d");
+  // If the GPU drops the context (driver reset, sleep), go back to the CSS sky instead of a black canvas.
+  let lost = false;
+  canvas.addEventListener("webglcontextlost", () => {
+    lost = true;
+    canvas.remove();
+    document.documentElement.classList.remove("space-3d");
+  });
 
   const small = window.innerWidth < 760;
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
@@ -139,6 +146,7 @@
 
   let last = performance.now();
   function frame(now) {
+    if (lost) return;
     const dt = Math.min(.05, (now - last) / 1000);
     last = now;
     earth.rotation.y += dt * .1;
