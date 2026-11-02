@@ -22,6 +22,29 @@ def skin(html, base=None):
     return html[:head.end()] + insert + html[head.end():]
 
 
+def trim_talk_deck(html):
+    """Reapply the nine-step talk edit after fetching; safe to run twice."""
+    html = html.replace("14 ขั้น", "9 ขั้น").replace(" / 14", " / 9")
+    html = html.replace("จาก Prompt ถึง deploy", "จาก Prompt ถึง Create")
+    html = re.sub(r' *<section class="slide"[^>]*>\s*<div[^>]*><div class="kick">ขั้น (?:10|11|12|13|14) / 9</div>.*?</section>', '', html, flags=re.S)
+    html = re.sub(r'<i class="[^"]*" title="(?:10|11|12|13|14) [^"]*">\d+</i>', '', html)
+    html = re.sub(r'^.*<div class="vn [^"\n]*"[^\n]*<b>(?:10|11|12|13|14)</b>[^\n]*\n', '', html, flags=re.M)
+    html = re.sub(r'^.*<path class="va" style="--i:(?:8|9|10|11|12|13)"[^\n]*\n', '', html, flags=re.M)
+    html = re.sub(r'(<path id="vtravel" d=")[^"]*', r'\g<1>M13.8 18.0 L31.9 18.0 L50.0 18.0 L68.1 18.0 L86.2 18.0 L86.2 29.8 L68.1 29.8 L50.0 29.8 L31.9 29.8', html)
+    html = re.sub(r'^.*<div class="vn end"[^\n]*\n', '', html, flags=re.M)
+    html = re.sub(r'^.*<div class="row"><code>(?:scrutinize|debug-mantra)</code>[^\n]*\n', '', html, flags=re.M)
+    html = html.replace('01 / 16', '01 / 12')
+    # Preserve step 9 copy, hiding only the out-of-scope next-step indicator.
+    marker = '<style id="talk-nine-steps">.slide:nth-of-type(12) .nx{display:none}</style>'
+    if marker not in html:
+        html = html.replace('</head>', marker + '\n</head>')
+    if len(re.findall(r' *<section class="slide"', html)) != 12:
+        raise ValueError('deck-04 structure changed: expected 12 talk slides')
+    if len(re.findall(r'<div class="vn ', html)) != 9:
+        raise ValueError('deck-04 structure changed: expected nine overview steps')
+    return html
+
+
 def fetch(url):
     with urllib.request.urlopen(url) as response:
         return response.read().decode("utf-8")
@@ -41,6 +64,8 @@ remote = {
 }
 for target, (url, base) in remote.items():
     html = fetch(url)
+    if target == "vibe/deck-04.html":
+        html = trim_talk_deck(html)
     # The talk site is public, so the course copyright gate (which redirects to the course cover) is dropped here.
     html = re.sub(r'\s*<script src="assets/course-consent\.js[^"]*"></script>', "", html)
     html = html.replace("html.course-awaiting-consent { visibility: hidden; }", "")
