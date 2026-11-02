@@ -69,6 +69,7 @@ def main():
                 return out;
             }""")
             made = 0
+            written = set()
             for item in items:
                 target = OUT / f"{item['slug']}.jpg"
                 if only_missing and target.exists():
@@ -83,6 +84,7 @@ def main():
                 img = img.resize((320, round(img.height * 320 / img.width)), Image.LANCZOS)
                 img.save(target, "JPEG", quality=80, optimize=True)
                 made += 1
+                written.add(target.name)
                 print(f"{target.name}  <-  {item['href'][:80]}")
             browser.close()
         keep = {f"{i['slug']}.jpg" for i in items}
@@ -90,7 +92,9 @@ def main():
         stale = [OUT / name for name in sorted(previous - keep) if (OUT / name).exists()]
         for f in stale:
             f.unlink()
-        MANIFEST.write_text(json.dumps(sorted(keep), indent=1), encoding="utf-8")
+        # Own only what this script wrote (now or before), never a same-named file it found and skipped.
+        owned = (previous | written) & keep
+        MANIFEST.write_text(json.dumps(sorted(owned), indent=1), encoding="utf-8")
         print(f"{made} thumbnails written, {len(stale)} stale removed, {len(items)} pages total")
     finally:
         server.terminate()

@@ -2907,7 +2907,7 @@
     }
 
     // Motion pages replace a slide image in place; thumbnails keep the original PNG.
-    const motionAssetRevision = "20261102-review-fixes";
+    const motionAssetRevision = "20261102-review-fixes-2";
 
     function motionPath(file) {
       return `assets/motion/${file}?rev=${motionAssetRevision}`;
@@ -3830,8 +3830,9 @@
         if (lessons.dashboard.pages[index]?.type === "dashboard-chart") window.dispatchEvent(new CustomEvent("dashboard-page", {detail:index}));
         return;
       }
-      if (!editingAgentData && event.key === "ArrowLeft") showSlide(activeIndex - 1);
-      if (!editingAgentData && event.key === "ArrowRight") showSlide(activeIndex + 1);
+      // Presentation clickers send PageDown / PageUp.
+      if (!editingAgentData && ["ArrowLeft", "PageUp"].includes(event.key)) { event.preventDefault(); showSlide(activeIndex - 1); }
+      if (!editingAgentData && ["ArrowRight", "PageDown"].includes(event.key)) { event.preventDefault(); showSlide(activeIndex + 1); }
     });
 
     slideStage.addEventListener("pointerdown", event => {
