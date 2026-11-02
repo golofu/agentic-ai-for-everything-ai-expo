@@ -75,7 +75,7 @@ h1{position:absolute;left:270px;top:26px;font:800 50px/1.3 Manrope,'Noto Sans Th
   <h1>Download Skill</h1>
   <p class="sub">โหลดไฟล์ Skill (.zip) ที่คนอื่นทำไว้ แล้วอัปโหลดเข้า Claude Desktop</p>
   <section class="rail" id="rail"></section>
-  <section class="prompt"><span class="lab">ทางเข้า</span><p id="prompt-text">Customize &gt; Add &gt; Upload skill &gt; เลือกไฟล์ .zip &gt; Upload</p><button class="copy" type="button" id="copy">คัดลอก Prompt</button></section>
+  <section class="prompt"><span class="lab">ทางเข้า</span><p id="prompt-text">Customize &gt; Add &gt; Upload skill &gt; เลือกไฟล์ .zip &gt; Upload</p></section>
   <section class="screen">
     <div class="bar"><i></i><i></i><i></i>&nbsp;Claude</div>
     <div class="clip"><div class="view" id="view">
@@ -127,7 +127,7 @@ else{
   const imgs=frames.map(f=>f.complete?Promise.resolve():new Promise(r=>{f.addEventListener('load',r,{once:true});f.addEventListener('error',r,{once:true})}));
   Promise.all([document.fonts?document.fonts.ready:Promise.resolve(),...imgs]).then(()=>play());
 }
-$('#copy').addEventListener('click',async()=>{const text=$('#prompt-text').textContent;let ok=false;try{await navigator.clipboard.writeText(text);ok=true}catch(e){const t=document.createElement('textarea');t.value=text;t.style.cssText='position:fixed;left:-9999px';document.body.append(t);t.select();try{ok=document.execCommand('copy')}catch(_){}t.remove()}$('#copy').textContent=ok?'คัดลอกแล้ว':'คัดลอกไม่สำเร็จ';setTimeout(()=>$('#copy').textContent='คัดลอก Prompt',2200)});
+$('#copy')?.addEventListener('click',async()=>{const text=$('#prompt-text').textContent;let ok=false;try{await navigator.clipboard.writeText(text);ok=true}catch(e){const t=document.createElement('textarea');t.value=text;t.style.cssText='position:fixed;left:-9999px';document.body.append(t);t.select();try{ok=document.execCommand('copy')}catch(_){}t.remove()}$('#copy').textContent=ok?'คัดลอกแล้ว':'คัดลอกไม่สำเร็จ';setTimeout(()=>$('#copy').textContent='คัดลอก Prompt',2200)});
 </script>
 </body>
 </html>
