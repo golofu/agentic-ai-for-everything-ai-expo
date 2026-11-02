@@ -2538,12 +2538,13 @@
         // After page 8 (172): the Workspace Setup prompt (moved here from To Be Gen AI Advance),
         // then 232 = the shared workspace template that the prompt creates, 233 = the first 5-minute job, 234 = six starter job cards.
         pages: [
-          ...Array.from({ length: 8 }, (_, index) => ({ type: "slide", page: index + 165 })),
+          // Talk cut (2026-11-02): pages 2-7 (166-171) and 13-23 (173-183) of the course lesson removed
+          { type: "slide", page: 165 },
+          { type: "slide", page: 172 },
           { type: "advance-prompt", number: 2, label: "Prompt สร้าง Workspace" },
           { type: "slide", page: 232 },
           { type: "slide", page: 233 },
-          { type: "slide", page: 234 },
-          ...Array.from({ length: 11 }, (_, index) => ({ type: "slide", page: index + 173 }))
+          { type: "slide", page: 234 }
         ]
       },
       "dept-usecases": {
