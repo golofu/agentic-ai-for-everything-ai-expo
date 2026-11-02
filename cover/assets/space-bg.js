@@ -18,7 +18,6 @@
   document.documentElement.classList.add("space-3d");
 
   const small = window.innerWidth < 760;
-  const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
   renderer.setClearColor(0x000000, 0);
 
@@ -85,7 +84,7 @@
   for (let i = 0; i < count; i++) {
     // Most stars near the earth, thinning out to well beyond the frame.
     const radius = 3.1 + Math.pow(Math.random(), 2.4) * 150;
-    orbit.set([radius, Math.random() * Math.PI * 2, (Math.random() - .5) * .9, 1.15 / Math.sqrt(radius)], i * 4);
+    orbit.set([radius, Math.random() * Math.PI * 2, (Math.random() - .5) * .9, 1.6 / Math.sqrt(radius)], i * 4);
     look.set([1 + Math.pow(Math.random(), 3) * 3, Math.random()], i * 2);
   }
   const starGeometry = new THREE.BufferGeometry();
@@ -148,11 +147,7 @@
     renderer.render(scene, camera);
     requestAnimationFrame(frame);
   }
-  if (still) {
-    // Reduced motion: one frame now and one once the textures have had time to arrive.
-    renderer.render(scene, camera);
-    setTimeout(() => renderer.render(scene, camera), 1500);
-  } else {
-    requestAnimationFrame(frame);
-  }
+  // Always moves, even when Windows animation effects are off (that turns on prefers-reduced-motion):
+  // the moving universe is the point of this background on stage.
+  requestAnimationFrame(frame);
 })();
