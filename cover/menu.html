@@ -2981,6 +2981,39 @@
       return recap ? [...pages, { type: "recap-video", label: "คลิปสรุปเนื้อหา", file: recap }] : pages;
     }
 
+    // Embedded pages (type "profile-site") get a screenshot made by scripts/make-page-thumbs.py,
+    // saved as assets/page-thumbs/<slug>.jpg. The script calls this same function, so names stay in sync.
+    function pageThumbSlug(href) {
+      let hash = 0x811c9dc5;
+      for (const byte of new TextEncoder().encode(href)) hash = Math.imul(hash ^ byte, 0x01000193) >>> 0;
+      const readable = href.replace(/[^a-z0-9]+/gi, "-").replace(/^-+|-+$/g, "").slice(0, 60).toLowerCase();
+      return `${readable}-${hash.toString(16).padStart(8, "0")}`;
+    }
+
+    // Picture for a page in the thumbnail strip and the slide picker, or null for a text tile.
+    function pageThumbSrc(lesson, page, index) {
+      if (page.type === "slide") return thumbPath(page);
+      if (page.type === "recap-video") return videoPath(`recap/${page.file}-poster.jpg`);
+      if (lesson.contentThumbDir) return `assets/motion/${lesson.contentThumbDir}/thumbs/content-${String(index + 1).padStart(2, "0")}.jpg?rev=${motionAssetRevision}`;
+      if (page.type === "profile-site" && page.href) return `assets/page-thumbs/${pageThumbSlug(page.href)}.jpg`;
+      return null;
+    }
+
+    // Image thumbnail that turns back into the text tile if the picture is missing.
+    function pageThumbImage(src, page, labelClass) {
+      const image = document.createElement("img");
+      image.src = src;
+      image.alt = page.label || "";
+      if (page.label) image.title = page.label;
+      image.addEventListener("error", () => {
+        const label = document.createElement("span");
+        label.className = labelClass;
+        label.textContent = page.label;
+        image.replaceWith(label);
+      }, { once: true });
+      return image;
+    }
+
     const giveSkillSequenceByPage = new Map([
       [136, "01"], [138, "02"], [140, "03"], [142, "04"], [144, "05"], [146, "06"],
       [163, "07"], [164, "08"], [150, "09"], [152, "10"], [154, "11"],
@@ -3500,6 +3533,8 @@
           image.src = `assets/motion/${lesson.contentThumbDir}/thumbs/content-${String(index + 1).padStart(2, "0")}.jpg?rev=${motionAssetRevision}`;
           image.alt = `ตัวอย่างหน้า ${page.label}`;
           button.append(image);
+        } else if (page.type === "profile-site" && page.href) {
+          button.append(pageThumbImage(pageThumbSrc(lesson, page, index), page, "thumb-label"));
         } else {
           const label = document.createElement("span");
           label.className = "thumb-label";
@@ -3543,9 +3578,12 @@
         button.type = "button";
         button.className = "slide-picker-item";
         button.setAttribute("aria-label", `เปิด ${pageLabel(page)}`);
-        if (page.type === "slide" || page.type === "recap-video") {
+        const thumbSrc = pageThumbSrc(lesson, page, index);
+        if (page.type === "profile-site" && thumbSrc) {
+          button.append(pageThumbImage(thumbSrc, page, "slide-picker-item-label"));
+        } else if (thumbSrc) {
           const image = document.createElement("img");
-          image.src = page.type === "slide" ? thumbPath(page) : videoPath(`recap/${page.file}-poster.jpg`);
+          image.src = thumbSrc;
           image.alt = "";
           button.append(image);
         } else {
