@@ -102,42 +102,42 @@ a.smp:hover::before{color:rgba(255,255,255,.75)}
   <div class="row"><i>ใส่</i><p>พิมพ์หรืออัดเสียงเล่าขั้นตอนเปิด-ปิดร้าน (หรืองานใดก็ได้) เซฟใส่ input/</p></div>
   <div class="row pr"><i>สั่ง</i><p id="p1">อ่านขั้นตอนใน input/ จัดเป็น SOP 3 ช่วง <u>เช้า / ระหว่างวัน / ปิดร้าน</u> แต่ละข้อบอก ใครทำ เวลา อุปกรณ์ ใส่ช่อง [ ] ให้ติ๊ก ทำเป็น PDF 1 หน้าตัวใหญ่ติดผนัง บันทึกใน output/</p></div>
   <div class="row"><i>ได้</i><p>SOP พร้อมพิมพ์ พนักงานใหม่ทำตามได้</p></div>
-  <div class="bot"><a class="smp" href="../../agent-usecases/sample-data/process.md" target="_blank" rel="noopener">process.md</a><button class="cp" type="button" data-copy="p1">คัดลอก</button></div>
+  <div class="bot"><a class="smp" href="../../playbook-samples/239-1/store-routine-notes.docx" download>เล่าขั้นตอนเปิด-ปิดร้าน (Word)</a><button class="cp" type="button" data-copy="p1">คัดลอก</button></div>
 </div>
 <div class="card fx" id="k2" style="left:686px;top:246px">
   <div class="ch"><b>2</b><span>ยอดขาย 8 สัปดาห์ → รายการสั่งของ</span></div>
   <div class="row"><i>ใส่</i><p>Excel ยอดขายรายสัปดาห์ + จำนวนของในคลังตอนนี้ สร้างโฟลเดอร์ใหม่ชื่อ <u>สั่งของ-สัปดาห์นี้/</u> แล้วใส่ไว้ในนั้น</p></div>
   <div class="row pr"><i>สั่ง</i><p id="p2">อ่าน Excel ในโฟลเดอร์ <u>สั่งของ-สัปดาห์นี้/</u> คำนวณยอดขายเฉลี่ยต่อสัปดาห์ของแต่ละสินค้า บวกเผื่อ 20% หักของที่มีในคลัง ทำรายการสั่งของสัปดาห์หน้าแยกตาม supplier พร้อมราคาประมาณ บันทึกเป็น Excel ไว้ในโฟลเดอร์ <u>สั่งของ-สัปดาห์นี้/</u> เดิม</p></div>
   <div class="row"><i>ได้</i><p>รายการสั่งของ ส่ง supplier ได้เลย</p></div>
-  <div class="bot"><a class="smp" href="../../agent-usecases/sample-data/inventory.csv" target="_blank" rel="noopener">inventory.csv + sales.csv</a><button class="cp" type="button" data-copy="p2">คัดลอก</button></div>
+  <div class="bot"><a class="smp" href="../../playbook-samples/239-2/sales-8-weeks-and-stock.xlsx" download>ยอดขาย 8 สัปดาห์ + คลัง (Excel)</a><button class="cp" type="button" data-copy="p2">คัดลอก</button></div>
 </div>
 <div class="card fx" id="k3" style="left:1242px;top:246px">
   <div class="ch"><b>3</b><span>รายชื่อ + วันว่าง → ตารางเวร 4 สัปดาห์</span></div>
   <div class="row"><i>ใส่</i><p>Excel รายชื่อพนักงานและวันที่ว่าง/ไม่ว่าง ใส่ input/</p></div>
   <div class="row pr"><i>สั่ง</i><p id="p3">อ่านรายชื่อใน input/ จัดตารางเวร 4 สัปดาห์ ร้านเปิด <u>10:00–20:00</u> ต้องมีอย่างน้อย <u>2 คน</u> ต่อกะ ทุกคนหยุดสัปดาห์ละ 1 วัน ไม่มีใครทำติดกันเกิน 6 วัน บันทึกเป็น Excel ใน output/ และบอกถ้าจัดไม่ลงตัว</p></div>
   <div class="row"><i>ได้</i><p>ตารางเวร แชร์ให้ทีมได้ทันที</p></div>
-  <div class="bot"><a class="smp" href="../../agent-usecases/sample-data/staff-availability.csv" target="_blank" rel="noopener">staff-availability.csv</a><button class="cp" type="button" data-copy="p3">คัดลอก</button></div>
+  <div class="bot"><a class="smp" href="../../playbook-samples/239-3/staff-availability-nov-2026.xlsx" download>วันว่างพนักงาน 6 คน 4 สัปดาห์ (Excel)</a><button class="cp" type="button" data-copy="p3">คัดลอก</button></div>
 </div>
 <div class="card fx" id="k4" style="left:130px;top:634px">
   <div class="ch"><b>4</b><span>ขั้นตอนงาน → ชุดสอนพนักงานใหม่</span></div>
   <div class="row"><i>ใส่</i><p>สร้างโฟลเดอร์ใหม่ชื่อ <u>สอนพนักงานใหม่/</u> ใส่ SOP จากใบ 1 · ข้อมูลบริษัทใน resources/</p></div>
   <div class="row pr"><i>สั่ง</i><p id="p4">อ่านขั้นตอนงานในโฟลเดอร์ <u>สอนพนักงานใหม่/</u> และข้อมูลบริษัทจาก resources/ ทำชุดสอนพนักงานใหม่สัปดาห์แรก แผนวันที่ 1–5 สิ่งที่ต้องเรียนแต่ละวัน และแบบทดสอบ 10 ข้อพร้อมเฉลย บันทึกไว้ในโฟลเดอร์ <u>สอนพนักงานใหม่/</u> เดิม</p></div>
   <div class="row"><i>ได้</i><p>พนักงานใหม่เริ่มงานได้โดยหัวหน้าไม่ต้องสอนเองทุกคน</p></div>
-  <div class="bot"><a class="smp" href="../../agent-usecases/sample-data/process.md" target="_blank" rel="noopener">process.md + onboarding.md</a><button class="cp" type="button" data-copy="p4">คัดลอก</button></div>
+  <div class="bot"><a class="smp" href="../../playbook-samples/239-4/onboarding-inputs.zip" download>SOP ร้าน + ข้อมูลบริษัท (Word, zip)</a><button class="cp" type="button" data-copy="p4">คัดลอก</button></div>
 </div>
 <div class="card fx" id="k5" style="left:686px;top:634px">
   <div class="ch"><b>5</b><span>ตารางงาน → งานไหนเลยกำหนด</span></div>
   <div class="row"><i>ใส่</i><p>Excel รายการงาน มีคอลัมน์ผู้รับผิดชอบ กำหนดส่ง สถานะ ใส่ input/</p></div>
-  <div class="row pr"><i>สั่ง</i><p id="p5">อ่านตารางงานใน input/ หางานที่เลยกำหนดหรือจะครบใน 3 วัน เรียงตามความด่วน ทำตาราง งาน ผู้รับผิดชอบ กำหนด เลยมากี่วัน แล้วร่างข้อความทวงสั้นๆ ทีละคน โทนสุภาพ บันทึกใน output/</p></div>
+  <div class="row pr"><i>สั่ง</i><p id="p5">อ่านตารางงานใน input/ หางานที่เลยกำหนดหรือจะครบใน 3 วัน เรียงตามความด่วน ทำตาราง งาน ผู้รับผิดชอบ กำหนด เลยมากี่วัน แล้วร่างข้อความทวงสั้นๆ ทีละคน โทนสุภาพ นับจากวันที่ในไฟล์ บันทึกใน output/</p></div>
   <div class="row"><i>ได้</i><p>เห็นงานค้างทั้งทีมในหน้าเดียว + ข้อความพร้อมส่ง</p></div>
-  <div class="bot"><a class="smp" href="../../agent-usecases/sample-data/tasks.csv" target="_blank" rel="noopener">tasks.csv</a><button class="cp" type="button" data-copy="p5">คัดลอก</button></div>
+  <div class="bot"><a class="smp" href="../../playbook-samples/239-5/team-tasks.xlsx" download>ตารางงานทีม 20 งาน (Excel)</a><button class="cp" type="button" data-copy="p5">คัดลอก</button></div>
 </div>
 <div class="card fx" id="k6" style="left:1242px;top:634px">
   <div class="ch"><b>6</b><span>ของในคลัง → หาของซ้ำ/ของค้างนาน</span></div>
   <div class="row"><i>ใส่</i><p>Excel รายการของในคลัง มีคอลัมน์ ชื่อ จำนวน (ถ้ามีวันรับเข้ายิ่งดี) สร้างโฟลเดอร์ใหม่ชื่อ <u>เช็คคลัง/</u> แล้วใส่ไว้ในนั้น</p></div>
-  <div class="row pr"><i>สั่ง</i><p id="p6">อ่านรายการในโฟลเดอร์ <u>เช็คคลัง/</u> หาสินค้าที่ชื่อซ้ำหรือใกล้เคียงกัน ของที่เหลือต่ำกว่าจุดสั่งซื้อ และของที่ค้างเกิน 90 วัน (ถ้าไฟล์มีวันรับเข้า) ทำ 3 ตารางแยกกัน พร้อมข้อเสนอว่าควรทำอย่างไรกับแต่ละกลุ่ม บันทึกเป็น Excel ไว้ในโฟลเดอร์ <u>เช็คคลัง/</u> เดิม</p></div>
+  <div class="row pr"><i>สั่ง</i><p id="p6">อ่านรายการในโฟลเดอร์ <u>เช็คคลัง/</u> หาสินค้าที่ชื่อซ้ำหรือใกล้เคียงกัน ของที่เหลือต่ำกว่าจุดสั่งซื้อ และของที่ค้างเกิน 90 วัน (ถ้าไฟล์มีวันรับเข้า) ทำ 3 ตารางแยกกัน พร้อมข้อเสนอว่าควรทำอย่างไรกับแต่ละกลุ่ม นับจากวันที่ในไฟล์ บันทึกเป็น Excel ไว้ในโฟลเดอร์ <u>เช็คคลัง/</u> เดิม</p></div>
   <div class="row"><i>ได้</i><p>เคลียร์คลังได้โดยไม่ต้องเดินนับใหม่</p></div>
-  <div class="bot"><a class="smp" href="../../agent-usecases/sample-data/inventory.csv" target="_blank" rel="noopener">inventory.csv</a><button class="cp" type="button" data-copy="p6">คัดลอก</button></div>
+  <div class="bot"><a class="smp" href="../../playbook-samples/239-6/stock-list.xlsx" download>รายการของในคลัง 24 รายการ (Excel)</a><button class="cp" type="button" data-copy="p6">คัดลอก</button></div>
 </div>
 
     <svg id="sk" viewBox="0 0 1920 1080" aria-hidden="true"></svg>

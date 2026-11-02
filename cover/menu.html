@@ -2550,8 +2550,112 @@
       "dept-usecases": {
         title: "AI Work Playbook · ใช้งานตามแผนก",
         motionDir: "setup-work-space",
-        // 235 pick a department (its tiles jump to the matching page), 236-241 six job cards per department, 242 next step
-        slides: Array.from({ length: 8 }, (_, index) => index + 235)
+        pages: [
+          {
+            "type": "slide",
+            "page": 235
+          },
+          {
+            "type": "slide",
+            "page": 236
+          },
+          {
+            "type": "slide",
+            "page": 236,
+            "motion": "setup-work-space/ex-236-1.html",
+            "label": "รูปสินค้า → แคปชันโพสต์"
+          },
+          {
+            "type": "slide",
+            "page": 236,
+            "motion": "setup-work-space/ex-236-2.html",
+            "label": "รีวิวลูกค้า → สิ่งที่ต้องแก้"
+          },
+          {
+            "type": "slide",
+            "page": 237
+          },
+          {
+            "type": "slide",
+            "page": 237,
+            "motion": "setup-work-space/ex-237-1.html",
+            "label": "ข้อความลูกค้า → ร่างตอบ 3 แบบ"
+          },
+          {
+            "type": "slide",
+            "page": 237,
+            "motion": "setup-work-space/ex-237-3.html",
+            "label": "รายชื่อลูกค้า → ใครหายไปนาน"
+          },
+          {
+            "type": "slide",
+            "page": 238
+          },
+          {
+            "type": "slide",
+            "page": 238,
+            "motion": "setup-work-space/ex-238-1.html",
+            "label": "Excel รายรับรายจ่าย → สรุปเดือน"
+          },
+          {
+            "type": "slide",
+            "page": 238,
+            "motion": "setup-work-space/ex-238-2.html",
+            "label": "ใบเสนอราคา 3 เจ้า → ตารางเทียบ"
+          },
+          {
+            "type": "slide",
+            "page": 239
+          },
+          {
+            "type": "slide",
+            "page": 239,
+            "motion": "setup-work-space/ex-239-2.html",
+            "label": "ยอดขาย 8 สัปดาห์ → รายการสั่งของ"
+          },
+          {
+            "type": "slide",
+            "page": 239,
+            "motion": "setup-work-space/ex-239-5.html",
+            "label": "ตารางงาน → งานไหนเลยกำหนด"
+          },
+          {
+            "type": "slide",
+            "page": 240
+          },
+          {
+            "type": "slide",
+            "page": 240,
+            "motion": "setup-work-space/ex-240-2.html",
+            "label": "Resume หลายคน → ตารางคัด"
+          },
+          {
+            "type": "slide",
+            "page": 240,
+            "motion": "setup-work-space/ex-240-6.html",
+            "label": "ผลสำรวจพนักงาน → สิ่งที่ทีมอยากให้แก้"
+          },
+          {
+            "type": "slide",
+            "page": 241
+          },
+          {
+            "type": "slide",
+            "page": 241,
+            "motion": "setup-work-space/ex-241-1.html",
+            "label": "ไฟล์ประชุม → สรุป + งานค้าง"
+          },
+          {
+            "type": "slide",
+            "page": 241,
+            "motion": "setup-work-space/ex-241-2.html",
+            "label": "งานทั้งสัปดาห์ → รายงาน 1 หน้า"
+          },
+          {
+            "type": "slide",
+            "page": 242
+          }
+        ]
       },
       "agent-usecases": {
         title: "Usecase for AI Agents",
@@ -2807,7 +2911,7 @@
     }
 
     // Motion pages replace a slide image in place; thumbnails keep the original PNG.
-    const motionAssetRevision = "20261102-create-skill-steps-3";
+    const motionAssetRevision = "20261102-playbook-examples";
 
     function motionPath(file) {
       return `assets/motion/${file}?rev=${motionAssetRevision}`;
@@ -2838,7 +2942,7 @@
       const data = event.data;
       if (!data || data.type !== "goToPage") return;
       const pages = lessonPages(lessons[activeLesson]);
-      const index = pages.findIndex(page => page.type === "slide" && page.page === Number(data.page));
+      const index = pages.findIndex(page => page.type === "slide" && page.page === Number(data.page) && !/\/ex-/.test(page.motion || ""));
       if (index >= 0) showSlide(index);
     });
 
@@ -2846,6 +2950,8 @@
     slideMotion.addEventListener("load", () => {
       try {
         slideMotion.contentWindow.addEventListener("keydown", event => {
+          if (event.key === "Escape" && slideMotion.contentDocument.querySelector("dialog[open]")) return;
+          if (["ArrowLeft", "ArrowRight"].includes(event.key) && slideMotion.contentDocument.body.dataset.captureGameArrows === "true") return;
           const forwarded = new KeyboardEvent("keydown", { key: event.key, shiftKey: event.shiftKey, bubbles: true, cancelable: true });
           document.dispatchEvent(forwarded);
           if (forwarded.defaultPrevented) event.preventDefault();
@@ -3380,12 +3486,12 @@
         const button = document.createElement("button");
         button.type = "button";
         button.className = "thumb";
-        const pageLabel = page.type === "slide" ? `สไลด์หน้า ${page.page}` : page.label;
+        const pageLabel = page.label || `สไลด์หน้า ${page.page}`;
         button.setAttribute("aria-label", `เปิด ${pageLabel}`);
         if (page.type === "slide") {
           const image = document.createElement("img");
           image.src = thumbPath(page);
-          image.alt = `ตัวอย่างสไลด์หน้า ${page.page}`;
+          image.alt = page.label || `ตัวอย่างสไลด์หน้า ${page.page}`;
           button.append(image);
           if (!page.motion && page.assetSet === "basic-rag" && page.page >= 62 && page.page <= 69) button.classList.add("legacy-restyled-thumb");
         } else if (page.type === "recap-video") {
@@ -3430,7 +3536,7 @@
     }
 
     function pageLabel(page) {
-      return page.type === "slide" ? `สไลด์หน้า ${page.page}` : page.label;
+      return page.label || `สไลด์หน้า ${page.page}`;
     }
 
     function renderSlidePicker() {

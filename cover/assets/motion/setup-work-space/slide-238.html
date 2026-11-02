@@ -102,42 +102,42 @@ a.smp:hover::before{color:rgba(255,255,255,.75)}
   <div class="row"><i>ใส่</i><p>Excel รายรับรายจ่ายเดือนนี้ (และเดือนก่อนถ้ามี) ใส่ input/</p></div>
   <div class="row pr"><i>สั่ง</i><p id="p1">อ่าน Excel ใน input/ สรุป รายได้รวม ค่าใช้จ่ายแยกหมวด กำไรเป็นเปอร์เซ็นต์ เทียบกับเดือนก่อน และบอกรายการที่เพิ่มหรือลดเกิน 20% บันทึกใน output/</p></div>
   <div class="row"><i>ได้</i><p>สรุป 1 หน้า พร้อมรายการที่ต้องไปดูต่อ</p></div>
-  <div class="bot"><a class="smp" href="../../agent-usecases/sample-data/expenses.csv" target="_blank" rel="noopener">expenses.csv + august.csv</a><button class="cp" type="button" data-copy="p1">คัดลอก</button></div>
+  <div class="bot"><a class="smp" href="../../playbook-samples/238-1/income-expense-sep-oct-2026.xlsx" download>รายรับรายจ่าย ก.ย.–ต.ค. (Excel)</a><button class="cp" type="button" data-copy="p1">คัดลอก</button></div>
 </div>
 <div class="card fx" id="k2" style="left:686px;top:246px">
   <div class="ch"><b>2</b><span>ใบเสนอราคา 3 เจ้า → ตารางเทียบ</span></div>
   <div class="row"><i>ใส่</i><p>ใบเสนอราคา supplier 3 เจ้า (PDF หรือรูป) สร้างโฟลเดอร์ใหม่ชื่อ <u>เทียบ-supplier/</u> แล้วใส่ไว้ในนั้น</p></div>
   <div class="row pr"><i>สั่ง</i><p id="p2">อ่านใบเสนอราคาทุกใบในโฟลเดอร์ <u>เทียบ-supplier/</u> ทำตารางเทียบ ราคาต่อหน่วย เงื่อนไขชำระ ระยะส่ง การรับประกัน ข้อดีข้อเสีย แล้วแนะนำว่าควรเลือกเจ้าไหนเพราะอะไร บันทึกเป็น Excel ไว้ในโฟลเดอร์ <u>เทียบ-supplier/</u> เดิม</p></div>
   <div class="row"><i>ได้</i><p>ตารางเทียบ + คำแนะนำ เอาเสนอหัวหน้าได้</p></div>
-  <div class="bot"><a class="smp" href="../../agent-usecases/sample-data/suppliers.csv" target="_blank" rel="noopener">suppliers.csv + supplier-criteria.md</a><button class="cp" type="button" data-copy="p2">คัดลอก</button></div>
+  <div class="bot"><a class="smp" href="../../playbook-samples/238-2/supplier-quotes-3.zip" download>ใบเสนอราคา 3 เจ้า (PDF, zip)</a><button class="cp" type="button" data-copy="p2">คัดลอก</button></div>
 </div>
 <div class="card fx" id="k3" style="left:1242px;top:246px">
   <div class="ch"><b>3</b><span>จะจ่ายเงินค่าบริการ → ภาษีเท่าไร</span></div>
   <div class="row"><i>ใส่</i><p>ไม่ต้องใส่ไฟล์ พิมพ์ตัวเลขในคำสั่งได้เลย</p></div>
   <div class="row pr"><i>สั่ง</i><p id="p3">จะจ่ายค่า <u>ออกแบบโลโก้</u> ให้ <u>บุคคลธรรมดา (ไม่จด VAT)</u> ยอด <u>20,000</u> บาท บอกว่าต้องคิด VAT ไหม หัก ณ ที่จ่ายกี่เปอร์เซ็นต์ ยอดที่ต้องโอนจริง และต้องออกเอกสารอะไรบ้าง ทำเป็นตาราง พร้อมหมายเหตุให้บัญชีตรวจก่อนจ่ายจริง บันทึกใน output/</p></div>
   <div class="row"><i>ได้</i><p>ตัวเลขครบ ให้บัญชีตรวจแล้วจ่ายได้</p></div>
-  <div class="bot"><span class="smp">ไม่ต้องใช้ไฟล์</span><button class="cp" type="button" data-copy="p3">คัดลอก</button></div>
+  <div class="bot"><a class="smp" href="../../playbook-samples/238-3/logo-design-invoice.docx" download>ใบแจ้งค่าออกแบบโลโก้ (Word)</a><button class="cp" type="button" data-copy="p3">คัดลอก</button></div>
 </div>
 <div class="card fx" id="k4" style="left:130px;top:634px">
   <div class="ch"><b>4</b><span>สลิปเดินทาง → รายงานเบิกค่าใช้จ่าย</span></div>
   <div class="row"><i>ใส่</i><p>รูปใบเสร็จ ค่ารถ ค่าอาหาร ค่าที่พัก จากทริปงาน สร้างโฟลเดอร์ใหม่ชื่อ <u>เบิก-[ชื่อทริป]/</u> แล้วใส่ไว้ในนั้น</p></div>
   <div class="row pr"><i>สั่ง</i><p id="p4">อ่านใบเสร็จทุกใบในโฟลเดอร์ <u>เบิก-[ชื่อทริป]/</u> ทำรายงานเบิกค่าใช้จ่าย ตาราง วันที่ รายการ หมวด ยอด แยกหมวดและรวมยอด ระบุใบที่อ่านตัวเลขไม่ชัดให้ตรวจ บันทึกเป็น Excel ไว้ในโฟลเดอร์ <u>เบิก-[ชื่อทริป]/</u> เดิม</p></div>
   <div class="row"><i>ได้</i><p>ยื่นเบิกได้ทันที ไม่ต้องกรอกทีละใบ</p></div>
-  <div class="bot"><a class="smp" href="../../agent-usecases/sample-data/receipt-01.txt" target="_blank" rel="noopener">receipt-01.txt + receipt-02.txt</a><button class="cp" type="button" data-copy="p4">คัดลอก</button></div>
+  <div class="bot"><a class="smp" href="../../playbook-samples/238-4/trip-receipts-8.zip" download>รูปใบเสร็จทริป 8 ใบ (JPG, zip)</a><button class="cp" type="button" data-copy="p4">คัดลอก</button></div>
 </div>
 <div class="card fx" id="k5" style="left:686px;top:634px">
   <div class="ch"><b>5</b><span>งบที่ตั้ง vs ใช้จริง → หมวดไหนเกิน</span></div>
   <div class="row"><i>ใส่</i><p>Excel งบประมาณที่ตั้งไว้ + Excel ค่าใช้จ่ายจริง สร้างโฟลเดอร์ใหม่ชื่อ <u>งบประมาณ-[ปี]/</u> แล้วใส่ไว้ในนั้น</p></div>
   <div class="row pr"><i>สั่ง</i><p id="p5">อ่านทั้งสองไฟล์ในโฟลเดอร์ <u>งบประมาณ-[ปี]/</u> ทำตารางเทียบรายหมวด งบตั้ง ใช้จริง ส่วนต่าง เปอร์เซ็นต์ ไฮไลต์หมวดที่เกิน 10% และบอกว่าถ้าใช้ต่ออัตรานี้จะเกินงบเมื่อไร บันทึกเป็น Excel ไว้ในโฟลเดอร์ <u>งบประมาณ-[ปี]/</u> เดิม</p></div>
   <div class="row"><i>ได้</i><p>รู้ก่อนสิ้นปีว่าหมวดไหนต้องเบรก</p></div>
-  <div class="bot"><a class="smp" href="../../agent-usecases/sample-data/budget.csv" target="_blank" rel="noopener">budget.csv + expenses.csv</a><button class="cp" type="button" data-copy="p5">คัดลอก</button></div>
+  <div class="bot"><a class="smp" href="../../playbook-samples/238-5/budget-vs-actual.zip" download>งบที่ตั้ง + ใช้จริง 9 เดือน (zip)</a><button class="cp" type="button" data-copy="p5">คัดลอก</button></div>
 </div>
 <div class="card fx" id="k6" style="left:1242px;top:634px">
   <div class="ch"><b>6</b><span>ราคาเมนู/สินค้าใหม่ → ต้องขายกี่ชิ้นถึงคุ้ม</span></div>
   <div class="row"><i>ใส่</i><p>พิมพ์ ต้นทุนต่อชิ้น ราคาขาย ค่าใช้จ่ายคงที่ต่อเดือน (ค่าเช่า ค่าแรง) ใน input/</p></div>
   <div class="row pr"><i>สั่ง</i><p id="p6">อ่านตัวเลขใน input/ คำนวณจุดคุ้มทุน ต้องขายกี่ชิ้นต่อเดือนและต่อวัน ทำตารางเทียบ 3 ราคาขาย (ต่ำ กลาง สูง) ว่าจุดคุ้มทุนและกำไรต่อเดือนต่างกันอย่างไร บันทึกเป็น Excel ใน output/</p></div>
   <div class="row"><i>ได้</i><p>ตั้งราคาจากตัวเลข ไม่ใช่ความรู้สึก</p></div>
-  <div class="bot"><span class="smp">ไม่ต้องใช้ไฟล์ พิมพ์ตัวเลขเอง</span><button class="cp" type="button" data-copy="p6">คัดลอก</button></div>
+  <div class="bot"><a class="smp" href="../../playbook-samples/238-6/input/new-product-numbers.xlsx" download>ตัวเลขสินค้าใหม่ (Excel)</a><button class="cp" type="button" data-copy="p6">คัดลอก</button></div>
 </div>
 
     <svg id="sk" viewBox="0 0 1920 1080" aria-hidden="true"></svg>

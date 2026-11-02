@@ -102,42 +102,42 @@ a.smp:hover::before{color:rgba(255,255,255,.75)}
   <div class="row"><i>ใส่</i><p>ก๊อปอีเมลหรือไลน์ลูกค้า วางเป็นไฟล์ .txt ใส่ input/</p></div>
   <div class="row pr"><i>สั่ง</i><p id="p1">อ่านข้อความใน input/ สรุปว่าลูกค้าต้องการอะไร 3 ข้อ แล้วร่างคำตอบ 3 แบบ สั้น / เป็นทางการ / ปฏิเสธนุ่มนวล ใช้ภาษาไทยธรรมชาติ ไม่ใช่ภาษาแปล บันทึกใน output/</p></div>
   <div class="row"><i>ได้</i><p>เลือก 1 แบบ แก้นิดหน่อย ส่งได้เลย</p></div>
-  <div class="bot"><a class="smp" href="../../agent-usecases/sample-data/complaints.csv" target="_blank" rel="noopener">complaints.csv (ข้อความลูกค้า 5 ราย)</a><button class="cp" type="button" data-copy="p1">คัดลอก</button></div>
+  <div class="bot"><a class="smp" href="../../playbook-samples/237-1/customer-line-chat.txt" download>แชต LINE ลูกค้า (.txt)</a><button class="cp" type="button" data-copy="p1">คัดลอก</button></div>
 </div>
 <div class="card fx" id="k2" style="left:686px;top:246px">
   <div class="ch"><b>2</b><span>Brief ลูกค้า → ใบเสนอราคา 3 ระดับ</span></div>
   <div class="row"><i>ใส่</i><p>สร้างโฟลเดอร์ใหม่ชื่อ <u>ใบเสนอราคา-[ชื่อลูกค้า]/</u> ใส่ Brief จากลูกค้า · ราคาและ Template ใบเสนอราคาใน resources/</p></div>
   <div class="row pr"><i>สั่ง</i><p id="p2">อ่าน Brief ในโฟลเดอร์ <u>ใบเสนอราคา-[ชื่อลูกค้า]/</u> และราคาจาก resources/ ทำใบเสนอราคา 3 ระดับ <u>Basic / Standard / Premium</u> บอกขอบเขตงานแต่ละระดับ ราคารวม VAT 7% และเงื่อนไขชำระเงิน บันทึกเป็น Word ไว้ในโฟลเดอร์ <u>ใบเสนอราคา-[ชื่อลูกค้า]/</u> เดิม</p></div>
   <div class="row"><i>ได้</i><p>ใบเสนอราคาพร้อมส่ง แก้ชื่อลูกค้าแล้วออก PDF</p></div>
-  <div class="bot"><a class="smp" href="../../agent-usecases/sample-data/customer-brief.md" target="_blank" rel="noopener">customer-brief.md + template.md + products.csv (ราคา)</a><button class="cp" type="button" data-copy="p2">คัดลอก</button></div>
+  <div class="bot"><a class="smp" href="../../playbook-samples/237-2/quotation-inputs.zip" download>Brief + ราคา + แบบฟอร์ม (zip)</a><button class="cp" type="button" data-copy="p2">คัดลอก</button></div>
 </div>
 <div class="card fx" id="k3" style="left:1242px;top:246px">
   <div class="ch"><b>3</b><span>รายชื่อลูกค้า → ใครหายไปนาน</span></div>
   <div class="row"><i>ใส่</i><p>Excel รายชื่อลูกค้า มีคอลัมน์วันที่ติดต่อล่าสุด (ปิดเบอร์โทรก่อน) ใส่ input/</p></div>
-  <div class="row pr"><i>สั่ง</i><p id="p3">อ่านตารางใน input/ หาลูกค้าที่ไม่ได้ติดต่อเกิน <u>90 วัน</u> ทำตาราง ชื่อ บริษัท ติดต่อล่าสุด แล้วร่างข้อความทักทายสั้นๆ ให้ทีละคน โทนสบาย ไม่ขายของ บันทึกใน output/</p></div>
+  <div class="row pr"><i>สั่ง</i><p id="p3">อ่านตารางใน input/ หาลูกค้าที่ไม่ได้ติดต่อเกิน <u>90 วัน</u> ทำตาราง ชื่อ บริษัท ติดต่อล่าสุด แล้วร่างข้อความทักทายสั้นๆ ให้ทีละคน โทนสบาย ไม่ขายของ นับจากวันที่ในไฟล์ บันทึกใน output/</p></div>
   <div class="row"><i>ได้</i><p>รายชื่อ + ข้อความพร้อมส่ง ทีละคน</p></div>
-  <div class="bot"><a class="smp" href="../../agent-usecases/sample-data/customers-last-contact.csv" target="_blank" rel="noopener">customers-last-contact.csv</a><button class="cp" type="button" data-copy="p3">คัดลอก</button></div>
+  <div class="bot"><a class="smp" href="../../playbook-samples/237-3/customers-last-contact.xlsx" download>รายชื่อลูกค้า 24 ราย (Excel)</a><button class="cp" type="button" data-copy="p3">คัดลอก</button></div>
 </div>
 <div class="card fx" id="k4" style="left:130px;top:634px">
   <div class="ch"><b>4</b><span>ข้อมูลลูกค้า → เตรียมก่อนเข้าพบ</span></div>
   <div class="row"><i>ใส่</i><p>ก๊อปหน้าเว็บ/เพจของลูกค้า หรือโปรไฟล์ที่มี วางเป็นไฟล์ แล้วสร้างโฟลเดอร์ใหม่ชื่อ <u>ลูกค้า-[ชื่อบริษัท]/</u> ใส่ไว้ในนั้น</p></div>
   <div class="row pr"><i>สั่ง</i><p id="p4">อ่านข้อมูลลูกค้าในโฟลเดอร์ <u>ลูกค้า-[ชื่อบริษัท]/</u> ทำ brief 1 หน้า ธุรกิจเขาทำอะไร ปัญหาที่น่าจะมี สินค้าเราตัวไหนตรง คำถามที่เขาน่าจะถาม 5 ข้อพร้อมคำตอบ และ 3 ประเด็นที่ควรพูดก่อน บันทึกไว้ในโฟลเดอร์ <u>ลูกค้า-[ชื่อบริษัท]/</u> เดิม</p></div>
   <div class="row"><i>ได้</i><p>อ่าน 5 นาทีก่อนเข้าห้องประชุม</p></div>
-  <div class="bot"><a class="smp" href="../../agent-usecases/sample-data/customer-profile.md" target="_blank" rel="noopener">customer-profile.md</a><button class="cp" type="button" data-copy="p4">คัดลอก</button></div>
+  <div class="bot"><a class="smp" href="../../playbook-samples/237-4/customer-info-and-products.zip" download>ข้อมูลลูกค้า + สินค้าเรา (zip)</a><button class="cp" type="button" data-copy="p4">คัดลอก</button></div>
 </div>
 <div class="card fx" id="k5" style="left:686px;top:634px">
   <div class="ch"><b>5</b><span>แชตลูกค้าที่ถามซ้ำ → FAQ 10 ข้อ</span></div>
   <div class="row"><i>ใส่</i><p>ก๊อปแชตหรืออีเมลที่ลูกค้าถามบ่อย 10–20 ข้อความ วางเป็นไฟล์ แล้วสร้างโฟลเดอร์ใหม่ชื่อ <u>FAQ-ลูกค้า/</u> ใส่ไว้ในนั้น · ข้อมูลสินค้าใน resources/</p></div>
   <div class="row pr"><i>สั่ง</i><p id="p5">อ่านคำถามลูกค้าในโฟลเดอร์ <u>FAQ-ลูกค้า/</u> จัดกลุ่มคำถามที่ซ้ำกัน เลือก 10 ข้อที่ถามบ่อยสุด เขียนคำตอบมาตรฐานจากข้อมูลใน resources/ โทนสุภาพเป็นกันเอง บันทึกไว้ในโฟลเดอร์ <u>FAQ-ลูกค้า/</u> เดิม</p></div>
   <div class="row"><i>ได้</i><p>FAQ ให้ทีมตอบเหมือนกันทุกคน แปะเพจได้</p></div>
-  <div class="bot"><a class="smp" href="../../agent-usecases/sample-data/complaints.csv" target="_blank" rel="noopener">complaints.csv + products.csv</a><button class="cp" type="button" data-copy="p5">คัดลอก</button></div>
+  <div class="bot"><a class="smp" href="../../playbook-samples/237-5/customer-questions-and-info.zip" download>แชต 20 ข้อความ + ข้อมูลร้าน (zip)</a><button class="cp" type="button" data-copy="p5">คัดลอก</button></div>
 </div>
 <div class="card fx" id="k6" style="left:1242px;top:634px">
   <div class="ch"><b>6</b><span>สินค้า + ความต้องการลูกค้า → จับคู่ให้</span></div>
   <div class="row"><i>ใส่</i><p>รายการสินค้า/บริการใน resources/ · ความต้องการของลูกค้า 1 ราย (จากแชตหรือแบบฟอร์ม) ใส่ input/</p></div>
   <div class="row pr"><i>สั่ง</i><p id="p6">อ่านความต้องการลูกค้าใน input/ เทียบกับสินค้าทั้งหมดใน resources/ เลือก 3 ตัวที่เหมาะที่สุด เรียงตามความเหมาะสม บอกเหตุผลและราคาแต่ละตัว แล้วร่างข้อความเสนอให้ลูกค้าสั้นๆ บันทึกใน output/</p></div>
   <div class="row"><i>ได้</i><p>ตอบลูกค้าได้ตรงความต้องการในไม่กี่นาที</p></div>
-  <div class="bot"><a class="smp" href="../../agent-usecases/sample-data/products.csv" target="_blank" rel="noopener">products.csv + customer-brief.md</a><button class="cp" type="button" data-copy="p6">คัดลอก</button></div>
+  <div class="bot"><a class="smp" href="../../playbook-samples/237-6/customer-need-and-products.zip" download>ความต้องการลูกค้า + สินค้า (zip)</a><button class="cp" type="button" data-copy="p6">คัดลอก</button></div>
 </div>
 
     <svg id="sk" viewBox="0 0 1920 1080" aria-hidden="true"></svg>

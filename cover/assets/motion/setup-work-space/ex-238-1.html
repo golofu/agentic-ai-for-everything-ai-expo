@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="th"><head><!-- space-skin --><script>// Inlined into each copied slide (scripts/apply-space-skin.py).
+// Slides keep their original light course colours for readability; the space theme lives in the viewer around them.
+// Copied pages keep a <base href> to their source site, so URL updates there would throw: swallow those.
+(() => {
+  for (const name of ["replaceState", "pushState"]) {
+    const original = history[name].bind(history);
+    history[name] = (...args) => { try { return original(...args); } catch (error) { return undefined; } };
+  }
+})();
+</script><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Excel รายรับรายจ่าย → สรุปเดือน</title><link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Itim&family=Manrope:wght@400;600;700;800&family=Noto+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="example.css"></head>
+<body><main id="stage"><div class="paper base"></div><div class="paper lines"></div><div class="paper margin"></div><div id="holes" aria-hidden="true"></div>
+<header><p class="eyebrow">AI WORK PLAYBOOK · ตัวอย่างจริง 238-1</p><h1>Excel รายรับรายจ่าย → สรุปเดือน</h1></header>
+<svg class="wire" viewBox="0 0 1920 1080" aria-hidden="true"><path id="route" d="M350 225 H900 H1510"/><path d="m880 213 20 12-20 12 M1490 213l20 12-20 12"/><g id="parcel"><rect x="-17" y="-14" width="34" height="28" rx="4"/><path d="M-17 -5H17 M0 -14V-5"/></g></svg>
+<div class="columns"><section class="panel input"><h2><b>1</b> ใส่</h2><p class="intro">Excel รายรับรายจ่ายเดือนนี้ (และเดือนก่อนถ้ามี) ใส่ input/</p><pre class="input-excerpt">วันที่ | ประเภท | หมวด
+05/09/2026 | รายจ่าย | ค่าเช่าร้าน
+05/09/2026 | รายจ่าย | ค่าน้ำค่าไฟ
+08/09/2026 | รายจ่าย | ต้นทุนสินค้า</pre><p class="source">income-expense-sep-oct-2026.xlsx · แถวแรก / 3 คอลัมน์แรก</p><div class="downloads input-downloads"><a href="../../playbook-samples/238-1/income-expense-sep-oct-2026.xlsx" download>income-expense-sep-oct-2026.xlsx</a></div></section>
+<section class="panel command"><h2><b>2</b> สั่ง</h2><p class="source">คำสั่งพร้อมคัดลอก</p><p id="prompt">อ่าน Excel ใน input/ สรุป รายได้รวม ค่าใช้จ่ายแยกหมวด กำไรเป็นเปอร์เซ็นต์ เทียบกับเดือนก่อน และบอกรายการที่เพิ่มหรือลดเกิน 20% บันทึกใน output/</p><button id="copy" type="button">คัดลอกคำสั่ง</button><p id="copy-status" role="status" aria-live="polite"></p><p class="source bottom-note">วางคำสั่งใน ChatGPT Work หรือ Claude Desktop หลังเลือกโฟลเดอร์งาน</p><svg id="cursor" viewBox="0 0 28 36" aria-hidden="true"><path d="M2 2L24 22H14L10 33Z"/></svg></section>
+<section class="panel output"><h2><b>3</b> ได้</h2><p class="source">ดูผลตัวอย่างจาก</p><div role="tablist" aria-label="ดูผลตัวอย่างจาก"><button id="tab-chatgpt" role="tab" aria-selected="true" aria-controls="chatgpt" data-app="chatgpt">ChatGPT</button><button id="tab-claude" role="tab" aria-selected="false" aria-controls="claude" data-app="claude" tabindex="-1">Claude</button></div><section class="result" id="chatgpt" role="tabpanel" aria-labelledby="tab-chatgpt" >
+ <p class="source">คัดจาก สรุปรายรับรายจ่าย-ตุลาคม-2026.md</p>
+ <pre class="output-excerpt">หน่วย: บาท
+เปรียบเทียบยอดรวมรายเดือนของแต่ละหมวด ทั้งรายรับและรายจ่าย โดยใช้เกณฑ์มากกว่า 20%
+- กำไร = รายรับรวม − รายจ่ายรวม ตามรายการในไฟล์
+- อัตรากำไร = กำไร ÷ รายรับรวม × 100
+- เปอร์เซ็นต์เปลี่ยนแปลง = (ยอดตุลาคม − ยอดกันยายน) ÷ ยอดกันยายน × 100</pre>
+ <button class="shot" type="button" data-image="../../playbook-examples/238-1/chatgpt/chat.jpg" aria-label="ขยายภาพแชต chatgpt"><img src="../../playbook-examples/238-1/chatgpt/chat.jpg" alt="ภาพผลการรันจริง chatgpt 238-1"><span>ภาพแชตจริง · กดขยาย</span></button>
+ <div class="downloads output-downloads"><a href="../../playbook-examples/238-1/chatgpt/%E0%B8%AA%E0%B8%A3%E0%B8%B8%E0%B8%9B%E0%B8%A3%E0%B8%B2%E0%B8%A2%E0%B8%A3%E0%B8%B1%E0%B8%9A%E0%B8%A3%E0%B8%B2%E0%B8%A2%E0%B8%88%E0%B9%88%E0%B8%B2%E0%B8%A2-%E0%B8%95%E0%B8%B8%E0%B8%A5%E0%B8%B2%E0%B8%84%E0%B8%A1-2026.md" download>สรุปรายรับรายจ่าย-ตุลาคม-2026.md</a></div><button class="copy-result" type="button" data-url="../../playbook-examples/238-1/chatgpt/%E0%B8%AA%E0%B8%A3%E0%B8%B8%E0%B8%9B%E0%B8%A3%E0%B8%B2%E0%B8%A2%E0%B8%A3%E0%B8%B1%E0%B8%9A%E0%B8%A3%E0%B8%B2%E0%B8%A2%E0%B8%88%E0%B9%88%E0%B8%B2%E0%B8%A2-%E0%B8%95%E0%B8%B8%E0%B8%A5%E0%B8%B2%E0%B8%84%E0%B8%A1-2026.md">คัดลอกผลลัพธ์</button><p class="result-status" role="status" aria-live="polite"></p></section><section class="result" id="claude" role="tabpanel" aria-labelledby="tab-claude" hidden>
+ <p class="source">คัดจาก สรุปรายได้-ค่าใช้จ่าย-ต.ค.-2026.xlsx · แถวแรก / บางคอลัมน์</p>
+ <pre class="output-excerpt">รายได้
+รายการ | กันยายน 2026 | ตุลาคม 2026
+ขายหน้าร้าน | 148200 | 139800
+ขายออนไลน์ | 196400 | 241700</pre>
+ <button class="shot" type="button" data-image="../../playbook-examples/238-1/claude/chat.jpg" aria-label="ขยายภาพแชต claude"><img src="../../playbook-examples/238-1/claude/chat.jpg" alt="ภาพผลการรันจริง claude 238-1"><span>ภาพแชตจริง · กดขยาย</span></button>
+ <div class="downloads output-downloads"><a href="../../playbook-examples/238-1/claude/%E0%B8%AA%E0%B8%A3%E0%B8%B8%E0%B8%9B%E0%B8%A3%E0%B8%B2%E0%B8%A2%E0%B9%84%E0%B8%94%E0%B9%89-%E0%B8%84%E0%B9%88%E0%B8%B2%E0%B9%83%E0%B8%8A%E0%B9%89%E0%B8%88%E0%B9%88%E0%B8%B2%E0%B8%A2-%E0%B8%95.%E0%B8%84.-2026.md" download>สรุปรายได้-ค่าใช้จ่าย-ต.ค.-2026.md</a><a href="../../playbook-examples/238-1/claude/%E0%B8%AA%E0%B8%A3%E0%B8%B8%E0%B8%9B%E0%B8%A3%E0%B8%B2%E0%B8%A2%E0%B9%84%E0%B8%94%E0%B9%89-%E0%B8%84%E0%B9%88%E0%B8%B2%E0%B9%83%E0%B8%8A%E0%B9%89%E0%B8%88%E0%B9%88%E0%B8%B2%E0%B8%A2-%E0%B8%95.%E0%B8%84.-2026.xlsx" download>สรุปรายได้-ค่าใช้จ่าย-ต.ค.-2026.xlsx</a></div><button class="copy-result" type="button" data-url="../../playbook-examples/238-1/claude/%E0%B8%AA%E0%B8%A3%E0%B8%B8%E0%B8%9B%E0%B8%A3%E0%B8%B2%E0%B8%A2%E0%B9%84%E0%B8%94%E0%B9%89-%E0%B8%84%E0%B9%88%E0%B8%B2%E0%B9%83%E0%B8%8A%E0%B9%89%E0%B8%88%E0%B9%88%E0%B8%B2%E0%B8%A2-%E0%B8%95.%E0%B8%84.-2026.md">คัดลอกผลลัพธ์</button><p class="result-status" role="status" aria-live="polite"></p></section></section></div>
+<footer><span>ทั้งคู่สรุปรายได้ 480,000 ค่าใช้จ่าย 433,000 กำไร 47,000 บาท</span><button id="replay" type="button">เล่นใหม่</button></footer></main>
+<dialog id="image-dialog"><button id="close-dialog" autofocus type="button">ปิดภาพ</button><img alt="ภาพแชตจริงแบบขยาย"></dialog>
+<script src="example.js"></script></body></html>

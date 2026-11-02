@@ -12,7 +12,7 @@
 </script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>โฟลเดอร์ตัวอย่างจริงใน Windows หลังรัน Prompt สร้าง Workspace</title>
+<title>โต๊ะทำงานของจริงใน Windows หลังรัน Prompt สร้าง Workspace</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Itim&family=Manrope:wght@400;600;700;800&family=Noto+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -52,7 +52,7 @@ body{font-family:'Manrope','Noto Sans Thai',sans-serif;color:var(--ink);-webkit-
 /* real Explorer picture (taped photo) with hover hotspots */
 .photo{position:absolute;z-index:3;padding:12px 12px 14px;background:#fff;box-shadow:0 12px 30px rgba(40,30,80,.16),0 1px 3px rgba(40,30,80,.18);opacity:0;transform:translateY(-46px) rotate(calc(var(--r,0deg) + 6deg)) scale(1.05);transition:opacity 0.35s ease,transform 0.63s cubic-bezier(.22,1,.36,1)}
 .photo.on{opacity:1;transform:rotate(var(--r,0deg))}
-.photo .img{position:relative;display:block;width:1000px;height:619px;background:url("media/workspace-explorer-v2.png") no-repeat 0 0/1000px 619px}
+.photo .img{position:relative;display:block;width:1000px;height:580px;background:url("media/workspace-explorer.png") no-repeat 0 0/1000px 580px}
 .photo .tape{position:absolute;z-index:2;width:150px;height:40px;left:50%;top:-20px;margin-left:-75px;background:rgba(238,234,255,.85);border-left:2px dashed rgba(141,128,202,.4);border-right:2px dashed rgba(141,128,202,.4);transform:rotate(-5deg);box-shadow:0 1px 2px rgba(40,30,80,.12)}
 .photo svg.pframe{position:absolute;left:-14px;top:-14px;overflow:visible;pointer-events:none}
 .hs{position:absolute;cursor:pointer;border-radius:6px;transition:background .2s,box-shadow .2s}
@@ -84,31 +84,30 @@ body{font-family:'Manrope','Noto Sans Thai',sans-serif;color:var(--ink);-webkit-
   <div class="paper" id="holes"></div>
   <svg class="paper noise" viewBox="0 0 1920 1080" preserveAspectRatio="none" aria-hidden="true"><filter id="pn"><feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="3" stitchTiles="stitch"/><feColorMatrix values="0 0 0 0 .36  0 0 0 0 .32  0 0 0 0 .52  0 0 0 .075 0"/></filter><rect width="1920" height="1080" filter="url(#pn)"/></svg>
   <div id="scene">
-<div class="t ttl fx" id="ttl">โฟลเดอร์ตัวอย่างจริง <span class="q">หลังรัน Prompt สร้าง Workspace</span></div>
-<div class="t sub fl" id="sub">ภาพหน้าจอ Windows Explorer จริง · องค์กรตัวอย่าง Gen AI Space · <b>ชี้แต่ละรายการเพื่อดูคำอธิบาย</b></div>
-<div class="t foot fl" id="foot">CODEX + CLAUDE · WORKSPACE</div>
+<div class="t ttl fx" id="ttl">โต๊ะทำงานของจริง <span class="q">หลังรัน Prompt สร้าง Workspace</span></div>
+<div class="t sub fl" id="sub">Prompt หน้าที่แล้วสร้างให้แบบนี้ (ตัวอย่าง: องค์กรชื่อ Gen AI Space) · <b>เอาเมาส์ไปวางที่บรรทัดไหน คำอธิบายอันนั้นจะสว่างขึ้น</b></div>
+<div class="t foot fl" id="foot">CHATGPT WORK + CLAUDE · WORKSPACE</div>
 
 <div class="photo" id="ph" style="left:130px;top:250px;--r:-0.6deg">
   <span class="tape"></span>
-  <div class="img" id="img" role="img" aria-label="ภาพหน้าจอ Windows Explorer จริง: input output resources skill AGENTS.md CLAUDE.md และ START-HERE.md">
-    <i class="hs" data-k="path" style="left:0px;top:5px;width:960px;height:50px"></i>
-    <i class="hs" data-k="input" style="left:15px;top:206px;width:960px;height:35px"></i>
-    <i class="hs" data-k="output" style="left:15px;top:244px;width:960px;height:35px"></i>
-    <i class="hs" data-k="res" style="left:15px;top:281px;width:960px;height:35px"></i>
-    <i class="hs" data-k="skill" style="left:15px;top:319px;width:960px;height:35px"></i>
-    <i class="hs" data-k="plan" style="left:15px;top:356px;width:960px;height:35px"></i>
-    <i class="hs" data-k="id" style="left:15px;top:394px;width:960px;height:35px"></i>
-    <i class="hs" data-k="id" style="left:15px;top:431px;width:960px;height:35px"></i>
+  <div class="img" id="img" role="img" aria-label="หน้าต่าง Windows Explorer ของโฟลเดอร์ gen-ai-space มี input, output, resources, skill, AGENTS.md และ CLAUDE.md">
+    <i class="hs" data-k="path"   style="left:0;top:52px;width:630px;height:50px"></i>
+    <i class="hs" data-k="input"  style="left:10px;top:205px;width:770px;height:35px"></i>
+    <i class="hs" data-k="output" style="left:10px;top:240px;width:770px;height:35px"></i>
+    <i class="hs" data-k="res"    style="left:10px;top:274px;width:770px;height:35px"></i>
+    <i class="hs" data-k="skill"  style="left:10px;top:309px;width:770px;height:35px"></i>
+    <i class="hs" data-k="id"     style="left:10px;top:343px;width:770px;height:35px"></i>
+    <i class="hs" data-k="plan"   style="left:10px;top:378px;width:770px;height:35px"></i>
   </div>
 </div>
 
-<div class="co fx" data-k="path" id="c1" style="top:236px"><b>โต๊ะอยู่ที่ไหน <i>ดูตรงนี้</i></b><span>ตั้งชื่อตามองค์กร แผนก หรือโครงการ · เปิดโฟลเดอร์นี้ในเครื่องมือ AI ที่อ่านไฟล์ได้</span></div>
+<div class="co fx" data-k="path" id="c1" style="top:236px"><b>โต๊ะอยู่ที่ไหน <i>ดูตรงนี้</i></b><span>Documents › gen-ai-space (ตั้งชื่อตามองค์กร) · ตอนเปิด ChatGPT Work หรือ Claude ให้เลือกโฟลเดอร์นี้</span></div>
 <div class="co fx" data-k="input" id="c2" style="top:340px"><b>ลิ้นชัก <code>input/</code> ไฟล์ต้นฉบับของงานครั้งนี้</b><span>วาง Brief, PDF, Word, Excel ที่จะสั่งทำ · AI อ่านอย่างเดียว ห้ามแก้ ย้าย หรือลบ</span></div>
-<div class="co fx" data-k="output" id="c3" style="top:444px"><b>ลิ้นชัก <code>output/</code> ผลงานใหม่ทั้งหมด</b><span>เก็บผลงานใหม่ ไม่เขียนทับชื่อเดิม · ตรวจเนื้อหาและรูปแบบก่อนส่ง</span></div>
+<div class="co fx" data-k="output" id="c3" style="top:444px"><b>ลิ้นชัก <code>output/</code> ผลงานใหม่ทั้งหมด</b><span>ที่เดียวที่ AI เขียนได้ ไฟล์ต้นฉบับจึงไม่โดนทับ · ชื่อซ้ำต้องถามก่อนเสมอ</span></div>
 <div class="co fx" data-k="res" id="c4" style="top:548px"><b>ลิ้นชัก <code>resources/</code> คลังความรู้องค์กร</b><span>Company Profile, Brand, ราคา, Template, Case Study · ใช้ซ้ำได้ทุกงาน ไม่ต้องแนบใหม่</span></div>
-<div class="co fx" data-k="skill" id="c5" style="top:652px"><b>ลิ้นชัก <code>skill/</code> Local Skill ของเรา</b><span>มีแค่ README รอผู้เรียนใส่ Skill เอง · เรียกโดยสั่งให้อ่านไฟล์ตาม path</span></div>
-<div class="co fx star" data-k="plan" id="c6" style="top:756px"><b><code>AGENTS.md</code> <i>อ่านก่อนทุกครั้ง</i></b><span>กติกากลางที่เดียว · งาน ข้อมูล ผลงาน วิธีตอบ และขอบเขตการอนุญาต</span></div>
-<div class="co fx" data-k="id" id="c7" style="top:860px"><b>START-HERE.md + CLAUDE.md</b><span>คู่มือแรกสำหรับคน · CLAUDE.md มี @AGENTS.md เพื่ออ่านกติกาเดียวกัน</span></div>
+<div class="co fx" data-k="skill" id="c5" style="top:652px"><b>ลิ้นชัก <code>skill/</code> Local Skill ของเรา</b><span>พิมพ์ชื่อ skill แล้ว AI อ่าน SKILL.md ทำตามทันที · ไม่ใช่ที่เก็บไฟล์งาน</span></div>
+<div class="co fx star" data-k="plan" id="c6" style="top:756px"><b><code>CLAUDE.md</code> <i>อ่านก่อนทุกครั้ง</i></b><span>แผนผังโต๊ะ + กฎ 9 ข้อ + ข้อมูลองค์กร มาตรฐานเอกสาร และสไตล์การตอบ · Claude เปิดไฟล์นี้ก่อนเริ่มงาน</span></div>
+<div class="co fx" data-k="id" id="c7" style="top:860px"><b><code>AGENTS.md</code> สำเนาของ CLAUDE.md</b><span>เหมือนกันทุกตัวอักษร · ChatGPT Work เปิดไฟล์นี้ก่อนเริ่มงาน แก้ไฟล์หนึ่งต้องแก้อีกไฟล์ด้วย</span></div>
 
     <svg id="sk" viewBox="0 0 1920 1080" aria-hidden="true"></svg>
   </div>
@@ -164,24 +163,23 @@ function play(freezeAt){resetAll();
  INSTANT=false;
  requestAnimationFrame(()=>requestAnimationFrame(()=>{stage.classList.remove('noanim');
   TL.forEach(([t,f])=>timers.push(setTimeout(f,t*1000/SPEED)));}));}
-function setupPhoto(){const ph=document.getElementById('ph'),fw=1000+24,fh=619+26;
+function setupPhoto(){const ph=document.getElementById('ph'),fw=1000+24,fh=531+26;
  const sv=el('svg',{class:'pframe',width:fw+28,height:fh+28,viewBox:'0 0 '+(fw+28)+' '+(fh+28)},ph);ph.insertBefore(sv,ph.firstChild);
  seed(90);P(rectD(6,6,fw+16,fh+16,2.2),{g:sv,w:3,c:'#5d518e'});P(rectD(8,8,fw+12,fh+12,2.6),{g:sv,w:1.6,c:'#8d80ca',op:.6});}
 document.getElementById('replay').addEventListener('click',()=>play(null));
 function start(){const go=()=>{if(start.done)return;start.done=1;setupPhoto();build();play(RM?1e9:QT);};(document.fonts&&document.fonts.ready?document.fonts.ready:Promise.resolve()).then(go);setTimeout(go,2500);}
 function head(){G('uline');P(lineD(164,176,1120,182,2,.004),{g:document.getElementById('uline'),c:'#f05a28',w:6});}
 
-/* Actual Explorer capture region: 750x465 scaled to 1000x619; navigation pane excluded. */
+/* photo origin on stage = (130+12, 250+12). image is 1000x580 (k = 1000/810 of the 810x470 screenshot) */
 const OX=142,OY=262;
 const ARROWS=[
- ['path',1205,283,1100,292],
- ['input',1205,387,1100,485],
- ['output',1205,491,1100,524],
- ['res',1205,595,1100,561],
- ['skill',1205,699,1100,599],
- ['plan',1205,803,1100,636],
- ['id',1205,907,1100,674],
- ['id',1205,907,1100,711]
+ ['path',   1205, 283, OX+615, OY+78],
+ ['input',  1205, 387, OX+778, OY+222],
+ ['output', 1205, 491, OX+778, OY+257],
+ ['res',    1205, 595, OX+778, OY+291],
+ ['skill',  1205, 699, OX+778, OY+326],
+ ['plan',   1205, 803, OX+778, OY+395],
+ ['id',     1205, 907, OX+778, OY+360]
 ];
 function build(){seed(232);head();
  ARROWS.forEach(([k,x1,y1,x2,y2],i)=>{const g=sArrow(x1,y1,x2+8,y2,{id:'ar-'+k+'-'+i,c:k==='plan'?'#f05a28':'#5d518e',w:3.2,head:16,bend:(y1-y2)*.18});g.setAttribute('data-k',k);g.style.transition='opacity .2s';});
