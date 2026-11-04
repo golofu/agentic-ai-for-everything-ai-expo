@@ -562,12 +562,25 @@
   @keyframes pf2-show-up { 0%, 44% { opacity: 0; } 46%, 56% { opacity: 1; } 58%, 100% { opacity: 0; } }
   @keyframes pf2-upload { 0%, 45% { transform: scaleX(0); } 56%, 100% { transform: scaleX(1); } }
   @keyframes pf2-live { 0%, 57% { opacity: 0; transform: translateY(10px) scale(.96); } 63%, 92% { opacity: 1; transform: none; } 97%, 100% { opacity: 0; transform: none; } }
+  /* 2026-11-04: publish slide plays ONCE and stays on the finished site (the 6.5s loop looked like flicker) */
+  .slide.on .pf2-folder { animation: pf2-drag1 2.6s var(--ease) .9s 1 both; }
+  .slide.on .pf2-zone { animation: pf2-zone1 2.6s linear .9s 1 both; }
+  .slide.on .pf2-zone em { animation: pf2-show1 2.6s linear .9s 1 both; }
+  .slide.on .pf2-zone em::after { animation: pf2-upload1 2.6s linear .9s 1 both; }
+  .slide.on .pf2-live { animation: pf2-live1 2.6s var(--ease) .9s 1 both; }
+  @keyframes pf2-drag1 { 0%, 15% { transform: none; opacity: 1; } 60% { transform: translate(292px, 10px) rotate(-4deg); opacity: 1; } 72% { transform: translate(292px, 14px) scale(.9); opacity: 1; } 85%, 100% { transform: translate(292px, 16px) scale(.55); opacity: 0; } }
+  @keyframes pf2-zone1 { 0%, 35% { opacity: 1; border-color: #cfc8ec; background: transparent; } 50%, 80% { opacity: 1; border-color: var(--violet); background: var(--lavender); } 90%, 100% { opacity: 0; border-color: var(--violet); background: var(--lavender); } }
+  @keyframes pf2-show1 { 0%, 70% { opacity: 0; } 72%, 88% { opacity: 1; } 92%, 100% { opacity: 0; } }
+  @keyframes pf2-upload1 { 0%, 70% { transform: scaleX(0); } 88%, 100% { transform: scaleX(1); } }
+  @keyframes pf2-live1 { 0%, 88% { opacity: 0; transform: translateY(10px) scale(.96); } 100% { opacity: 1; transform: none; } }
   .pf2-steps { display: flex; flex-direction: column; gap: 9px; }
   .pf2-step { display: grid; grid-template-columns: 40px 1fr; gap: 14px; align-items: center; padding: 10px 16px; border-radius: 20px; background: rgba(255,255,255,.6); border: 1px solid rgba(255,255,255,.92); font: 600 18px/1.4 var(--body); opacity: .5; }
   .pf2-step > i { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; background: #1d2230; color: #fff; font: 800 16px var(--display); font-style: normal; }
   .pf2-step small { display: block; font: 500 13.5px var(--body); color: var(--muted); }
   .pf2-step code { font: 700 15.5px "Consolas", monospace; color: var(--violet-deep); }
   .slide.on .pf2-step { animation: 6.5s var(--ease) .9s infinite both; }
+  /* steps stay still: all three readable, no looping highlight */
+  .slide.on .pf2-step { animation: none !important; opacity: 1; background: #fff; }
   .slide.on .pf2-step:nth-child(1) { animation-name: pf2-st1; }
   .slide.on .pf2-step:nth-child(2) { animation-name: pf2-st2; }
   .slide.on .pf2-step:nth-child(3) { animation-name: pf2-st3; }
