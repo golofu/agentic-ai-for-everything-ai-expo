@@ -149,7 +149,8 @@
     .slide.on .vs .arrow { animation: nudge 1.6s ease-in-out infinite 1s; }
     @keyframes nudge { 50% { transform: translateX(10px); } }
     /* 2026-11-04: slide 2 stays still (Boss: the looping bars/tip/cursor/arrow looked like flicker) */
-    .mock.live .bars span, .mock.live .tip, .mock.live .cursor, .slide.on .vs .arrow { animation: none !important; }
+    .mock.live .bars span, .mock.live .tip, .mock.live .cursor { animation: none !important; }
+    .slide.on .vs .arrow { animation: pop .85s var(--ease) both; animation-delay: calc(var(--i, 0) * 85ms + 180ms); }
     .mock.live .cursor { transform: translate(110px,-20px); }
     .tagrow { display: flex; gap: 8px; margin-top: 14px; flex-wrap: wrap; }
     .tagrow span { font-size: 14px; font-weight: 600; background: var(--lavender); color: var(--violet-deep); border-radius: 999px; padding: 4px 12px; }
