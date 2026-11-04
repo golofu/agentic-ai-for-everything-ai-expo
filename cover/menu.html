@@ -1960,6 +1960,14 @@
       .viewer .slide-frame.content-page.fit-169 { width: min(100%, calc((100svh - 140px) * 16 / 9)); height: auto; max-height: none; aspect-ratio: 16 / 9; }
       .viewer:fullscreen .slide-frame.content-page.fit-169 { width: min(100%, calc((100svh - 86px) * 16 / 9)); }
       .slide-frame.fit-169 .profile-site iframe { background: #0b0d14; }
+      /* Fullscreen on a 16:9 Creative page: the top bar floats and hides, so the page fills a 16:9 projector exactly.
+         Move the mouse to the top edge to bring the bar back. */
+      .viewer:fullscreen:has(.slide-frame.fit-169) { grid-template-rows: minmax(0, 1fr); }
+      .viewer:fullscreen:has(.slide-frame.fit-169) .viewer-bar { position: absolute; z-index: 20; top: 0; left: 0; right: 0; opacity: 0; transition: opacity .25s; }
+      .viewer:fullscreen:has(.slide-frame.fit-169) .viewer-bar:hover,
+      .viewer:fullscreen:has(.slide-frame.fit-169) .viewer-bar:focus-within { opacity: 1; }
+      .viewer:fullscreen:has(.slide-frame.fit-169) .stage { padding: 0; }
+      .viewer:fullscreen .slide-frame.content-page.fit-169 { width: min(100%, calc(100svh * 16 / 9)); border-radius: 0; }
     }
     /* Clip pages: smaller heading and padding so the recording itself is big.
        Desktop only: the side padding leaves room for the floating arrows, and phones keep the one-column step list. */
