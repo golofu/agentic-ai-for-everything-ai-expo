@@ -1955,6 +1955,12 @@
       .thumbnail-bar { min-height: 62px; padding-block: 6px; }
       .thumb { flex-basis: 86px; }
     }
+    /* 2026-11-04: 16:9 Creative pages fill the frame edge to edge (Boss: no white bands at the sides) */
+    @media (min-width: 761px) {
+      .viewer .slide-frame.content-page.fit-169 { width: min(100%, calc((100svh - 140px) * 16 / 9)); height: auto; max-height: none; aspect-ratio: 16 / 9; }
+      .viewer:fullscreen .slide-frame.content-page.fit-169 { width: min(100%, calc((100svh - 86px) * 16 / 9)); }
+      .slide-frame.fit-169 .profile-site iframe { background: #0b0d14; }
+    }
     /* Clip pages: smaller heading and padding so the recording itself is big.
        Desktop only: the side padding leaves room for the floating arrows, and phones keep the one-column step list. */
     .install-video.wide { gap: 6px; }
@@ -3634,6 +3640,8 @@
       }
       lessonContent.hidden = false;
       slideFrame.classList.add("content-page");
+      // Creative course pages are a fixed 16:9 stage: size the frame to 16:9 so no white bands sit beside them
+      slideFrame.classList.toggle("fit-169", page.type === "profile-site" && /^creative\/menu\.html/.test(page.href || ""));
       if (page.type === "agent-usecases") lessonContent.scrollTop = 0;
       if (page.type.startsWith("dashboard-")) lessonContent.scrollTop = 0;
     }
@@ -3657,6 +3665,7 @@
       lessonContent.classList.remove("install-videos-content");
       lessonContent.classList.remove("recap-video-content");
       slideFrame.classList.remove("content-page");
+      slideFrame.classList.remove("fit-169");
     }
 
     function startOverlayVideo(file) {
