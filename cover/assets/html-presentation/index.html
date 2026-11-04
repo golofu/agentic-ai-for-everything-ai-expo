@@ -1171,11 +1171,11 @@
       <div class="glass pf2-v-side" data-a="right">
         <small>ในคลิปนี้</small>
         <ol class="pf2-v-steps">
-          <li><i>1</i><span>ใส่ไฟล์ข้อมูลและรูป reference<em><code>input/</code></em></span></li>
-          <li><i>2</i><span>วาง Prompt 4 บรรทัด<em>Claude สร้างเว็บให้ทั้งหน้า</em></span></li>
-          <li><i>3</i><span>เปิดไฟล์ที่ได้ในเบราว์เซอร์<em><code>output/portfolio/index.html</code></em></span></li>
+          <li data-t="0" tabindex="0" role="button"><i>1</i><span>ใส่ไฟล์ข้อมูลและรูป reference<em><code>input/</code></em></span></li>
+          <li data-t="15" tabindex="0" role="button"><i>2</i><span>วาง Prompt 4 บรรทัด<em>Claude สร้างเว็บให้ทั้งหน้า</em></span></li>
+          <li data-t="57.6" tabindex="0" role="button"><i>3</i><span>เปิดไฟล์ที่ได้ในเบราว์เซอร์<em><code>output/portfolio/index.html</code></em></span></li>
         </ol>
-        <div class="pf2-v-note">กดหยุดคลิปได้ทุกจังหวะ แล้วทำตามไปทีละขั้น</div>
+        <div class="pf2-v-note">กดที่ขั้นตอนเพื่อข้ามไปช่วงนั้นในคลิป</div>
         <a class="pf2-ex" href="../playbook-examples/portfolio/claude/index.html" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;margin-top:12px;padding:9px 16px;border-radius:999px;background:#1d2230;color:#fff;font-weight:700;font-size:14px;text-decoration:none">เปิดพอร์ตที่ Claude ทำในคลิป ↗</a>
       </div>
     </div>
@@ -1681,5 +1681,26 @@
   });
 })();
 </script>
-</body>
+<style id="pf2-seek-style">
+  .pf2-v-steps li[data-t]{cursor:pointer;border-radius:12px;transition:background .2s}
+  .pf2-v-steps li[data-t]:hover{background:rgba(93,81,142,.08)}
+  .pf2-v-steps li[data-t].on i{background:#f05a28;color:#fff}
+</style>
+<script id="pf2-seek">
+(function () {
+  // Slide 24: click a step in the side list to jump the demo clip to that part (times match howto-chapters.js)
+  var v = document.getElementById('pf2Video');
+  if (!v) return;
+  var items = [].slice.call(document.querySelectorAll('.pf2-v-steps li[data-t]'));
+  function jump(li) { v.currentTime = parseFloat(li.dataset.t) + 0.05; v.play().catch(function () {}); }
+  items.forEach(function (li) {
+    li.addEventListener('click', function (e) { e.stopPropagation(); jump(li); });
+    li.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); e.stopPropagation(); jump(li); } });
+  });
+  v.addEventListener('timeupdate', function () {
+    var at = 0; items.forEach(function (li, i) { if (v.currentTime + 0.1 >= parseFloat(li.dataset.t)) at = i; });
+    items.forEach(function (li, i) { li.classList.toggle('on', i === at); });
+  });
+})();
+</script></body>
 </html>
