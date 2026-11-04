@@ -987,6 +987,10 @@
     .install-video { display: flex; flex-direction: column; align-items: center; gap: 10px; height: 100%; aspect-ratio: 9 / 17.4; max-width: 44vw; min-height: 0; margin: 0; }
     .install-video h3 { flex: none; margin: 0; font-family: var(--display); font-size: clamp(1.1rem, 1.8vw, 1.7rem); line-height: 1.3; color: var(--ink); }
     .install-video video { width: 100%; height: auto; aspect-ratio: 9 / 16; object-fit: contain; border-radius: 18px; background: #f4f4f4; box-shadow: 0 14px 40px rgba(40,30,80,.14); }
+    /* real Claude Desktop screen recordings (howto-*.mp4) are landscape */
+    .install-video.wide { aspect-ratio: auto; width: 100%; max-width: 100%; }
+    .install-video.wide h3 { color: #2a2927; }
+    .install-video.wide video { flex: 1; min-height: 0; width: 100%; height: auto; aspect-ratio: auto; border-radius: 12px; background: #fff; }
     .profile-site { position: relative; width: 100%; height: 100%; }
     .profile-site iframe { width: 100%; height: 100%; border: 0; display: block; background: white; }
     .profile-site-open {
@@ -2533,9 +2537,18 @@
           { type: "slide", page: 165 },
           { type: "slide", page: 172 },
           { type: "advance-prompt", number: 2, label: "Prompt สร้าง Workspace" },
+          { type: "install-videos", label: "วิธีทำ · Prompt สร้าง Workspace", title: "ทำจริงใน Claude Desktop · สร้าง Workspace", file: "howto-setup-workspace", aria: "คลิปอัดหน้าจอจริง สร้าง Workspace ใน Claude Desktop" },
           { type: "slide", page: 232 },
           { type: "slide", page: 233 },
-          { type: "slide", page: 234 }
+          { type: "install-videos", label: "วิธีทำ · งานชิ้นแรกใน 5 นาที", title: "ทำจริงใน Claude Desktop · งานชิ้นแรก", file: "howto-setup-firstjob", aria: "คลิปอัดหน้าจอจริง งานชิ้นแรกใน Claude Desktop" },
+          { type: "slide", page: 234 },
+          { type: "install-videos", label: "ใบที่ 1 · จัดระเบียบเอกสาร", title: "ทำจริงใน Claude Desktop · ใบที่ 1 จัดระเบียบเอกสาร", file: "howto-setup-organize", aria: "คลิปอัดหน้าจอจริง จัดระเบียบเอกสาร" },
+          { type: "install-videos", label: "ใบที่ 2 · บิล/สลิป → Excel", title: "ทำจริงใน Claude Desktop · ใบที่ 2 บิล/สลิป → Excel", file: "howto-setup-slips", aria: "คลิปอัดหน้าจอจริง รูปบิลเป็น Excel" },
+          { type: "install-videos", label: "ใบที่ 3 · โน้ตลายมือ → ข้อความ", title: "ทำจริงใน Claude Desktop · ใบที่ 3 โน้ตลายมือ → ข้อความ", file: "howto-setup-handwriting", aria: "คลิปอัดหน้าจอจริง ถอดโน้ตลายมือ" },
+          { type: "install-videos", label: "ใบที่ 4 · เสียง → ข้อความ", title: "ทำจริงใน Claude Desktop · ใบที่ 4 เสียง → ข้อความ", file: "howto-setup-audio", aria: "คลิปอัดหน้าจอจริง ถอดเสียง" },
+          { type: "install-videos", label: "ใบที่ 5 · ประกาศ → ปฏิทิน", title: "ทำจริงใน Claude Desktop · ใบที่ 5 ประกาศ → ปฏิทิน", file: "howto-setup-calendar", aria: "คลิปอัดหน้าจอจริง ลงปฏิทิน" },
+          { type: "install-videos", label: "ใบที่ 6 · แปลงไฟล์", title: "ทำจริงใน Claude Desktop · ใบที่ 6 แปลงไฟล์", file: "howto-setup-convert", aria: "คลิปอัดหน้าจอจริง แปลงไฟล์" },
+          { type: "install-videos", label: "ใบที่ 7 · รวมหลายไฟล์", title: "ทำจริงใน Claude Desktop · ใบที่ 7 รวมหลายไฟล์", file: "howto-setup-merge", aria: "คลิปอัดหน้าจอจริง รวมไฟล์" }
         ]
       },
       "dept-usecases": {
@@ -2556,12 +2569,14 @@
             "motion": "setup-work-space/ex-236-1.html",
             "label": "รูปสินค้า → แคปชันโพสต์"
           },
+          { "type": "install-videos", "label": "วิธีทำ · รูปสินค้า → แคปชันโพสต์", "title": "วิธีทำใน Claude Desktop", "file": "howto-236-1", "aria": "คลิปสอนวิธีทำ รูปสินค้า → แคปชันโพสต์ ใน Claude Desktop" },
           {
             "type": "slide",
             "page": 236,
             "motion": "setup-work-space/ex-236-2.html",
             "label": "รีวิวลูกค้า → สิ่งที่ต้องแก้"
           },
+          { "type": "install-videos", "label": "วิธีทำ · รีวิวลูกค้า → สิ่งที่ต้องแก้", "title": "วิธีทำใน Claude Desktop", "file": "howto-236-2", "aria": "คลิปสอนวิธีทำ รีวิวลูกค้า → สิ่งที่ต้องแก้ ใน Claude Desktop" },
           {
             "type": "slide",
             "page": 237
@@ -2572,12 +2587,14 @@
             "motion": "setup-work-space/ex-237-1.html",
             "label": "ข้อความลูกค้า → ร่างตอบ 3 แบบ"
           },
+          { "type": "install-videos", "label": "วิธีทำ · ข้อความลูกค้า → ร่างตอบ 3 แบบ", "title": "วิธีทำใน Claude Desktop", "file": "howto-237-1", "aria": "คลิปสอนวิธีทำ ข้อความลูกค้า → ร่างตอบ 3 แบบ ใน Claude Desktop" },
           {
             "type": "slide",
             "page": 237,
             "motion": "setup-work-space/ex-237-3.html",
             "label": "รายชื่อลูกค้า → ใครหายไปนาน"
           },
+          { "type": "install-videos", "label": "วิธีทำ · รายชื่อลูกค้า → ใครหายไปนาน", "title": "วิธีทำใน Claude Desktop", "file": "howto-237-3", "aria": "คลิปสอนวิธีทำ รายชื่อลูกค้า → ใครหายไปนาน ใน Claude Desktop" },
           {
             "type": "slide",
             "page": 238
@@ -2588,12 +2605,14 @@
             "motion": "setup-work-space/ex-238-1.html",
             "label": "Excel รายรับรายจ่าย → สรุปเดือน"
           },
+          { "type": "install-videos", "label": "วิธีทำ · Excel รายรับรายจ่าย → สรุปเดือน", "title": "วิธีทำใน Claude Desktop", "file": "howto-238-1", "aria": "คลิปสอนวิธีทำ Excel รายรับรายจ่าย → สรุปเดือน ใน Claude Desktop" },
           {
             "type": "slide",
             "page": 238,
             "motion": "setup-work-space/ex-238-2.html",
             "label": "ใบเสนอราคา 3 เจ้า → ตารางเทียบ"
           },
+          { "type": "install-videos", "label": "วิธีทำ · ใบเสนอราคา 3 เจ้า → ตารางเทียบ", "title": "วิธีทำใน Claude Desktop", "file": "howto-238-2", "aria": "คลิปสอนวิธีทำ ใบเสนอราคา 3 เจ้า → ตารางเทียบ ใน Claude Desktop" },
           {
             "type": "slide",
             "page": 239
@@ -2604,12 +2623,14 @@
             "motion": "setup-work-space/ex-239-2.html",
             "label": "ยอดขาย 8 สัปดาห์ → รายการสั่งของ"
           },
+          { "type": "install-videos", "label": "วิธีทำ · ยอดขาย 8 สัปดาห์ → รายการสั่งของ", "title": "วิธีทำใน Claude Desktop", "file": "howto-239-2", "aria": "คลิปสอนวิธีทำ ยอดขาย 8 สัปดาห์ → รายการสั่งของ ใน Claude Desktop" },
           {
             "type": "slide",
             "page": 239,
             "motion": "setup-work-space/ex-239-5.html",
             "label": "ตารางงาน → งานไหนเลยกำหนด"
           },
+          { "type": "install-videos", "label": "วิธีทำ · ตารางงาน → งานไหนเลยกำหนด", "title": "วิธีทำใน Claude Desktop", "file": "howto-239-5", "aria": "คลิปสอนวิธีทำ ตารางงาน → งานไหนเลยกำหนด ใน Claude Desktop" },
           {
             "type": "slide",
             "page": 240
@@ -2620,12 +2641,14 @@
             "motion": "setup-work-space/ex-240-2.html",
             "label": "Resume หลายคน → ตารางคัด"
           },
+          { "type": "install-videos", "label": "วิธีทำ · Resume หลายคน → ตารางคัด", "title": "วิธีทำใน Claude Desktop", "file": "howto-240-2", "aria": "คลิปสอนวิธีทำ Resume หลายคน → ตารางคัด ใน Claude Desktop" },
           {
             "type": "slide",
             "page": 240,
             "motion": "setup-work-space/ex-240-6.html",
             "label": "ผลสำรวจพนักงาน → สิ่งที่ทีมอยากให้แก้"
           },
+          { "type": "install-videos", "label": "วิธีทำ · ผลสำรวจพนักงาน → สิ่งที่ทีมอยากให้แก้", "title": "วิธีทำใน Claude Desktop", "file": "howto-240-6", "aria": "คลิปสอนวิธีทำ ผลสำรวจพนักงาน → สิ่งที่ทีมอยากให้แก้ ใน Claude Desktop" },
           {
             "type": "slide",
             "page": 241
@@ -2636,12 +2659,14 @@
             "motion": "setup-work-space/ex-241-1.html",
             "label": "ไฟล์ประชุม → สรุป + งานค้าง"
           },
+          { "type": "install-videos", "label": "วิธีทำ · ไฟล์ประชุม → สรุป + งานค้าง", "title": "วิธีทำใน Claude Desktop", "file": "howto-241-1", "aria": "คลิปสอนวิธีทำ ไฟล์ประชุม → สรุป + งานค้าง ใน Claude Desktop" },
           {
             "type": "slide",
             "page": 241,
             "motion": "setup-work-space/ex-241-2.html",
             "label": "งานทั้งสัปดาห์ → รายงาน 1 หน้า"
           },
+          { "type": "install-videos", "label": "วิธีทำ · งานทั้งสัปดาห์ → รายงาน 1 หน้า", "title": "วิธีทำใน Claude Desktop", "file": "howto-241-2", "aria": "คลิปสอนวิธีทำ งานทั้งสัปดาห์ → รายงาน 1 หน้า ใน Claude Desktop" },
           {
             "type": "slide",
             "page": 242
@@ -2992,6 +3017,7 @@
     function pageThumbSrc(lesson, page, index) {
       if (page.type === "slide") return thumbPath(page);
       if (page.type === "recap-video") return videoPath(`recap/${page.file}-poster.jpg`);
+      if (page.type === "install-videos" && page.file?.startsWith("howto-")) return videoPath(`${page.file}-poster.jpg`);
       if (lesson.contentThumbDir) return `assets/motion/${lesson.contentThumbDir}/thumbs/content-${String(index + 1).padStart(2, "0")}.jpg?rev=${motionAssetRevision}`;
       if (page.type === "profile-site" && page.href) return `assets/page-thumbs/${pageThumbSlug(page.href)}.jpg?rev=${motionAssetRevision}`;
       return null;
@@ -3365,7 +3391,7 @@
       wrap.className = "install-videos";
       [page].forEach(item => {
         const figure = document.createElement("figure");
-        figure.className = "install-video";
+        figure.className = item.file.startsWith("howto-") ? "install-video wide" : "install-video";
         const heading = document.createElement("h3");
         heading.textContent = item.title;
         const video = document.createElement("video");
@@ -3374,7 +3400,7 @@
         video.preload = "metadata";
         video.poster = videoPath(`${item.file}-poster.jpg`);
         video.src = videoPath(`${item.file}.mp4`);
-        video.setAttribute("aria-label", `วิดีโอแนะนำวิธีติดตั้ง ${item.title}`);
+        video.setAttribute("aria-label", item.aria || `วิดีโอแนะนำวิธีติดตั้ง ${item.title}`);
         figure.append(heading, video);
         wrap.append(figure);
       });
@@ -3565,6 +3591,12 @@
           const image = document.createElement("img");
           image.src = videoPath(`recap/${page.file}-poster.jpg`);
           image.alt = "ตัวอย่างคลิปสรุปเนื้อหา";
+          button.append(image);
+        } else if (page.type === "install-videos" && page.file?.startsWith("howto-")) {
+          // real Claude Desktop recordings: the poster frame cut by scripts/howto/edit.py
+          const image = document.createElement("img");
+          image.src = videoPath(`${page.file}-poster.jpg`);
+          image.alt = `ตัวอย่างคลิป ${page.label}`;
           button.append(image);
         } else if (lesson.contentThumbDir) {
           // Content pages (not slides) get a rendered picture of the page, built by scripts/build-content-thumbs.js

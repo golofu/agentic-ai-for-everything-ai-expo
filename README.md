@@ -9,3 +9,5 @@
 - TODO: meeting-recap-pro step-by-step pages (real Claude Desktop run); VaroCoin claim slide (Boss writes).
 
 - The talk copy of cover/vibe/deck-04.html is trimmed to 9 steps; re-running scripts/apply-space-skin.py would undo this on refetch without its trim_talk_deck function, which reapplies the trim.
+
+- How-to clips (Setup menu + AI Work Playbook): REAL screen recordings of Claude Desktop on the trainer's PC, cut only (speed-up, captions, privacy blur). Pipeline in scripts/howto/: make_jobs.py (prompts verbatim from the pages + fresh workspace per job) -> record-job.ps1 (drives Claude Desktop, records with ffmpeg gdigrab) -> make_spec.py + edit.py (cut to cover/assets/videos/howto-<id>.mp4). record-open.ps1 + fix_open.py redo only the 'open the output file' ending. Inputs for the Setup cards: cover/assets/playbook-samples/setup-*.
