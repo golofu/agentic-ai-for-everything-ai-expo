@@ -382,6 +382,13 @@
         linear-gradient(125deg, #f7f5ff 0%, #ffffff 51%, #fff6f9 100%);
     }
 
+    .lesson-card.html-portfolio {
+      background:
+        radial-gradient(circle at 18% 20%, rgba(220,245,232,.96) 0 18%, transparent 18.5%),
+        radial-gradient(circle at 82% 78%, rgba(232,226,255,.92) 0 22%, transparent 22.5%),
+        linear-gradient(125deg, #f2fbf6 0%, #ffffff 51%, #f7f5ff 100%);
+    }
+
     .lesson-card.perplexity {
       background:
         radial-gradient(circle at 18% 18%, rgba(255,232,172,.84) 0 18%, transparent 18.5%),
@@ -465,6 +472,7 @@
     .plugin-scheduled-subagent-title,
     .extension-usecase-title,
     .html-presentation-title,
+    .html-portfolio-title,
     .perplexity-title,
     .gemini-notebook-title,
     .more-ai-tools-title,
@@ -515,6 +523,7 @@
     }
     .extension-usecase-title { font-size: clamp(1.25rem, 2.2vw, 2.45rem); }
     .html-presentation-title { font-size: clamp(1.6rem, 2.7vw, 3rem); }
+    .html-portfolio-title { font-size: clamp(1.6rem, 2.7vw, 3rem); }
     .more-ai-tools-title { color: var(--ink); font-size: clamp(1.75rem, 3vw, 3.3rem); }
     .ai-image-title, .workshop-ai-image-title, .edit-ai-image-title { font-size: clamp(1.8rem, 3vw, 3.25rem); }
     .chatgpt-image-usecase-title { font-size: clamp(1.25rem, 2.2vw, 2.45rem); }
@@ -1543,7 +1552,7 @@
       .cover-link { font-size: 18px; }
       .intro { padding: 54px 0 30px; }
       .lesson-card { border-radius: 27px; }
-      .why-title, .history-title, .advance-title, .hallucination-title, .prompt-title, .workshop-title, .refinement-title, .basic-rag-title, .skill-title, .workshop-skill-title, .install-skill-title, .give-skill-title, .extension-usecase-title, .html-presentation-title, .perplexity-title, .gemini-notebook-title, .more-ai-tools-title, .agent-usecases-title, .ai-image-title, .workshop-ai-image-title, .edit-ai-image-title { font-size: clamp(2rem, 10.5vw, 3.35rem); }
+      .why-title, .history-title, .advance-title, .hallucination-title, .prompt-title, .workshop-title, .refinement-title, .basic-rag-title, .skill-title, .workshop-skill-title, .install-skill-title, .give-skill-title, .extension-usecase-title, .html-presentation-title, .html-portfolio-title, .perplexity-title, .gemini-notebook-title, .more-ai-tools-title, .agent-usecases-title, .ai-image-title, .workshop-ai-image-title, .edit-ai-image-title { font-size: clamp(2rem, 10.5vw, 3.35rem); }
       .hallucination-title { font-size: clamp(1.8rem, 8.4vw, 2.75rem); }
       .plugin-scheduled-subagent-title { font-size: clamp(1.1rem, 5.25vw, 1.5rem); }
       .chatgpt-image-usecase-title, .prompt-web-ai-image-title { font-size: clamp(1.7rem, 8.4vw, 2.75rem); }
@@ -1997,6 +2006,10 @@
 
         <button class="lesson-card html-presentation work-card text-only" type="button" data-lesson="html-presentation" aria-label="เปิดบท AI Presentation ด้วย HTML">
           <span class="html-presentation-title">AI Presentation<br>(HTML)</span>
+        </button>
+
+        <button class="lesson-card html-portfolio work-card text-only" type="button" data-lesson="html-portfolio" aria-label="เปิดบท Portfolio ด้วย HTML">
+          <span class="html-portfolio-title">Portfolio<br>ด้วย HTML</span>
         </button>
 
         <button class="lesson-card prompt section text-only" type="button" data-lesson="section-creative" aria-label="เปิดช่วง Agentic AI for Creative Work">
@@ -2700,7 +2713,16 @@
           "04 ฝังของจริง", "05 ซ่อน/เปิดรายละเอียด", "06 ตัวเลขอัปเดตเอง", "07 เทียบก่อน-หลัง", "08 ค้นหาในสไลด์",
           "09 ก๊อปและดาวน์โหลด", "10 สลับภาษา", "ตัวอย่างจริง", "เริ่มจาก Folder", "โหลด Skill 2 ตัว", "3 ขั้นตอน",
           "ข้อควรรู้", "สรุป"
-        ].map((label, index) => ({ type: "html-deck", number: index + 1, label }))
+        ].map((label, index) => ({ type: "html-deck", number: index + 1, thumbNumber: index + 1, label }))
+          // Talk cut (2026-11-04): the cover page (deck slide 1) is not shown; numbers still point at the real deck slides
+          .slice(1)
+      },
+      // Same deck file (assets/html-presentation/index.html), slides 20-26, shown as its own menu (2026-11-04)
+      "html-portfolio": {
+        title: "Portfolio ด้วย HTML",
+        contentThumbDir: "html-presentation",
+        pages: ["Portfolio ที่ดี", "เตรียมของ input/", "หา reference", "Prompt Portfolio", "ดูทำจริง", "สั่งแก้ + ตรวจ", "ขึ้นเว็บฟรี"]
+          .map((label, index) => ({ type: "html-deck", number: 20 + index, thumbNumber: 20 + index, label }))
       },
       perplexity: {
         title: "Perplexity",
@@ -3018,7 +3040,7 @@
       if (page.type === "slide") return thumbPath(page);
       if (page.type === "recap-video") return videoPath(`recap/${page.file}-poster.jpg`);
       if (page.type === "install-videos" && page.file?.startsWith("howto-")) return videoPath(`${page.file}-poster.jpg`);
-      if (lesson.contentThumbDir) return `assets/motion/${lesson.contentThumbDir}/thumbs/content-${String(index + 1).padStart(2, "0")}.jpg?rev=${motionAssetRevision}`;
+      if (lesson.contentThumbDir) return `assets/motion/${lesson.contentThumbDir}/thumbs/content-${String(page.thumbNumber ?? index + 1).padStart(2, "0")}.jpg?rev=${motionAssetRevision}`;
       if (page.type === "profile-site" && page.href) return `assets/page-thumbs/${pageThumbSlug(page.href)}.jpg?rev=${motionAssetRevision}`;
       return null;
     }
@@ -3486,10 +3508,15 @@
 
     // The embedded deck forwards arrow keys, Escape and in-deck jump buttons so the lesson viewer stays in sync.
     window.addEventListener("message", event => {
-      if (activeLesson !== "html-presentation") return;
+      if (activeLesson !== "html-presentation" && activeLesson !== "html-portfolio") return;
       if (event.source !== document.getElementById("htmlDeckFrame")?.contentWindow) return;
       if (event.data?.type === "html-deck-close") closeLesson();
-      if (event.data?.type === "html-deck-go" && Number.isInteger(event.data.index)) showSlide(event.data.index);
+      // The deck sends its own 0-based slide index; map it to the viewer page (the cover slide is cut from the lesson).
+      if (event.data?.type === "html-deck-go" && Number.isInteger(event.data.index)) {
+        const pages = activeLesson ? lessonPages(lessons[activeLesson]) : [];
+        const at = pages.findIndex(page => page.type === "html-deck" && page.number === event.data.index + 1);
+        if (at >= 0) showSlide(at);
+      }
     });
 
     function showLessonContent(page) {
@@ -3601,7 +3628,7 @@
         } else if (lesson.contentThumbDir) {
           // Content pages (not slides) get a rendered picture of the page, built by scripts/build-content-thumbs.js
           const image = document.createElement("img");
-          image.src = `assets/motion/${lesson.contentThumbDir}/thumbs/content-${String(index + 1).padStart(2, "0")}.jpg?rev=${motionAssetRevision}`;
+          image.src = `assets/motion/${lesson.contentThumbDir}/thumbs/content-${String(page.thumbNumber ?? index + 1).padStart(2, "0")}.jpg?rev=${motionAssetRevision}`;
           image.alt = `ตัวอย่างหน้า ${page.label}`;
           button.append(image);
         } else if (page.type === "profile-site" && page.href) {
@@ -3898,6 +3925,7 @@
         "prompt-basics": [icon('<path d="M4 5h16v11H9l-5 4z"/><path d="M8 9h8M8 12h5"/>'), "เขียนสั่ง AI ให้ได้ผลตั้งแต่ครั้งแรก"],
         "install-skill": [icon('<path d="M20 12v8H4v-8"/><rect x="2" y="7" width="20" height="5" rx="1"/><path d="M12 22V7M12 7c-1.5-3-5-3-5-1s3 1 5 1c2 0 5 1 5-1s-3.5-2-5 1z"/>'), "สร้าง Skill 4 แบบ · ติดตั้งใช้งาน"],
         "setup-work-space": [icon('<circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"/>'), "ตั้งค่าให้ AI รู้จักงานของเรา"],
+        "html-portfolio": [icon('<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M8 14h4M8 17h7"/><circle cx="16.5" cy="15" r="1.8"/>'), "เว็บพอร์ตหน้าเดียว ส่งลิงก์ได้"],
         "html-presentation": [icon('<rect x="3" y="3" width="18" height="13" rx="2"/><path d="M7 21l5-5 5 5M8 12l3-3 2 2 3-4"/>'), "สไลด์ที่คนดูกดใช้งานได้จริง"],
         "dept-usecases": [icon('<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5a2 2 0 012-2h2a2 2 0 012 2v2M3 13h18"/>'), "6 งานพร้อมใช้ ทุกแผนก"],
         "plugin-scheduled-subagent": [icon('<circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/><circle cx="20" cy="5" r="2"/><circle cx="4" cy="5" r="2"/>'), "Plugin ที่ควรมี + ตั้งเวลาให้ทำเอง"],

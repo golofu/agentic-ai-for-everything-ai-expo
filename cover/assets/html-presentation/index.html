@@ -339,6 +339,259 @@
       [data-a], .ln > span, .tree .ln2 { opacity: 1 !important; transform: none !important; animation: none !important; clip-path: none !important; }
     }
   </style>
+<style>
+  /* ---------- 20 portfolio tour ---------- */
+  .pf-head { display: flex; align-items: flex-end; gap: 30px; }
+  .pf-head > div:first-child { flex: none; }
+  .pf-sub { flex: 1; min-width: 0; font-size: 20px; line-height: 1.4; font-weight: 600; color: #4a5064; padding-bottom: 10px; }
+  .pf-bar .dl { margin: 0 0 0 4px; padding: 3px 12px; font-size: 12.5px; }
+  .pf-tour { display: grid; grid-template-columns: 660px 1fr; gap: 24px; margin-top: 20px; height: 392px; }
+  .pf-browser { position: relative; border-radius: 22px; padding: 0; overflow: hidden; display: flex; flex-direction: column; }
+  .pf-bar { flex: none; height: 38px; display: flex; align-items: center; gap: 7px; padding: 0 14px; background: rgba(255,255,255,.9); border-bottom: 1px solid var(--line); }
+  .pf-bar i { width: 10px; height: 10px; border-radius: 50%; background: #e3e0ef; }
+  .pf-bar i:first-child { background: #f3b4b0; } .pf-bar i:nth-child(2) { background: #f5d79a; } .pf-bar i:nth-child(3) { background: #b8e2c8; }
+  .pf-bar span { margin-left: 10px; flex: 1; font: 700 12px var(--display); color: var(--muted); background: #f3f2f8; border-radius: 999px; padding: 4px 14px; }
+  .pf-view { position: relative; flex: 1; overflow: hidden; background: #f6f1ea; }
+  .pf-page { position: absolute; left: 0; top: 0; width: 100%; height: auto; display: block; transition: transform 1s var(--ease); will-change: transform; }
+  .pf-ring { position: absolute; border: 3px solid var(--violet-deep); border-radius: 14px; box-shadow: 0 0 0 9999px rgba(29,34,48,.28); transition: all .9s var(--ease); pointer-events: none; opacity: 0; }
+  .pf-ring.pf-on { opacity: 1; }
+  .pf-pin { position: absolute; width: 38px; height: 38px; margin: -19px 0 0 -19px; border-radius: 50%; background: #1d2230; color: #fff; display: grid; place-items: center; font: 800 18px var(--display); box-shadow: 0 0 0 6px rgba(238,234,255,.9); transition: all .9s var(--ease); pointer-events: none; opacity: 0; }
+  .pf-pin.pf-on { opacity: 1; animation: pfPulse 1.8s ease-in-out infinite; }
+  @keyframes pfPulse { 50% { box-shadow: 0 0 0 12px rgba(238,234,255,.55); } }
+  .pf-rail { position: absolute; right: 10px; top: 50px; bottom: 12px; width: 26px; border-radius: 999px; background: rgba(255,255,255,.82); box-shadow: 0 6px 18px rgba(74,65,112,.14); }
+  .pf-rail button { position: absolute; left: 2px; width: 22px; height: 22px; margin-top: -11px; border: 0; padding: 0; border-radius: 50%; background: #fff; color: var(--violet-deep); font: 800 11px var(--display); box-shadow: inset 0 0 0 1.5px var(--violet); transition: all .25s; }
+  .pf-rail button.pf-on { background: var(--violet-deep); color: #fff; transform: scale(1.18); }
+  .pf-spots { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+  .pf-spots button { width: 100%; text-align: left; display: grid; grid-template-columns: 34px 1fr; column-gap: 14px; align-items: center; border: 1px solid rgba(255,255,255,.92); background: var(--glass); backdrop-filter: blur(12px); border-radius: 18px; padding: 6px 16px; box-shadow: 0 10px 26px rgba(74,65,112,.07); transition: background .3s, box-shadow .3s, transform .3s var(--ease); }
+  .pf-spots button:hover { transform: translateX(-4px); }
+  .pf-spots i { grid-row: span 2; align-self: start; width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; font: 800 15px var(--display); font-style: normal; color: var(--violet-deep); box-shadow: inset 0 0 0 1.5px var(--violet); transition: all .3s; }
+  .pf-spots b { font-size: 18px; line-height: 34px; }
+  .pf-spots span { display: block; max-height: 0; overflow: hidden; font-size: 15.5px; line-height: 1.55; color: #4a5064; transition: max-height .5s var(--ease), margin .5s var(--ease); }
+  .pf-spots button.pf-on { background: #fff; box-shadow: 0 16px 34px rgba(74,65,112,.16); }
+  .pf-spots button.pf-on i { background: #1d2230; color: #fff; box-shadow: none; }
+  .pf-spots button.pf-on span { max-height: 80px; margin: 0 0 4px; }
+  .pf-bottom { margin-top: 14px; padding: 11px 24px; border-radius: 20px; font-size: 19px; font-weight: 700; text-align: center; }
+  .pf-bottom em { font-style: normal; color: var(--violet-deep); }
+
+  /* ---------- 21 input folder ---------- */
+  .pf-input { display: grid; grid-template-columns: 1fr 440px; gap: 26px; margin-top: 26px; align-items: start; }
+  .pf-folder { position: relative; padding: 20px 24px 16px; border-radius: 0 26px 26px 26px; margin-top: 30px; }
+  .pf-folder::before { content: ""; position: absolute; left: -1px; top: -30px; width: 190px; height: 31px; border-radius: 18px 18px 0 0; background: var(--glass); border: 1px solid rgba(255,255,255,.92); border-bottom: 0; backdrop-filter: blur(14px); }
+  .pf-ftab { position: absolute; left: 22px; top: -24px; display: flex; align-items: center; gap: 10px; font: 800 19px "Consolas", var(--display); color: var(--violet-deep); }
+  .pf-ftab::before { content: ""; width: 22px; height: 16px; border-radius: 3px 5px 5px 5px; background: linear-gradient(#b3a8e6, var(--violet)); box-shadow: inset 0 4px 0 rgba(255,255,255,.35); }
+  .pf-fcount { position: absolute; right: 24px; top: -22px; font-size: 15px; color: var(--muted); }
+  .pf-fcount b { font: 800 20px var(--display); color: var(--ink); }
+  .pf-file { display: grid; grid-template-columns: 64px 1fr; gap: 16px; align-items: center; background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 10px 16px; margin-bottom: 9px; box-shadow: 0 8px 20px rgba(74,65,112,.06); }
+  .pf-file:last-child { margin-bottom: 0; }
+  .pf-file em { font: 800 12px var(--display); font-style: normal; letter-spacing: .06em; text-align: center; border-radius: 10px; padding: 9px 0; background: var(--lavender); color: var(--violet-deep); }
+  .pf-file em.pf-img { background: var(--peach); color: #b0612a; }
+  .pf-file em.pf-txt { background: var(--mint); color: var(--good); }
+  .pf-file b { display: block; font-size: 19px; line-height: 1.4; }
+  .pf-file small { display: block; font: 600 14px "Consolas", var(--body); color: var(--muted); margin-top: 1px; }
+  .slide.on .pf-file[data-a] { animation-name: pfFly; animation-duration: .9s; animation-delay: calc(var(--pf-k) * 300ms + 450ms); }
+  @keyframes pfFly { from { opacity: 0; transform: translate(380px, -90px) rotate(9deg) scale(.86); filter: blur(4px); } 70% { opacity: 1; filter: none; } to { opacity: 1; transform: none; } }
+  .pf-cut { padding: 20px 26px 18px; border-radius: 24px; border: 2px solid rgba(196,69,60,.35); background: rgba(255,241,240,.86); }
+  .pf-cut h3 { margin: 0 0 8px; font: 800 21px var(--body); color: var(--bad); display: flex; align-items: center; gap: 10px; }
+  .pf-cut h3::before { content: ""; width: 14px; height: 14px; border-radius: 50%; background: var(--bad); box-shadow: 0 0 0 5px rgba(196,69,60,.15); }
+  .pf-cut ul { list-style: none; margin: 0; padding: 0; }
+  .pf-cut li { position: relative; display: table; font-size: 19px; font-weight: 600; line-height: 1.5; padding: 4px 2px; white-space: nowrap; transition: color .3s; }
+  .pf-cut li::after { content: ""; position: absolute; left: -4px; right: -4px; top: 47%; height: 3px; border-radius: 2px; background: var(--bad); transform: scaleX(0); transform-origin: left; }
+  .slide.on .pf-cut li { animation: pfFade .4s ease forwards; animation-delay: calc(var(--pf-k) * 380ms + 2350ms); }
+  .slide.on .pf-cut li::after { animation: grow .45s var(--ease) forwards; animation-delay: calc(var(--pf-k) * 380ms + 2200ms); }
+  @keyframes pfFade { to { color: #a6727a; } }
+  .pf-tip { margin-top: 16px; padding: 18px 24px; border-radius: 22px; font-size: 17px; line-height: 1.6; color: #3a3f52; border-left: 5px solid var(--good); }
+  .pf-tip small { display: block; font: 700 14px var(--body); color: var(--good); margin-bottom: 4px; }
+
+  /* ---------- 22 references ---------- */
+  .pf-refs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 22px; }
+  .pf-ref { display: block; padding: 16px 18px 16px; border-radius: 24px; text-decoration: none; color: var(--ink); transition: transform .3s var(--ease), box-shadow .3s; }
+  .pf-ref:hover { transform: translateY(-6px) rotate(-.4deg); box-shadow: 0 30px 60px rgba(74,65,112,.2); }
+  .pf-mock { position: relative; height: 92px; border-radius: 14px; background: #fff; border: 1px solid var(--line); overflow: hidden; padding: 12px; display: grid; gap: 7px; }
+  .pf-mock span { border-radius: 6px; background: #ecebf3; }
+  .pf-m1 { grid-template-columns: repeat(4, 1fr); grid-template-rows: 1fr 1fr; }
+  .pf-m1 span:nth-child(2) { background: #d9d3f5; } .pf-m1 span:nth-child(5) { background: #ffd9c4; } .pf-m1 span:nth-child(7) { background: #cdeedd; }
+  .pf-m1 .pf-note { position: absolute; right: 12px; bottom: 10px; background: #1d2230; color: #fff; font: 700 11px var(--body); border-radius: 8px; padding: 4px 9px; border: 0; }
+  .pf-m2 { grid-template-columns: repeat(3, 1fr); grid-template-rows: 18px 1fr 1fr; }
+  .pf-m2 .pf-chips { grid-column: 1 / -1; display: flex; gap: 6px; background: none; }
+  .pf-m2 .pf-chips i { width: 42px; border-radius: 999px; background: #ecebf3; }
+  .pf-m2 .pf-chips i:first-child { background: #1d2230; }
+  .pf-m2 span:nth-child(3) { grid-row: span 2; background: #ffdbe6; } .pf-m2 span:nth-child(5) { background: #d9d3f5; }
+  .pf-m3 { grid-template-columns: 1fr; grid-template-rows: 30px 12px 12px 1fr; padding: 12px 70px; }
+  .pf-m3 span:first-child { background: linear-gradient(90deg, #d9d3f5, #ffdbe6); }
+  .pf-m3 span:nth-child(2) { width: 70%; } .pf-m3 span:nth-child(3) { width: 45%; }
+  .pf-m3::after { content: ""; position: absolute; right: 22px; top: 12px; bottom: 12px; width: 5px; border-radius: 3px; background: linear-gradient(var(--violet) 0 30%, #ecebf3 30%); }
+  .pf-ref h3 { margin: 12px 0 0; font: 800 25px var(--display); letter-spacing: -.02em; }
+  .pf-ref .pf-url { font: 700 13px var(--display); color: var(--violet-deep); }
+  .pf-ref p { margin: 8px 0 12px; font-size: 17px; line-height: 1.55; color: #4a5064; }
+  .pf-ref .pf-go { font: 700 15px var(--body); color: #fff; background: #1d2230; border-radius: 999px; padding: 7px 16px; display: inline-block; }
+  .steps.pf-steps { margin-top: 22px; gap: 20px; }
+  .pf-steps .track { top: 24px; left: 24px; right: 40px; }
+  .pf-steps .s { display: flex; align-items: flex-start; gap: 12px; text-align: left; }
+  .pf-steps .s i { flex: none; margin: 4px 0 0; width: 44px; height: 44px; font-size: 19px; box-shadow: 0 0 0 6px rgba(238,234,255,.9); }
+  .pf-steps .s div { flex: 1; padding: 12px 16px; font-size: 17px; border-radius: 18px; background: rgba(255,255,255,.95); }
+  .pf-warn { margin-top: 16px; padding: 13px 24px; border-radius: 20px; font-size: 19px; font-weight: 700; color: var(--bad); border-left: 5px solid var(--bad); }
+</style>
+<style id="pf2-style">
+  /* ---------- 23 prompt ---------- */
+  .pf2-chat { margin-top: 20px; padding: 0; overflow: hidden; border-radius: 26px; }
+  .pf2-chat-bar { display: flex; align-items: center; gap: 7px; padding: 11px 22px; border-bottom: 1px solid var(--line); background: rgba(255,255,255,.6); font: 500 13px var(--body); color: var(--muted); }
+  .pf2-chat-bar i { width: 11px; height: 11px; border-radius: 50%; background: #ffc9d6; }
+  .pf2-chat-bar i:nth-child(2) { background: #ffe3b8; } .pf2-chat-bar i:nth-child(3) { background: #c9ecd9; }
+  .pf2-chat-bar b { font: 800 14px var(--display); color: var(--ink); margin: 0 8px 0 10px; }
+  .pf2-msg { margin: 16px 22px 0; background: #fff; border: 1px solid var(--line); border-radius: 20px; padding: 14px 20px 12px; cursor: text; }
+  .pf2-msg small { display: block; font: 800 11px var(--display); letter-spacing: .14em; color: var(--violet-deep); margin-bottom: 6px; }
+  .pf2-lines { list-style: none; margin: 0; padding: 0; }
+  .pf2-lines li { display: grid; grid-template-columns: 26px 1fr; gap: 12px; padding: 3px 0; font: 500 18px/1.6 var(--body); color: var(--ink); min-height: 35px; }
+  .pf2-lines li > i { font: 800 12px/26px var(--display); font-style: normal; text-align: center; width: 26px; height: 26px; margin-top: 2px; border-radius: 50%; background: var(--lavender); color: var(--violet-deep); transition: background .3s, color .3s; }
+  .pf2-lines li.pf2-typing > i, .pf2-lines li.pf2-done > i { background: #1d2230; color: #fff; }
+  .pf2-lines li.pf2-typing .pf2-t::after { content: ""; display: inline-block; width: 2px; height: 1.05em; margin-left: 2px; vertical-align: -.16em; background: var(--violet-deep); animation: pf2-blink 1s steps(1) infinite; }
+  @keyframes pf2-blink { 50% { opacity: 0; } }
+  .pf2-chat-foot { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 12px 22px 16px; }
+  .pf2-status { display: flex; align-items: center; gap: 8px; font-size: 15px; color: var(--muted); }
+  .pf2-status::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--violet); flex: none; }
+  .pf2-status.pf2-ok { color: var(--good); } .pf2-status.pf2-ok::before { background: var(--good); }
+  .pf2-status.pf2-err { color: var(--bad); } .pf2-status.pf2-err::before { background: var(--bad); }
+  .pf2-under { display: flex; gap: 12px; margin-top: 14px; align-items: stretch; }
+  .pf2-tip { flex: none; width: 372px; display: grid; align-items: center; padding: 10px 18px; border-radius: 18px; font: 600 16px/1.45 var(--body); color: #fff; background: #1d2230; box-shadow: 0 12px 30px rgba(29,34,48,.18); }
+  .pf2-tip code { font: 700 15px "Consolas", monospace; color: #d8d0ff; }
+  .pf2-tags { flex: 1; display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+  .pf2-tags span { display: block; padding: 8px 12px; border-radius: 16px; background: rgba(255,255,255,.8); border: 1px solid var(--line); font-size: 13px; line-height: 1.4; color: var(--muted); transition: background .35s, border-color .35s, transform .35s var(--ease); }
+  .pf2-tags span b { display: block; font: 700 15px var(--body); color: var(--ink); }
+  .pf2-tags span b i { font: 800 12px var(--display); font-style: normal; color: var(--violet-deep); margin-right: 6px; }
+  .pf2-tags span.pf2-on { background: var(--lavender); border-color: rgba(141,128,202,.55); transform: translateY(-3px); }
+
+  /* ---------- 24 video ---------- */
+  .pf2-v-grid { display: grid; grid-template-columns: 724px 1fr; gap: 24px; margin-top: 20px; align-items: start; }
+  .pf2-player { margin: 0; padding: 12px; border-radius: 26px; }
+  .pf2-screen { position: relative; aspect-ratio: 1280 / 686; border-radius: 16px; overflow: hidden; background: #1f1b33; }
+  .pf2-screen video { display: block; width: 100%; height: 100%; object-fit: contain; background: #1f1b33; }
+  .pf2-ph { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; text-align: center; color: #fff;
+    background: radial-gradient(circle at 80% 18%, rgba(141,128,202,.6), transparent 52%), linear-gradient(135deg, #2d2550, #5d518e); }
+  .pf2-ph[hidden] { display: none; }
+  .pf2-ph svg { width: 76px; height: 76px; border-radius: 50%; background: rgba(255,255,255,.14); box-shadow: 0 0 0 0 rgba(255,255,255,.35); animation: pf2-ring 2.4s ease-out infinite; }
+  @keyframes pf2-ring { 70%, 100% { box-shadow: 0 0 0 22px rgba(255,255,255,0); } }
+  .pf2-ph b { font: 700 22px var(--body); }
+  .pf2-ph span { font-size: 15px; color: #d8d0ff; }
+  .pf2-player figcaption { padding: 12px 8px 2px; font: 500 16px/1.5 var(--body); color: #3a3f52; }
+  .pf2-player figcaption b { color: var(--violet-deep); }
+  .pf2-v-side { padding: 24px 26px; border-radius: 26px; }
+  .pf2-v-side small, .pf2-k { display: block; font: 800 11px var(--display); letter-spacing: .14em; color: var(--violet-deep); }
+  .pf2-k span, .pf2-v-side small { font: 700 13px var(--body); letter-spacing: 0; }
+  .pf2-v-steps { list-style: none; margin: 14px 0 0; padding: 0; }
+  .pf2-v-steps li { position: relative; display: grid; grid-template-columns: 40px 1fr; gap: 14px; padding: 0 0 20px; font: 600 18px/1.5 var(--body); }
+  .pf2-v-steps li:not(:last-child)::after { content: ""; position: absolute; left: 19px; top: 44px; bottom: 4px; width: 2px; background: var(--line); }
+  .pf2-v-steps li > i { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; background: #1d2230; color: #fff; font: 800 16px var(--display); font-style: normal; box-shadow: 0 0 0 6px rgba(238,234,255,.9); }
+  .pf2-v-steps li span { padding-top: 6px; }
+  .pf2-v-steps em { display: block; margin-top: 4px; font: 500 15px var(--body); font-style: normal; color: var(--muted); }
+  .pf2-v-steps code { font: 600 15px "Consolas", monospace; background: var(--lavender); color: var(--violet-deep); border-radius: 6px; padding: 1px 6px; }
+  .pf2-v-note { margin-top: 2px; padding-top: 14px; border-top: 1px solid var(--line); font-size: 15px; line-height: 1.6; color: var(--muted); }
+
+  /* ---------- 25 fix + check ---------- */
+  .pf2-fc-grid { display: grid; grid-template-columns: 600px 1fr; gap: 24px; margin-top: 22px; }
+  .pf2-fix { padding: 20px 22px; border-radius: 26px; display: flex; flex-direction: column; gap: 10px; }
+  .pf2-fix-row { display: grid; grid-template-columns: 28px 1fr auto; gap: 12px; align-items: center; background: #fff; border: 1px solid var(--line); border-radius: 18px; padding: 11px 12px 11px 14px; font: 500 17px/1.5 var(--body); transition: border-color .2s, transform .2s var(--ease); }
+  .pf2-fix-row:hover { border-color: var(--violet); transform: translateX(3px); }
+  .pf2-fix-row > i { width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; background: var(--lavender); color: var(--violet-deep); font: 800 12px var(--display); font-style: normal; }
+  .pf2-fix-row mark { background: #fff1a8; border-radius: 4px; padding: 0 2px; color: inherit; }
+  .pf2-fix-row .btn { padding: 7px 14px; font-size: 15px; white-space: nowrap; }
+  .pf2-fix .pf2-status { margin-top: 2px; font-size: 14px; }
+  .pf2-check { padding: 22px 26px 20px; border-radius: 26px; display: flex; flex-direction: column; }
+  .pf2-check h3 { font: 800 22px/1.35 var(--body); margin: 6px 0 8px; }
+  .pf2-ck { list-style: none; margin: 0; padding: 0; }
+  .pf2-ck li { display: grid; grid-template-columns: 30px 1fr; gap: 14px; align-items: start; padding: 10px 0; border-top: 1px solid var(--line); font: 500 17px/1.5 var(--body); color: #8a90a0; }
+  .pf2-ck li b { font: 800 15px var(--display); color: var(--violet-deep); margin-right: 6px; }
+  .pf2-ck svg { width: 30px; height: 30px; margin-top: -1px; overflow: visible; }
+  .pf2-ck circle { fill: #fff; stroke: #d8d5e8; stroke-width: 2; }
+  .pf2-ck path { fill: none; stroke: #fff; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 20; stroke-dashoffset: 20; }
+  .slide.on .pf2-ck li { animation: pf2-ink .45s var(--ease) both; animation-delay: calc(var(--k) * 600ms + 1100ms); }
+  .slide.on .pf2-ck circle { animation: pf2-fill .45s var(--ease) both; animation-delay: calc(var(--k) * 600ms + 1100ms); transform-box: fill-box; transform-origin: center; }
+  .slide.on .pf2-ck path { animation: pf2-draw .4s ease-out both; animation-delay: calc(var(--k) * 600ms + 1250ms); }
+  @keyframes pf2-ink { to { color: var(--ink); } }
+  @keyframes pf2-fill { 0% { fill: #fff; stroke: #d8d5e8; transform: scale(1); } 60% { transform: scale(1.18); } 100% { fill: var(--good); stroke: var(--good); transform: scale(1); } }
+  @keyframes pf2-draw { to { stroke-dashoffset: 0; } }
+  .pf2-pass { align-self: flex-start; margin-top: auto; display: flex; align-items: center; gap: 8px; font: 700 15px var(--body); color: var(--good); background: var(--mint); border-radius: 999px; padding: 7px 16px; opacity: 0; }
+  .slide.on .pf2-pass { animation: pop .6s var(--ease) both 4.3s; }
+
+  /* ---------- 26 publish ---------- */
+  .pf2-pub-grid { display: grid; grid-template-columns: 600px 1fr; gap: 22px; margin-top: 20px; }
+  .pf2-scene { position: relative; height: 248px; border-radius: 26px; overflow: hidden; }
+  .pf2-desk { position: absolute; left: 16px; top: 16px; bottom: 16px; width: 156px; border-radius: 18px; background: rgba(238,234,255,.7); border: 1px solid rgba(255,255,255,.9); padding: 12px 14px; }
+  .pf2-desk small { display: block; font: 700 12px var(--body); color: var(--muted); }
+  .pf2-desk code { font: 700 13px "Consolas", monospace; color: var(--violet-deep); }
+  .pf2-ghost { position: absolute; left: 34px; top: 68px; width: 88px; height: 72px; border: 2px dashed #cfc8ec; border-radius: 12px; }
+  .pf2-browser { position: absolute; left: 188px; right: 16px; top: 16px; bottom: 16px; border-radius: 18px; background: #fff; border: 1px solid var(--line); overflow: hidden; box-shadow: 0 14px 34px rgba(74,65,112,.1); }
+  .pf2-browser-bar { display: flex; align-items: center; gap: 6px; height: 36px; padding: 0 12px; border-bottom: 1px solid var(--line); background: #f7f6fc; }
+  .pf2-browser-bar i { width: 9px; height: 9px; border-radius: 50%; background: #e1ddf0; }
+  .pf2-browser-bar span { margin-left: 8px; flex: 1; font: 600 12.5px "Consolas", monospace; color: #4a5064; background: #fff; border: 1px solid var(--line); border-radius: 999px; padding: 3px 12px; }
+  .pf2-zone, .pf2-live { position: absolute; left: 202px; right: 30px; top: 66px; bottom: 30px; border-radius: 14px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; text-align: center; }
+  .pf2-zone { border: 2px dashed #cfc8ec; color: var(--muted); font: 600 15px var(--body); }
+  .pf2-zone em { display: block; width: 150px; height: 6px; border-radius: 99px; background: var(--lavender); overflow: hidden; opacity: 0; }
+  .pf2-zone em::after { content: ""; display: block; height: 100%; width: 100%; background: linear-gradient(90deg, var(--violet), #e8a6c4); transform-origin: left; transform: scaleX(0); }
+  .pf2-live { opacity: 0; }
+  .pf2-live small { display: flex; align-items: center; gap: 7px; font: 700 13px var(--body); color: var(--good); }
+  .pf2-live small::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--good); }
+  .pf2-live b { font: 700 17px "Consolas", monospace; color: var(--ink); background: var(--mint); border-radius: 999px; padding: 8px 18px; }
+  .pf2-live span { font-size: 12.5px; color: var(--muted); }
+  .pf2-folder { position: absolute; left: 52px; top: 86px; width: 84px; text-align: center; z-index: 2; }
+  .pf2-folder svg { display: block; width: 84px; height: 66px; filter: drop-shadow(0 10px 16px rgba(74,65,112,.22)); }
+  .pf2-folder b { display: block; margin-top: 4px; font: 700 13px "Consolas", monospace; color: var(--ink); }
+  .pf2-folder .pf2-cur { position: absolute; width: 22px; height: 22px; left: 54px; top: 38px; }
+  .slide.on .pf2-folder { animation: pf2-drag 6.5s var(--ease) .9s infinite both; }
+  .slide.on .pf2-zone { animation: pf2-zone 6.5s linear .9s infinite both; }
+  .slide.on .pf2-zone em { animation: pf2-show-up 6.5s linear .9s infinite both; }
+  .slide.on .pf2-zone em::after { animation: pf2-upload 6.5s linear .9s infinite both; }
+  .slide.on .pf2-live { animation: pf2-live 6.5s var(--ease) .9s infinite both; }
+  @keyframes pf2-drag {
+    0%, 14% { transform: none; opacity: 1; }
+    40% { transform: translate(292px, 10px) rotate(-4deg); opacity: 1; }
+    46% { transform: translate(292px, 14px) scale(.9); opacity: 1; }
+    54% { transform: translate(292px, 16px) scale(.55); opacity: 0; }
+    92% { transform: none; opacity: 0; }
+    100% { transform: none; opacity: 1; }
+  }
+  @keyframes pf2-zone {
+    0%, 22% { opacity: 1; border-color: #cfc8ec; background: transparent; }
+    32%, 52% { opacity: 1; border-color: var(--violet); background: var(--lavender); }
+    58%, 93% { opacity: 0; border-color: var(--violet); background: var(--lavender); }
+    100% { opacity: 1; border-color: #cfc8ec; background: transparent; }
+  }
+  @keyframes pf2-show-up { 0%, 44% { opacity: 0; } 46%, 56% { opacity: 1; } 58%, 100% { opacity: 0; } }
+  @keyframes pf2-upload { 0%, 45% { transform: scaleX(0); } 56%, 100% { transform: scaleX(1); } }
+  @keyframes pf2-live { 0%, 57% { opacity: 0; transform: translateY(10px) scale(.96); } 63%, 92% { opacity: 1; transform: none; } 97%, 100% { opacity: 0; transform: none; } }
+  .pf2-steps { display: flex; flex-direction: column; gap: 9px; }
+  .pf2-step { display: grid; grid-template-columns: 40px 1fr; gap: 14px; align-items: center; padding: 10px 16px; border-radius: 20px; background: rgba(255,255,255,.6); border: 1px solid rgba(255,255,255,.92); font: 600 18px/1.4 var(--body); opacity: .5; }
+  .pf2-step > i { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; background: #1d2230; color: #fff; font: 800 16px var(--display); font-style: normal; }
+  .pf2-step small { display: block; font: 500 13.5px var(--body); color: var(--muted); }
+  .pf2-step code { font: 700 15.5px "Consolas", monospace; color: var(--violet-deep); }
+  .slide.on .pf2-step { animation: 6.5s var(--ease) .9s infinite both; }
+  .slide.on .pf2-step:nth-child(1) { animation-name: pf2-st1; }
+  .slide.on .pf2-step:nth-child(2) { animation-name: pf2-st2; }
+  .slide.on .pf2-step:nth-child(3) { animation-name: pf2-st3; }
+  @keyframes pf2-st1 { 0%, 12% { opacity: 1; background: #fff; box-shadow: 0 12px 30px rgba(74,65,112,.14); } 16%, 94% { opacity: .5; background: rgba(255,255,255,.6); box-shadow: none; } 100% { opacity: 1; background: #fff; box-shadow: 0 12px 30px rgba(74,65,112,.14); } }
+  @keyframes pf2-st2 { 0%, 12% { opacity: .5; background: rgba(255,255,255,.6); box-shadow: none; } 16%, 54% { opacity: 1; background: #fff; box-shadow: 0 12px 30px rgba(74,65,112,.14); } 58%, 100% { opacity: .5; background: rgba(255,255,255,.6); box-shadow: none; } }
+  @keyframes pf2-st3 { 0%, 54% { opacity: .5; background: rgba(255,255,255,.6); box-shadow: none; } 60%, 92% { opacity: 1; background: #fff; box-shadow: 0 12px 30px rgba(74,65,112,.14); } 96%, 100% { opacity: .5; background: rgba(255,255,255,.6); box-shadow: none; } }
+  .pf2-steps .dl { align-self: flex-start; margin-top: 4px; }
+  .pf2-alt { margin-top: 16px; padding: 11px 20px; border-radius: 18px; font-size: 15.5px; line-height: 1.5; color: #4a5064; }
+  .pf2-alt b { color: var(--ink); }
+  .pf2-more { margin-top: 14px; }
+  .pf2-chips { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 8px; }
+  .pf2-chip { position: relative; display: block; padding: 10px 34px 10px 16px; border-radius: 18px; background: #fff; border: 1px solid var(--line); text-decoration: none; color: var(--ink); box-shadow: 0 8px 20px rgba(74,65,112,.06); transition: transform .2s var(--ease), border-color .2s, box-shadow .2s; }
+  .pf2-chip:hover { transform: translateY(-3px); border-color: var(--violet); box-shadow: 0 14px 30px rgba(74,65,112,.14); }
+  .pf2-chip b { display: block; font: 700 15.5px var(--body); }
+  .pf2-chip span { display: block; font: 600 12.5px "Consolas", monospace; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .pf2-chip::after { content: "\2197"; position: absolute; right: 14px; top: 10px; font: 800 15px var(--display); color: var(--violet-deep); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .pf2-ck li { color: var(--ink); } .pf2-ck circle { fill: var(--good); stroke: var(--good); } .pf2-ck path { stroke-dashoffset: 0; }
+    .pf2-pass { opacity: 1; }
+  }
+  @media print {
+    .pf2-ck li { color: var(--ink) !important; } .pf2-ck circle { fill: var(--good) !important; stroke: var(--good) !important; } .pf2-ck path { stroke-dashoffset: 0 !important; }
+    .pf2-pass { opacity: 1 !important; }
+    .pf2-folder, .pf2-zone, .pf2-zone em::after, .pf2-live, .pf2-step, .pf2-ck li, .pf2-ck circle, .pf2-ck path, .pf2-pass { animation: none !important; }
+    .pf2-step { opacity: 1 !important; }
+  }
+</style>
 </head>
 <body>
 <div class="video-stage" aria-hidden="true">
@@ -722,6 +975,275 @@
       <div class="glass" data-a="pop"><b data-count="3">3</b>ขั้นตอน สั่งด้วยภาษาพูด</div>
     </div>
   </section>
+
+  <!-- Portfolio ด้วย HTML (slides 20-26) -->
+  <section class="slide" data-sec="PORTFOLIO">
+    <div class="pf-head">
+      <div>
+        <div class="eyebrow" data-a>ทำ Portfolio ด้วย HTML</div>
+        <h2 data-split data-en="A good <span class='hl'>portfolio</span>, up close">Portfolio ที่ดี<span class="hl">หน้าตาเป็นยังไง</span></h2>
+      </div>
+      <div class="pf-sub" data-a data-en="See a real one first, then make ours.">ดูของจริงก่อน แล้วค่อยทำของเรา</div>
+    </div>
+    <div class="pf-tour">
+      <div class="glass pf-browser" data-a="left">
+        <div class="pf-bar"><i></i><i></i><i></i><span>genaispace.net/portfolio</span><a class="dl" href="https://genaispace.net/portfolio/" target="_blank" rel="noopener">เปิดเว็บจริง ↗</a></div>
+        <div class="pf-view">
+          <img class="pf-page" src="portfolio/portfolio-full.webp" width="1000" height="8907" alt="หน้าเว็บ Portfolio ของวิทยากร genaispace.net/portfolio">
+          <div class="pf-ring"></div>
+          <b class="pf-pin">1</b>
+        </div>
+        <div class="pf-rail" aria-hidden="true"></div>
+      </div>
+      <ol class="pf-spots">
+        <li data-a><button data-pf="0"><i>1</i><b>หัวเว็บ</b><span>พาดหัวเป็นปัญหาของลูกค้า ไม่ใช่ชื่อเรา มีรูปจริง และปุ่มติดต่อ</span></button></li>
+        <li data-a><button data-pf="1"><i>2</i><b>รู้จักฉัน</b><span>ประวัติสั้น ๆ กับตัวเลขที่พิสูจน์ได้ เช่น องค์กรกว่า 70 แห่ง<br>ผู้เรียนมากกว่า 4,500 คน</span></button></li>
+        <li data-a><button data-pf="2"><i>3</i><b>ลูกค้าและผลงาน</b><span>โลโก้ลูกค้า และภาพตอนทำงานจริง</span></button></li>
+        <li data-a><button data-pf="3"><i>4</i><b>ปัญหาที่ช่วยแก้ และวิธีทำงาน</b><span>บอกว่าลูกค้าติดอะไร แล้วเราช่วยแก้ด้วยวิธีไหน</span></button></li>
+        <li data-a><button data-pf="4"><i>5</i><b>บริการ</b><span>แต่ละการ์ดบอกว่าลูกค้าได้อะไร และมีปุ่มติดต่อทุกการ์ด</span></button></li>
+        <li data-a><button data-pf="5"><i>6</i><b>ประวัติ คำถามที่พบบ่อย ติดต่อ</b><span>ตอบคำถามที่ลูกค้าถามบ่อยไว้ก่อน<br>แล้วปิดท้ายด้วยช่องทางติดต่อ</span></button></li>
+      </ol>
+    </div>
+    <div class="glass pf-bottom" data-a data-en="The whole page is <em>one HTML file</em>. Send the link in LINE, open it on a phone.">ทั้งหน้าคือ<em>ไฟล์ HTML ไฟล์เดียว</em> ส่งลิงก์ใน LINE ได้ เปิดบนมือถือได้</div>
+    <script>
+      (function () {
+        var sec = document.currentScript.closest('section');
+        var PAGE_W = 1280, PAGE_H = 11401; // screenshot of profile-site/index.html at 1280px wide
+        // [scrollTop, ring x, y, w, h] in page pixels; rings are clipped to the visible window
+        var SPOTS = [
+          [0, 24, 100, 700, 560],
+          [814, 41, 864, 1198, 237],
+          [1383, 41, 1433, 1198, 823],
+          [2521, 41, 2571, 1198, 749],
+          [3346, 41, 3396, 1198, 679],
+          [9592, 41, 9642, 1198, 1278]
+        ];
+        var view = sec.querySelector('.pf-view'), img = sec.querySelector('.pf-page');
+        var ring = sec.querySelector('.pf-ring'), pin = sec.querySelector('.pf-pin'), rail = sec.querySelector('.pf-rail');
+        var items = sec.querySelectorAll('.pf-spots button'), timer = null, active = -1;
+        SPOTS.forEach(function (s, i) {
+          var b = document.createElement('button');
+          b.textContent = i + 1;
+          b.onmouseenter = b.onclick = function () { stop(); show(i); };
+          rail.appendChild(b);
+        });
+        var dots = rail.querySelectorAll('button');
+        // Dots sit where each part is on the page, nudged apart so none overlap.
+        function placeDots() {
+          var h = rail.clientHeight - 26, last = -99;
+          dots.forEach(function (b, i) { var y = Math.max(13 + SPOTS[i][0] / PAGE_H * h, last + 26); b.style.top = y + 'px'; last = y; });
+        }
+        placeDots();
+        function show(i) {
+          active = i;
+          var k = view.clientWidth / PAGE_W, vh = view.clientHeight / k, s = SPOTS[i];
+          var top = Math.min(s[0], PAGE_H - vh);
+          img.style.transform = 'translateY(' + (-top * k) + 'px)';
+          var y1 = Math.max(s[2], top + 8), y2 = Math.min(s[2] + s[4], top + vh - 8);
+          ring.style.left = s[1] * k + 'px'; ring.style.width = s[3] * k + 'px';
+          ring.style.top = (y1 - top) * k + 'px'; ring.style.height = (y2 - y1) * k + 'px';
+          // pin sits on the ring's top edge near the right, where section content is usually empty
+          pin.style.left = ((s[1] + s[3]) * k - 56) + 'px'; pin.style.top = Math.max((y1 - top) * k, 20) + 'px';
+          pin.textContent = i + 1;
+          ring.classList.add('pf-on'); pin.classList.add('pf-on');
+          items.forEach(function (b, j) { b.classList.toggle('pf-on', j === i); });
+          dots.forEach(function (b, j) { b.classList.toggle('pf-on', j === i); });
+        }
+        function stop() { clearTimeout(timer); timer = null; }
+        // Reveal the six spots one by one when the slide opens; any hover or click takes over.
+        function play(i) { show(i); if (i < SPOTS.length - 1) timer = setTimeout(function () { play(i + 1); }, 2600); }
+        items.forEach(function (b, i) { b.onmouseenter = b.onclick = function () { stop(); show(i); }; });
+        new MutationObserver(function () {
+          if (sec.classList.contains('on')) { if (!timer && active < 0) timer = setTimeout(function () { play(0); }, 1100); }
+          else if (!sec.classList.contains('out')) { stop(); active = -1; ring.classList.remove('pf-on'); pin.classList.remove('pf-on');
+            img.style.transform = ''; items.forEach(function (b) { b.classList.remove('pf-on'); }); dots.forEach(function (b) { b.classList.remove('pf-on'); }); }
+        }).observe(sec, { attributes: true, attributeFilter: ['class'] });
+      })();
+    </script>
+  </section>
+
+  <section class="slide" data-sec="INPUT">
+    <div class="eyebrow" data-a>ทำ Portfolio ด้วย HTML</div>
+    <h2 data-split data-en="Put your materials in <span class='hl'>input/</span>">เตรียมของใส่ <span class="hl">input/</span></h2>
+    <div class="pf-input">
+      <div class="glass pf-folder" data-a="pop">
+        <span class="pf-ftab">input/</span>
+        <span class="pf-fcount"><b data-count="5">5</b> อย่างที่ต้องมี</span>
+        <div class="pf-file" data-a style="--pf-k:0"><em>DOC/PDF</em><div><b>ประวัติหรือ Resume</b><small>resume.pdf</small></div></div>
+        <div class="pf-file" data-a style="--pf-k:1"><em class="pf-img">JPG</em><div><b>รูปตัวเอง 1 รูป</b><small>profile.jpg</small></div></div>
+        <div class="pf-file" data-a style="--pf-k:2"><em class="pf-img">JPG ×5</em><div><b>รูปผลงาน 3–5 รูป ตั้งชื่อไฟล์ให้อ่านรู้เรื่อง</b><small>work-cafe-menu.jpg · work-shop-sign.jpg</small></div></div>
+        <div class="pf-file" data-a style="--pf-k:3"><em class="pf-txt">TXT</em><div><b>ตัวเลขผลงาน เช่น ลูกค้า 30 ราย หรือยอดขายโต 20%</b><small>numbers.txt</small></div></div>
+        <div class="pf-file" data-a style="--pf-k:4"><em class="pf-txt">TXT</em><div><b>ช่องทางติดต่อ LINE และอีเมล</b><small>contact.txt</small></div></div>
+      </div>
+      <div>
+        <div class="pf-cut" data-a="right">
+          <h3>ตัดออกก่อนส่งให้ AI</h3>
+          <ul>
+            <li style="--pf-k:0">เลขบัตรประชาชน</li>
+            <li style="--pf-k:1">วันเกิด</li>
+            <li style="--pf-k:2">ที่อยู่บ้าน</li>
+            <li style="--pf-k:3">เงินเดือน</li>
+            <li style="--pf-k:4">ข้อมูลลูกค้าที่ยังไม่ได้รับอนุญาต</li>
+          </ul>
+        </div>
+        <div class="glass pf-tip" data-a="right"><small>ยังไม่มีผลงาน?</small><span data-en="Use your everyday work instead, e.g. &quot;cut report time from 2 days to half a day&quot;, or activities and certificates.">ใช้งานที่ทำประจำแทน เช่น "ลดเวลาทำรายงานจาก 2 วันเหลือครึ่งวัน" หรือกิจกรรม ใบประกาศ</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" data-sec="REFERENCE">
+    <div class="eyebrow" data-a>ทำ Portfolio ด้วย HTML</div>
+    <h2 data-split data-en="Find a <span class='hl'>reference</span> first">หา <span class="hl">reference</span> ก่อนทำ</h2>
+    <div class="pf-refs">
+      <a class="glass pf-ref" data-a href="https://www.killerportfolio.com/" target="_blank" rel="noopener">
+        <div class="pf-mock pf-m1" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><b class="pf-note">ดีตรงไหน</b></div>
+        <h3>Killer Portfolio</h3><div class="pf-url">killerportfolio.com</div>
+        <p>รวมพอร์ตคนและเอเจนซี่ มีคำอธิบายว่าดีตรงไหน</p>
+        <span class="pf-go">เปิดเว็บ ↗</span>
+      </a>
+      <a class="glass pf-ref" data-a href="https://www.gallereee.com/" target="_blank" rel="noopener">
+        <div class="pf-mock pf-m2" aria-hidden="true"><div class="pf-chips"><i></i><i></i><i></i></div><span></span><span></span><span></span><span></span><span></span></div>
+        <h3>Gallereee</h3><div class="pf-url">gallereee.com</div>
+        <p>คัดใหม่ทุกสัปดาห์ กรองตามอาชีพได้</p>
+        <span class="pf-go">เปิดเว็บ ↗</span>
+      </a>
+      <a class="glass pf-ref" data-a href="https://onepagelove.com/genre/portfolio" target="_blank" rel="noopener">
+        <div class="pf-mock pf-m3" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+        <h3>One Page Love</h3><div class="pf-url">onepagelove.com</div>
+        <p>เว็บหน้าเดียว รูปทรงเดียวกับพอร์ตเรา</p>
+        <span class="pf-go">เปิดเว็บ ↗</span>
+      </a>
+    </div>
+    <div class="steps pf-steps">
+      <div class="track"></div>
+      <div class="s" data-a="pop"><i>1</i><div class="glass">เลือกพอร์ตที่ชอบ 1–2 เว็บ<br>ที่สายงานใกล้ตัวเรา</div></div>
+      <div class="s" data-a="pop"><i>2</i><div class="glass">แคปหน้าจอ<br>ใส่ใน input/</div></div>
+      <div class="s" data-a="pop"><i>3</i><div class="glass">ให้ AI ใช้สี ฟอนต์<br>และการจัดวางแบบในรูป</div></div>
+    </div>
+    <div class="glass pf-warn" data-a data-en="Borrow the style only. Never copy their text, photos or logos.">ยืมได้แค่สไตล์ ห้ามก๊อปข้อความ รูป หรือโลโก้ของเขา</div>
+  </section>
+
+  <section class="slide pf2-s23" data-sec="PORTFOLIO · PROMPT">
+    <div class="eyebrow" data-a>Prompt สร้าง Portfolio</div>
+    <h2 data-split data-en="4 lines, <span class='hl'>a whole portfolio page</span>">พิมพ์ 4 บรรทัด ได้<span class="hl">เว็บพอร์ตทั้งหน้า</span></h2>
+    <div class="glass pf2-chat" data-a>
+      <div class="pf2-chat-bar"><i></i><i></i><i></i><b>Claude Desktop</b>แชตใหม่ · เลือกโฟลเดอร์ที่มี input/ ไว้แล้ว</div>
+      <div class="pf2-msg" id="pf2Msg" title="กดเพื่อแสดงข้อความทั้งหมด">
+        <small>PROMPT</small>
+        <ol class="pf2-lines" id="pf2Lines">
+          <li><i>1</i><span class="pf2-t">สร้าง Portfolio ของฉันจากไฟล์ใน input/ เป็นไฟล์ HTML ไฟล์เดียว บันทึกเป็น output/portfolio/index.html</span></li>
+          <li><i>2</i><span class="pf2-t">เรียง 6 ส่วน: หัวเว็บ+ปุ่มติดต่อ / รู้จักฉัน+ตัวเลขผลงาน / ผลงาน 3–5 ชิ้น / บริการ / คำถามที่พบบ่อย / ติดต่อ LINE</span></li>
+          <li><i>3</i><span class="pf2-t">ใช้สไตล์จากรูป reference ใน input/ ฟอนต์ไทย เปิดบนมือถือได้ สลับ TH/EN ได้</span></li>
+          <li><i>4</i><span class="pf2-t">ห้ามแต่งตัวเลขหรือคำพูดที่ไม่มีในไฟล์ ข้อมูลไหนไม่มีให้เว้น [ ] แล้วบอกฉัน</span></li>
+        </ol>
+      </div>
+      <div class="pf2-chat-foot">
+        <span class="pf2-status" id="pf2Status" role="status">กดก๊อป แล้ววางในช่องแชตของ Claude Desktop</span>
+        <button type="button" class="btn primary" id="pf2CopyMain">ก๊อป Prompt</button>
+      </div>
+    </div>
+    <div class="pf2-under" data-a>
+      <div class="pf2-tip" data-en="<span>Name the file <code>index.html</code> so it can go live right away</span>"><span>ตั้งชื่อไฟล์ว่า <code>index.html</code> เพื่อให้ขึ้นเว็บได้ทันที</span></div>
+      <div class="pf2-tags" id="pf2Tags">
+        <span><b><i>1</i>ได้อะไร</b>ไฟล์เดียว และเก็บไว้ที่ไหน</span>
+        <span><b><i>2</i>โครง</b>6 ส่วน เรียงตามลำดับนี้</span>
+        <span><b><i>3</i>หน้าตา</b>สไตล์ ฟอนต์ มือถือ 2 ภาษา</span>
+        <span><b><i>4</i>กันมั่ว</b>ไม่มีในไฟล์ ห้ามแต่งเอง</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide pf2-s24" data-sec="PORTFOLIO · DEMO">
+    <div class="eyebrow" data-a>ดูทำจริง</div>
+    <h2 data-split data-en="Watch it done in <span class='hl'>Claude Desktop</span>">ดูทำจริงใน <span class="hl">Claude Desktop</span></h2>
+    <div class="pf2-v-grid">
+      <figure class="glass pf2-player" data-a="left">
+        <div class="pf2-screen">
+          <video id="pf2Video" controls playsinline preload="metadata" poster="../videos/howto-portfolio-poster.jpg" src="../videos/howto-portfolio.mp4" aria-label="วิดีโออัดหน้าจอ ทำ Portfolio ใน Claude Desktop"></video>
+          <div class="pf2-ph" id="pf2VideoPh" hidden>
+            <svg viewBox="0 0 76 76" aria-hidden="true"><path d="M31 25l22 13-22 13z" fill="#fff"/></svg>
+            <b>คลิปสาธิตกำลังจะขึ้นตรงนี้</b>
+            <span>ระหว่างนี้ทำตาม 3 ขั้นด้านขวาได้เลย</span>
+          </div>
+        </div>
+        <figcaption data-en="<b>Real screen recording:</b> building the portfolio of 'La-or, owner of Baan Lamun' from input files to a finished site"><b>อัดหน้าจอจริง:</b> ทำพอร์ตของ 'ละออ เจ้าของร้านบ้านละมุน' ตั้งแต่ใส่ไฟล์ จนได้เว็บ</figcaption>
+      </figure>
+      <div class="glass pf2-v-side" data-a="right">
+        <small>ในคลิปนี้</small>
+        <ol class="pf2-v-steps">
+          <li><i>1</i><span>ใส่ไฟล์ข้อมูลและรูป reference<em><code>input/</code></em></span></li>
+          <li><i>2</i><span>วาง Prompt 4 บรรทัด<em>Claude สร้างเว็บให้ทั้งหน้า</em></span></li>
+          <li><i>3</i><span>เปิดไฟล์ที่ได้ในเบราว์เซอร์<em><code>output/portfolio/index.html</code></em></span></li>
+        </ol>
+        <div class="pf2-v-note">กดหยุดคลิปได้ทุกจังหวะ แล้วทำตามไปทีละขั้น</div>
+        <a class="pf2-ex" href="../playbook-examples/portfolio/claude/index.html" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;margin-top:12px;padding:9px 16px;border-radius:999px;background:#1d2230;color:#fff;font-weight:700;font-size:14px;text-decoration:none">เปิดพอร์ตที่ Claude ทำในคลิป ↗</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide pf2-s25" data-sec="PORTFOLIO · FIX">
+    <div class="eyebrow" data-a>สั่งแก้ + ตรวจ</div>
+    <h2 data-split data-en="Fix it, then <span class='hl'>check before you share</span>">สั่งแก้ + <span class="hl">ตรวจก่อนปล่อย</span></h2>
+    <div class="pf2-fc-grid">
+      <div class="glass pf2-fix" data-a="left">
+        <span class="pf2-k">PROMPT <span>สั่งแก้ · พิมพ์ต่อในแชตเดิม</span></span>
+        <div class="pf2-fix-row"><i>1</i><span class="pf2-fix-t">พาดหัวยังไม่โดน เขียนใหม่ 3 แบบ โดยพูดถึงปัญหาของลูกค้า</span><button type="button" class="btn primary pf2-fix-copy">ก๊อป</button></div>
+        <div class="pf2-fix-row"><i>2</i><span class="pf2-fix-t">สีดูเหมือนเว็บ AI ทั่วไป เปลี่ยนเป็นโทน <mark>[สีแบรนด์ของฉัน]</mark></span><button type="button" class="btn primary pf2-fix-copy">ก๊อป</button></div>
+        <div class="pf2-fix-row"><i>3</i><span class="pf2-fix-t">ตรวจทั้งหน้า มีคำหรือตัวเลขไหนที่ไม่มีในไฟล์ input/ ลิสต์มาให้ดู</span><button type="button" class="btn primary pf2-fix-copy">ก๊อป</button></div>
+        <div class="pf2-fix-row"><i>4</i><span class="pf2-fix-t">ให้ปุ่ม LINE ลอยอยู่มุมล่างขวาตลอดเวลาบนมือถือ</span><button type="button" class="btn primary pf2-fix-copy">ก๊อป</button></div>
+        <span class="pf2-status" id="pf2FixStatus" role="status">ข้อ 2 แก้คำในวงเล็บเป็นสีของคุณก่อนส่ง</span>
+      </div>
+      <div class="glass pf2-check" data-a="right">
+        <span class="pf2-k">CHECKLIST</span>
+        <h3 data-en="5 things HR and clients complain about most">ตรวจ 5 ข้อที่ HR และลูกค้าบ่นบ่อย</h3>
+        <ol class="pf2-ck">
+          <li style="--k:0"><svg viewBox="0 0 30 30" aria-hidden="true"><circle cx="15" cy="15" r="13"/><path d="M9 15.5l4 4 8-9"/></svg><span><b>1</b>โชว์ผลลัพธ์ ไม่ใช่แค่ว่าทำอะไร</span></li>
+          <li style="--k:1"><svg viewBox="0 0 30 30" aria-hidden="true"><circle cx="15" cy="15" r="13"/><path d="M9 15.5l4 4 8-9"/></svg><span><b>2</b>ภาพคมชัด และไม่มีคำผิด</span></li>
+          <li style="--k:2"><svg viewBox="0 0 30 30" aria-hidden="true"><circle cx="15" cy="15" r="13"/><path d="M9 15.5l4 4 8-9"/></svg><span><b>3</b>ตรงกับงานที่สมัครหรือลูกค้าที่อยากได้</span></li>
+          <li style="--k:3"><svg viewBox="0 0 30 30" aria-hidden="true"><circle cx="15" cy="15" r="13"/><path d="M9 15.5l4 4 8-9"/></svg><span><b>4</b>ผลงานไม่เกิน 5 ชิ้น คนดูตัดสินใจในไม่กี่วินาที</span></li>
+          <li style="--k:4"><svg viewBox="0 0 30 30" aria-hidden="true"><circle cx="15" cy="15" r="13"/><path d="M9 15.5l4 4 8-9"/></svg><span><b>5</b>กดทุกลิงก์และทุกปุ่มแล้วต้องใช้ได้</span></li>
+        </ol>
+        <div class="pf2-pass">ผ่านครบ 5 ข้อ ค่อยส่งลิงก์ให้คนดู</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide pf2-s26" data-sec="PORTFOLIO · PUBLISH">
+    <div class="eyebrow" data-a>ขึ้นเว็บ + ใช้ต่อ</div>
+    <h2 data-split data-en="Go live for free, <span class='hl'>keep using it after class</span>">ขึ้นเว็บฟรี + <span class="hl">ใช้ต่อหลังเรียน</span></h2>
+    <div class="pf2-pub-grid">
+      <div class="glass pf2-scene" data-a="left" aria-hidden="true">
+        <div class="pf2-desk"><small>ในเครื่อง</small><code>output/</code><i class="pf2-ghost"></i></div>
+        <div class="pf2-browser">
+          <div class="pf2-browser-bar"><i></i><i></i><i></i><span>app.netlify.com/drop</span></div>
+        </div>
+        <div class="pf2-zone">ลากโฟลเดอร์มาวางที่นี่<em></em></div>
+        <div class="pf2-live"><small>ออนไลน์แล้ว</small><b>your-site.netlify.app</b><span>ตัวอย่างลิงก์ ชื่อจริงระบบจะสุ่มให้</span></div>
+        <div class="pf2-folder">
+          <svg viewBox="0 0 84 66"><path d="M4 12a6 6 0 0 1 6-6h20l7 7h37a6 6 0 0 1 6 6v37a6 6 0 0 1-6 6H10a6 6 0 0 1-6-6z" fill="#5d518e"/><path d="M4 22a6 6 0 0 1 6-6h64a6 6 0 0 1 6 6v34a6 6 0 0 1-6 6H10a6 6 0 0 1-6-6z" fill="#8d80ca"/><rect x="30" y="30" width="24" height="18" rx="3" fill="#fff" opacity=".9"/><path d="M36 36l-3 3 3 3M48 36l3 3-3 3" stroke="#5d518e" stroke-width="2" fill="none" stroke-linecap="round"/></svg>
+          <b>portfolio</b>
+          <svg class="pf2-cur" viewBox="0 0 24 24"><path d="M4 2l16 9-7 2-3 7z" fill="#1d2230" stroke="#fff" stroke-width="1.5"/></svg>
+        </div>
+      </div>
+      <div class="pf2-steps" data-a="right">
+        <div class="pf2-step"><i>1</i><span>เปิด <code>app.netlify.com/drop</code></span></div>
+        <div class="pf2-step"><i>2</i><span>ลากโฟลเดอร์ <code>portfolio</code> มาวาง</span></div>
+        <div class="pf2-step"><i>3</i><span>ได้ลิงก์จริงทันที<small>สมัครบัญชีฟรีเพื่อเก็บเว็บไว้ถาวร</small></span></div>
+        <a class="dl" href="https://app.netlify.com/drop" target="_blank" rel="noopener">เปิด Netlify Drop &#8599;</a>
+      </div>
+    </div>
+    <div class="glass pf2-alt" data-a><b>ทางเลือกอื่น:</b> Claude Publish ง่ายที่สุด แต่บางลิงก์คนดูต้องมีบัญชี Claude · GitHub Pages เหมาะใช้ยาว</div>
+    <div class="pf2-more" data-a>
+      <span class="pf2-k">LINKS <span>ใช้ต่อหลังเรียน · กดแล้วเปิดในแท็บใหม่</span></span>
+      <div class="pf2-chips">
+        <a class="pf2-chip" href="https://fonts.google.com/?subset=thai" target="_blank" rel="noopener"><b>ฟอนต์ไทย</b><span>fonts.google.com</span></a>
+        <a class="pf2-chip" href="https://pagespeed.web.dev/" target="_blank" rel="noopener"><b>เช็กความเร็ว</b><span>pagespeed.web.dev</span></a>
+        <a class="pf2-chip" href="https://webaim.org/resources/contrastchecker/" target="_blank" rel="noopener"><b>เช็กสีอ่านง่าย</b><span>webaim.org</span></a>
+        <a class="pf2-chip" href="https://metatags.io/" target="_blank" rel="noopener"><b>เช็กการ์ดพรีวิวตอนแชร์</b><span>metatags.io</span></a>
+      </div>
+    </div>
+  </section>
+
 </div>
 
 <div class="nav">
@@ -1050,6 +1572,114 @@
   document.getElementById('viewerClose').onclick = closeViewer;
 
   go(Math.max(0, (parseInt(location.hash.slice(1), 10) || 1) - 1));
+</script>
+<script id="pf2-script">
+(function () {
+  var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Copy with the Clipboard API, falling back to a hidden textarea + execCommand (file://, older browsers, no permission).
+  function pf2Copy(text, btn, status, okMsg) {
+    var label = btn.dataset.pf2Label || (btn.dataset.pf2Label = btn.textContent);
+    function show(ok) {
+      clearTimeout(btn._pf2t);
+      btn.textContent = ok ? 'ก๊อปแล้ว' : 'ก๊อปไม่ได้';
+      btn.classList.toggle('done', ok);
+      if (status) {
+        status.textContent = ok ? okMsg : 'ก๊อปไม่ได้ ลากคลุมข้อความแล้วกด Ctrl+C แทน';
+        status.classList.toggle('pf2-ok', ok); status.classList.toggle('pf2-err', !ok);
+      }
+      btn._pf2t = setTimeout(function () { btn.textContent = label; btn.classList.remove('done'); }, 1800);
+    }
+    function fallback() {
+      var ta = document.createElement('textarea'), ok = false;
+      ta.value = text; ta.setAttribute('readonly', '');
+      ta.style.cssText = 'position:fixed;left:-9999px;top:0;opacity:0';
+      document.body.appendChild(ta); ta.select();
+      try { ok = document.execCommand('copy'); } catch (e) {}
+      ta.remove(); btn.focus(); show(ok);
+    }
+    if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(text).then(function () { show(true); }, fallback);
+    else fallback();
+  }
+
+  // Run fn(isOn) whenever the deck shows / hides a section (the deck toggles .on).
+  function watchSlide(sec, fn) {
+    if (!sec) return;
+    var was = false;
+    function check() { var on = sec.classList.contains('on'); if (on !== was) { was = on; fn(on); } }
+    new MutationObserver(check).observe(sec, { attributes: true, attributeFilter: ['class'] });
+    check();
+  }
+
+  /* 23: typing prompt + copy */
+  var s23 = document.querySelector('.pf2-s23');
+  if (s23) {
+    var lis = [].slice.call(s23.querySelectorAll('#pf2Lines li'));
+    var spans = lis.map(function (li) { return li.querySelector('.pf2-t'); });
+    var texts = spans.map(function (s) { return s.textContent; });
+    var tags = [].slice.call(s23.querySelectorAll('#pf2Tags span'));
+    var seg = window.Intl && Intl.Segmenter ? new Intl.Segmenter('th', { granularity: 'grapheme' }) : null;
+    var units = texts.map(function (t) { return seg ? Array.from(seg.segment(t), function (x) { return x.segment; }) : Array.from(t); });
+    var timer = null;
+    function mark(i, state) {
+      lis[i].classList.toggle('pf2-typing', state === 'typing');
+      lis[i].classList.toggle('pf2-done', state === 'done');
+      if (state === 'done') tags[i].classList.add('pf2-on');
+    }
+    function finish() {
+      clearTimeout(timer); timer = null;
+      spans.forEach(function (s, i) { s.textContent = texts[i]; mark(i, 'done'); });
+    }
+    function rest() {
+      clearTimeout(timer); timer = null;
+      spans.forEach(function (s, i) { s.textContent = texts[i]; mark(i, ''); });
+      tags.forEach(function (t) { t.classList.remove('pf2-on'); });
+    }
+    function type() {
+      rest();
+      if (reduce) { finish(); return; }
+      spans.forEach(function (s) { s.textContent = ''; });
+      var line = 0, pos = 0;
+      function step() {
+        if (line >= units.length) { timer = null; return; }
+        mark(line, 'typing');
+        pos += 2;
+        spans[line].textContent = units[line].slice(0, pos).join('');
+        if (pos >= units[line].length) { mark(line, 'done'); line++; pos = 0; timer = setTimeout(step, 320); }
+        else timer = setTimeout(step, 28);
+      }
+      timer = setTimeout(step, 900);
+    }
+    watchSlide(s23, function (on) { if (on) type(); else rest(); });
+    s23.querySelector('#pf2Msg').addEventListener('click', function () { if (timer) finish(); });
+    s23.querySelector('#pf2CopyMain').addEventListener('click', function () {
+      pf2Copy(texts.join('\n'), this, s23.querySelector('#pf2Status'), 'ก๊อปครบ 4 บรรทัดแล้ว วางในแชตของ Claude Desktop แล้วกด Enter');
+    });
+  }
+
+  /* 24: video with placeholder until the recording exists */
+  var video = document.getElementById('pf2Video'), ph = document.getElementById('pf2VideoPh');
+  if (video && ph) {
+    function missing() { ph.hidden = false; video.removeAttribute('controls'); }
+    video.addEventListener('error', missing);
+    video.addEventListener('loadedmetadata', function () { ph.hidden = true; video.setAttribute('controls', ''); });
+    if (video.error || video.networkState === 3) missing();
+    // Arrow keys and Space go to the player when it has focus (same rule as the course viewer); PageUp/PageDown still change slides.
+    video.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowLeft' || e.key === 'ArrowRight' || e.key === ' ') e.stopPropagation();
+    });
+    watchSlide(document.querySelector('.pf2-s24'), function (on) { if (!on && !video.paused) video.pause(); });
+  }
+
+  /* 25: per-prompt copy buttons */
+  var fixStatus = document.getElementById('pf2FixStatus');
+  [].forEach.call(document.querySelectorAll('.pf2-s25 .pf2-fix-copy'), function (btn, i) {
+    btn.addEventListener('click', function () {
+      var text = btn.parentNode.querySelector('.pf2-fix-t').textContent.trim();
+      pf2Copy(text, btn, fixStatus, 'ก๊อปข้อ ' + (i + 1) + ' แล้ว วางต่อในแชตเดิมได้เลย');
+    });
+  });
+})();
 </script>
 </body>
 </html>

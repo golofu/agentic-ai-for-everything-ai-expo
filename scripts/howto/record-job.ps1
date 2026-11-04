@@ -74,13 +74,14 @@ Start-Sleep 3; Ev "reply-end"
 # 4) the result on disk
 $new = Get-ChildItem $job.watchPath -Recurse -File -ErrorAction SilentlyContinue | Where-Object { -not $before.ContainsKey($_.FullName) -or $before[$_.FullName] -ne $_.LastWriteTimeUtc } | Sort-Object LastWriteTime
 Ev "result"; Show-Explorer $job.watchPath 5; Ev "result-explorer-end"
-$rank = @{ '.docx' = 1; '.xlsx' = 2; '.md' = 3; '.txt' = 4; '.csv' = 5; '.ics' = 6 }; $main = $new | Where-Object { $rank.ContainsKey($_.Extension.ToLower()) } | Sort-Object { $rank[$_.Extension.ToLower()] }, { -$_.LastWriteTime.Ticks } | Select-Object -First 1
+$rank = @{ '.html' = 0; '.docx' = 1; '.xlsx' = 2; '.md' = 3; '.txt' = 4; '.csv' = 5; '.ics' = 6 }; $main = $new | Where-Object { $rank.ContainsKey($_.Extension.ToLower()) } | Sort-Object { $rank[$_.Extension.ToLower()] }, { -$_.LastWriteTime.Ticks } | Select-Object -First 1
 if ($main) {
   $ext = $main.Extension.ToLower()
   if ($ext -in '.md', '.txt', '.csv', '.ics') { $p = Start-Process notepad.exe "`"$($main.FullName)`"" -PassThru } else { Invoke-Item $main.FullName }
   Start-Sleep 8; Ev "open"
   Start-Sleep 7
-  $fg = Get-Process | Where-Object { $_.MainWindowTitle -like "*$($main.BaseName)*" } | Select-Object -First 1
+  if ($ext -eq '.html') { $ch = Get-Process chrome | Where-Object { $_.MainWindowHandle -ne 0 } | Select-Object -First 1; if ($ch) { [W]::ShowWindow($ch.MainWindowHandle, 3) | Out-Null; [W]::SetForegroundWindow($ch.MainWindowHandle) | Out-Null }; foreach ($k in 1..8) { Key "{PGDN}"; Start-Sleep -Milliseconds 1400 }; Key "^{HOME}"; Start-Sleep 2; Key "^w"; $main = $null }
+  $fg = if (-not $main) { $null } else { Get-Process | Where-Object { $_.MainWindowTitle -like "*$($main.BaseName)*" } | Select-Object -First 1 }
   if ($fg) { [W]::SetForegroundWindow($fg.MainWindowHandle) | Out-Null; Start-Sleep 0.3; [W]::keybd_event(0x12,0,0,0); [W]::keybd_event(0x73,0,0,0); [W]::keybd_event(0x73,0,2,0); [W]::keybd_event(0x12,0,2,0) }
 }
 Start-Sleep 1; Ev "end"
