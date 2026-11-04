@@ -2754,6 +2754,8 @@
         ].map((label, index) => ({ type: "html-deck", number: index + 1, thumbNumber: index + 1, label }))
           // Talk cut (2026-11-04): the cover page (deck slide 1) is not shown; numbers still point at the real deck slides
           .slice(1)
+          // 2026-11-04: "ตัวอย่างจริง" (deck slide 14) removed from the talk
+          .filter(page => page.number !== 14)
       },
       // Same deck file (assets/html-presentation/index.html), slides 20-26, shown as its own menu (2026-11-04)
       "html-portfolio": {
