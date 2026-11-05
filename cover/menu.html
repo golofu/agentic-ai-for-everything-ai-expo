@@ -1977,6 +1977,8 @@
       .viewer:fullscreen:has(.slide-frame.fit-169) .stage { padding: 0; }
       .viewer:fullscreen .slide-frame.content-page.fit-169 { width: min(100%, calc(100svh * 16 / 9)); border-radius: 0; }
     }
+    /* 2026-11-05: section headings stay as labels only, no link to the full course */
+    .lesson-card.section-label { cursor: default; pointer-events: none; }
     /* Clip pages: smaller heading and padding so the recording itself is big.
        Desktop only: the side padding leaves room for the floating arrows, and phones keep the one-column step list. */
     .install-video.wide { gap: 6px; }
@@ -2049,6 +2051,10 @@
         </div>
 
 
+        <div class="lesson-card prompt section text-only section-label" role="heading" aria-level="2">
+          <span class="prompt-title">01 · Agentic AI for Work</span>
+        </div>
+
         <div class="lesson-top-row work-row">
         <button class="lesson-card setup-work-space work-card text-only" type="button" data-lesson="setup-work-space" aria-label="เปิดบท Setup Claude + ChatGPT Desktop">
           <span class="setup-work-space-title">Setup Claude +<br>ChatGPT Desktop</span>
@@ -2069,6 +2075,10 @@
         </div>
 
 
+        <div class="lesson-card prompt section text-only section-label" role="heading" aria-level="2">
+          <span class="prompt-title">02 · Agentic AI for Creative Work</span>
+        </div>
+
         <button class="lesson-card skill text-only" type="button" data-lesson="motion-graphic" aria-label="เปิดบท Motion Graphic Director">
           <span class="skill-title">Motion Graphic<br>Director</span>
         </button>
@@ -2081,6 +2091,10 @@
           <span class="workshop-skill-title">Agentic AI<br>for Creative</span>
         </button>
 
+
+        <div class="lesson-card prompt section text-only section-label" role="heading" aria-level="2">
+          <span class="prompt-title">03 · Vibe Code</span>
+        </div>
 
         <button class="lesson-card refinement text-only" type="button" data-lesson="vibe-basics" aria-label="เปิดบท Claude Code และ Codex คืออะไร">
           <span class="refinement-title">Claude Code<br>/ Codex</span>
