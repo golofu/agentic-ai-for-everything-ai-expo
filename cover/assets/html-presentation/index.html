@@ -628,27 +628,7 @@
   </div>
 
   <!-- 1 cover -->
-  <section class="slide cover" data-sec="COVER">
-    <div class="cover-grid">
-      <div>
-        <div class="eyebrow" data-a>Agentic AI For Works</div>
-        <h1 data-split data-en="Presentation|<span class='outline'>HTML</span>">Presentation|<span class="outline">HTML</span></h1>
-        <div class="lead" data-a data-en="Slides people can <b class='hl'>use</b>, not just look at.">จากสไลด์ที่ดูได้อย่างเดียว สู่ <b class="hl">สไลด์ที่คนดูกดใช้งานได้</b><br>สั่งด้วยภาษาพูด ไม่ต้องเขียนโค้ด</div>
-        <div class="start" data-a><button data-go="2">เริ่มเรียน</button><span>กดลูกศรขวา หรือปุ่มนี้</span></div>
-      </div>
-      <div class="glass path" data-a="right">
-        <div class="k">LEARNING PATH</div>
-        <h3>เปลี่ยนสไลด์ให้เป็น<br>เครื่องมือทำงาน</h3>
-        <ol>
-          <li><i>01</i>ภาพนิ่ง vs โปรแกรมเล็ก ๆ</li>
-          <li><i>02</i>10 ฟังก์ชันที่ PPT ทำไม่ได้</li>
-          <li><i>03</i>ดูของจริงจาก skill</li>
-          <li><i>04</i>เริ่มทำเองจาก folder เดียว</li>
-        </ol>
-      </div>
-    </div>
-    <div class="marquee"><div>คลิกได้ · คำนวณได้ · ค้นหาได้ · อัปเดตเองได้ · สลับภาษาได้ · ส่งเป็นลิงก์ได้ · คลิกได้ · คำนวณได้ · ค้นหาได้ · อัปเดตเองได้ · สลับภาษาได้ · ส่งเป็นลิงก์ได้ ·&nbsp;</div></div>
-  </section>
+  <section class="slide cover" data-sec="COVER"></section>
 
   <!-- 2 compare -->
   <section class="slide" data-sec="WHY HTML">
@@ -894,81 +874,16 @@
   </section>
 
   <!-- 14 real gallery -->
-  <section class="slide" data-sec="REAL EXAMPLES">
-    <div class="eyebrow" data-a>ของจริงจาก skill html-ppt</div>
-    <h2 data-split data-en="Real decks. Click to try.">สไลด์จริงที่ skill ทำได้ · <span class="hl">กดเปิดลองได้เลย</span></h2>
-    <div class="gallery-wrap">
-    <div class="gallery" id="gallery">
-      <button data-a data-deck="pitch-deck"><img src="decks/pitch-deck.png" alt=""><span>Pitch deck ระดมทุน<em>10 หน้า</em></span></button>
-      <button data-a data-deck="product-launch"><img src="decks/product-launch.png" alt=""><span>เปิดตัวสินค้า<em>8 หน้า</em></span></button>
-      <button data-a data-deck="weekly-report"><img src="decks/weekly-report.png" alt=""><span>รายงานประจำสัปดาห์<em>7 หน้า</em></span></button>
-      <button data-a data-deck="course-module"><img src="decks/course-module.png" alt=""><span>บทเรียนคอร์ส<em>7 หน้า</em></span></button>
-      <button data-a data-deck="presenter-mode-reveal"><img src="decks/presenter-mode-reveal.png" alt=""><span>Presenter mode (กด S)<em>6 หน้า</em></span></button>
-      <button data-a data-deck="obsidian-claude-gradient"><img src="decks/obsidian-claude-gradient.png" alt=""><span>Tech sharing โทนมืด<em>8 หน้า</em></span></button>
-    </div>
-    <div class="glass gallery-side" data-a="right"><b>15</b>template ทั้งชุดใน html-ppt เลือกมาให้ลอง 6 ชุด<br><br>กดการ์ดเพื่อเปิด แล้วใช้ลูกศรซ้ายขวาเปลี่ยนหน้า<br><br>ต้นฉบับเป็นภาษาอังกฤษและจีน สั่งให้ทำเป็นภาษาไทยได้</div>
-    </div>
-    <div class="viewer" id="viewer">
-      <div class="bar"><span id="viewerTitle"></span><div class="row"><a id="viewerOpen" target="_blank" rel="noopener">เปิดในแท็บใหม่</a><button id="viewerClose">ปิด ✕</button></div></div>
-      <iframe id="viewerFrame" title="ตัวอย่างสไลด์จริง"></iframe>
-    </div>
-  </section>
+  <section class="slide" data-sec="REAL EXAMPLES"></section>
 
   <!-- 15 folder -->
-  <section class="slide" data-sec="START">
-    <div class="eyebrow" data-a>เริ่มยังไง</div>
-    <h2 data-split data-en="Start with one folder">เริ่มจาก <span class="hl">folder เดียว</span></h2>
-    <div class="start-grid">
-      <div class="tree" data-a="left"><span class="ln2" style="--t:0">my-slides/</span><span class="ln2" style="--t:1">├── .claude/skills/</span><span class="ln2" style="--t:2">│   ├── frontend-slides/</span><span class="ln2" style="--t:3">│   └── html-ppt/</span><span class="ln2" style="--t:4">├── resource/  <span class="c">← ใส่ไฟล์งาน</span></span><span class="ln2" style="--t:5">└── CLAUDE.md  <span class="c">← กติกาให้ AI</span></span></div>
-      <div class="glass make" data-a="right">
-        <small>ก๊อปไปวางใน Claude Code แล้ว folder จะถูกสร้างให้ทั้งหมด</small>
-<pre id="folderPrompt">สร้างโฟลเดอร์ my-slides สำหรับทำสไลด์ HTML
-1. ติดตั้ง skill จาก github.com/zarazhangrui/frontend-slides และ github.com/lewislulu/html-ppt-skill ไว้ใน my-slides/.claude/skills/ ชื่อ frontend-slides และ html-ppt
-2. สร้างโฟลเดอร์ resource ว่างไว้ใส่ไฟล์
-3. สร้าง CLAUDE.md: ใช้ข้อมูลจาก resource เท่านั้น ห้ามแต่งตัวเลข ใช้ฟอนต์ Noto Sans Thai ยังไม่รู้สไตล์ใช้ frontend-slides งาน pitch หรือรายงานใช้ html-ppt และให้ดูโครงเรื่องก่อนสร้าง</pre>
-        <button class="btn primary" data-copy="folderPrompt">ก๊อป Prompt สร้าง folder</button>
-      </div>
-    </div>
-  </section>
+  <section class="slide" data-sec="START"></section>
 
   <!-- 16 skill downloads -->
-  <section class="slide" data-sec="SKILLS">
-    <div class="eyebrow" data-a>โหลด Skill</div>
-    <h2 data-split data-en="Download the 2 skills">โหลด <span class="hl">Skill 2 ตัว</span></h2>
-    <div class="skills2">
-      <div class="glass" data-a="left">
-        <div class="sk-head"><b>frontend-slides</b><em>MIT</em></div>
-        <p>ให้ AI ทำ preview มาให้เลือกสไตล์ด้วยตา และแปลง PPT เก่าเป็น HTML</p>
-        <div class="row">
-          <a class="dl" href="https://github.com/zarazhangrui/frontend-slides/archive/refs/heads/main.zip">ดาวน์โหลด .zip</a>
-          <a class="btn" href="https://github.com/zarazhangrui/frontend-slides" target="_blank" rel="noopener">เปิด GitHub</a>
-        </div>
-      </div>
-      <div class="glass" data-a="right">
-        <div class="sk-head"><b>html-ppt</b><em>MIT</em></div>
-        <p>template งานทั้งชุด เช่น pitch และรายงาน มี presenter mode กด S ดูโน้ตผู้พูด</p>
-        <div class="row">
-          <a class="dl" href="https://github.com/lewislulu/html-ppt-skill/archive/refs/heads/main.zip">ดาวน์โหลด .zip</a>
-          <a class="btn" href="https://github.com/lewislulu/html-ppt-skill" target="_blank" rel="noopener">เปิด GitHub</a>
-        </div>
-      </div>
-    </div>
-    <div class="glass sk-where" data-a>แตกไฟล์แล้วเปลี่ยนชื่อโฟลเดอร์ (ตัด -main ออก) วางไว้ที่ <code>my-slides/.claude/skills/frontend-slides</code> และ <code>my-slides/.claude/skills/html-ppt</code> · ถ้าใช้ Prompt หน้าที่แล้ว Claude Code โหลดให้เอง ข้ามหน้านี้ได้</div>
-  </section>
+  <section class="slide" data-sec="SKILLS"></section>
 
   <!-- 17 steps -->
-  <section class="slide" data-sec="HOW TO">
-    <div class="eyebrow" data-a>ลงมือทำ</div>
-    <h2 data-split data-en="3 steps">3 <span class="hl">ขั้นตอน</span></h2>
-    <div class="steps three">
-      <div class="track"></div>
-      <div class="s" data-a="pop"><i>1</i><div class="glass">วาง Prompt สร้าง folder ใน Claude Code</div></div>
-      <div class="s" data-a="pop"><i>2</i><div class="glass">ใส่ไฟล์งานลงใน resource</div></div>
-      <div class="s" data-a="pop"><i>3</i><div class="glass">พิมพ์สั่ง แล้วอนุมัติโครงเรื่อง</div></div>
-    </div>
-    <div class="glass steps-prompt" data-a><small>ตัวอย่าง PROMPT</small><span id="deckPrompt">ทำสไลด์ 8 หน้าจากไฟล์ใน resource ให้ผู้บริหารดู ใส่กราฟโต้ตอบได้ แสดงโครงเรื่องให้ดูก่อน</span><button class="btn primary" data-copy="deckPrompt">ก๊อป</button></div>
-    <div class="hint" data-a>อยากแก้ บอกเลขหน้าเสมอ เช่น "หน้า 3 ยาวไป ตัดเหลือ 3 บรรทัด"</div>
-  </section>
+  <section class="slide" data-sec="HOW TO"></section>
 
   <!-- 17 limits -->
   <section class="slide" data-sec="LIMITS">
@@ -983,15 +898,7 @@
   </section>
 
   <!-- 18 summary -->
-  <section class="slide cover" data-sec="SUMMARY">
-    <div class="eyebrow" data-a>สรุป</div>
-    <h1 data-split style="font-size:72px;line-height:1.15" data-en="Slides people can <span class='outline'>use</span>,|not just look at">สไลด์ที่คนดู <span class="outline">ใช้งานได้</span>|ไม่ใช่แค่ดู</h1>
-    <div class="sumrow">
-      <div class="glass" data-a="pop"><b data-count="10">10</b>ฟังก์ชันที่ PPT ทำไม่ได้</div>
-      <div class="glass" data-a="pop"><b data-count="1">1</b>folder พร้อม 2 skills</div>
-      <div class="glass" data-a="pop"><b data-count="3">3</b>ขั้นตอน สั่งด้วยภาษาพูด</div>
-    </div>
-  </section>
+  <section class="slide cover" data-sec="SUMMARY"></section>
 
   <!-- Portfolio ด้วย HTML (slides 20-26) -->
   <section class="slide" data-sec="PORTFOLIO">

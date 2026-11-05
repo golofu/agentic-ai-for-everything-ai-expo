@@ -253,23 +253,8 @@ ul.b li{font-size:1.75cqw}
 <body>
 <div class="stage" id="stage">
   <canvas id="dust"></canvas>
-  <section class="slide" data-dust="num:02">
-    <div class="abs kick r" style="left:6cqw;top:5cqw">Gen AI Space · Vibe Code</div>
-    <div class="abs kick r" style="right:6cqw;top:5cqw">คอร์ส 1 วัน</div>
-    <div class="abs r" style="left:6cqw;bottom:6.5cqw;width:60cqw;--d:.8"><div class="kick">บท 02</div><h2 style="font-size:4cqw">ติดตั้ง + install git</h2></div>
-  </section>
-  <section class="slide" data-dust="none">
-    <div class="r" style="--d:0"><div class="kick">02.1</div><h2>ติดตั้งแอป <em>ดูคลิปแล้วทำตาม</em></h2></div>
-    <ol class="abs r isteps" style="left:6cqw;width:42cqw;top:13cqw;--d:.5">
-      <li><b>ดาวน์โหลดแอป</b>เข้าเว็บ claude.ai และ chatgpt.com กดปุ่มดาวน์โหลดแอปสำหรับคอมพิวเตอร์</li>
-      <li><b>ติดตั้งแล้วเปิดแอป</b>ดับเบิลคลิกไฟล์ที่โหลดมา กด Next จนจบ</li>
-      <li><b>เข้าสู่ระบบ</b>ใช้บัญชี Google ง่ายที่สุด</li>
-      <li><b>เปิดโหมดสร้างงาน</b>Claude: กดปุ่ม &lt;/&gt; (แท็บ Code) · ChatGPT: กด Codex</li>
-    </ol>
-    <p class="abs r" style="left:6cqw;width:42cqw;bottom:4.4cqw;--d:1;font-size:1.4cqw">แท็บ Code ของ Claude ใช้ได้เฉพาะแพ็กเกจเสียเงิน · คลิปทั้งสองยาวประมาณ 2 นาที</p>
-    <figure class="abs r ivid" style="left:51cqw;top:9.5cqw;--d:.7"><figcaption>Claude</figcaption><video controls playsinline preload="metadata" poster="media/install-claude-poster.jpg" src="media/install-claude.mp4"></video></figure>
-    <figure class="abs r ivid" style="left:73cqw;top:9.5cqw;--d:.9"><figcaption>ChatGPT</figcaption><video controls playsinline preload="metadata" poster="media/install-chatgpt-poster.jpg" src="media/install-chatgpt.mp4"></video></figure>
-  </section>
+  <section class="slide" data-dust="num:02"></section>
+  <section class="slide" data-dust="none"></section>
   <section class="slide" data-dust="none">
     <div class="r" style="--d:0"><div class="kick">02.2 · สำคัญที่สุด</div><h2>โฟลเดอร์ทำงาน = <em>โต๊ะทำงานของ AI</em></h2></div>
     <div class="abs r fdesk" style="left:6cqw;width:42cqw;top:13cqw;--d:.5">
@@ -765,122 +750,11 @@ HANDOFF.md
     <div class="abs r co star" data-k="brain" style="left:56cqw;top:38.50cqw;--d:.9"><b>สมองของ AI <i>สำคัญที่สุด</i></b><span>กติกาอยู่ใน AGENTS.md · Codex อ่านตรง ส่วน Claude อ่านผ่าน CLAUDE.md ที่ชี้มาที่ไฟล์เดียวกัน = กติกาชุดเดียว ใช้ได้ 2 แอป · ห้ามลบ</span></div>
     <div class="abs r co" data-k="start" style="left:56cqw;top:44.50cqw;--d:1"><b>เราอ่านไฟล์นี้ไฟล์เดียวพอ</b><span>คู่มือสั้นสำหรับเรา: เปิดโฟลเดอร์นี้ใน Claude หรือ Codex แล้วพิมพ์ไอเดียได้เลย</span></div>
   </section>
-  <section class="slide" data-dust="none" id="s025">
-    <div class="r" style="--d:0"><div class="kick">02.5</div><h2>ไฟล์ .md คือ <em>สมุดบันทึกที่เรากับ AI ใช้ร่วมกัน</em></h2></div>
-    <div class="abs r mdone" style="left:6cqw;right:6cqw;top:12cqw;--d:.3">ปิดแชทแล้ว AI ลืมหมด แต่<b>สิ่งที่เขียนไว้ในไฟล์ .md ไม่หาย</b> AI เปิดอ่านได้ทุกครั้ง คนก็อ่านได้</div>
-    <div class="abs r mdc" style="left:6cqw;right:6cqw;top:17cqw;--d:.6">
-      <div>
-        <b><i>1</i>กฎ</b>
-        <p class="big">บอก AI ว่าต้องทำงานยังไง</p>
-        <p><code>AGENTS.md</code>AI อ่านเองทุกครั้งก่อนเริ่มงาน เลยทำเหมือนเดิมทุกครั้ง ไม่ต้องสั่งซ้ำ</p>
-        <p class="eg">เช่น "ถามให้ชัดก่อนลงมือ" "ห้ามขึ้นเว็บถ้ายังไม่ได้ทดสอบ"</p>
-      </div>
-      <div>
-        <b><i>2</i>ความจำ</b>
-        <p class="big">งานถึงไหนแล้ว ตัดสินใจอะไรไปแล้ว</p>
-        <p><code>PROJECT-STATE.md</code>AI จดเองระหว่างทำงาน เปิดแชทใหม่หรือข้ามวัน ก็ทำต่อได้ไม่หลง</p>
-        <p class="eg">เช่น "หน้าจองคิวเสร็จแล้ว เหลือหน้าชำระเงิน"</p>
-      </div>
-      <div>
-        <b><i>3</i>ส่งงานต่อ</b>
-        <p class="big">ให้คนอื่นหรือ AI อีกตัวมาอ่านต่อ</p>
-        <p><code>HANDOFF.md</code>สั่งให้ AI เขียนคำตอบลงไฟล์ ไม่ใช่แค่ตอบบนจอ แล้วใครมาเปิดทีหลังก็เห็น</p>
-        <p class="eg">เช่น "เขียนคำตอบลง CODEX-HANDOFF.md ใต้หัวข้อ ## Codex ตอบ"</p>
-      </div>
-      <div class="how">
-        <b><i>+</i>สร้างยังไง</b>
-        <p class="big">บอก AI ประโยคเดียว</p>
-        <p class="say2">"สร้างไฟล์ชื่อ โจทย์.md เขียนว่า อยากได้เว็บจองคิวร้านตัดผม"</p>
-        <div class="mdpics">
-          <small>ได้ไฟล์โผล่ในโฟลเดอร์</small>
-          <img src="media/md-file-row.png" alt="ไฟล์ .md ใน Explorer">
-          <small>เปิดดูข้างในด้วย Notepad = ข้อความธรรมดา</small>
-          <img src="media/md-notepad-sm.png" alt="ไฟล์ .md เปิดใน Notepad">
-        </div>
-        <p class="eg">เอกสารสวยๆ ส่งลูกค้า ใช้ Word/Canva แทน</p>
-      </div>
-    </div>
-  </section>
-  <section class="slide" data-dust="none">
-    <div class="r" style="--d:0"><div class="kick">02.6</div><h2>โฟลเดอร์นี้<em>ทำงานอย่างไร</em></h2></div>
-    <div class="abs r wsl" style="left:6cqw;top:11.7cqw;--d:.3">AI ทำตามกติกาใน AGENTS.md ทีละด่าน · <b>หยุดรอเรา 2 จุด</b> คือหลังวางแผน และก่อนขึ้นเว็บ</div>
-    <div class="abs r g7" style="left:6cqw;right:6cqw;top:15cqw;--d:.5">
-      <div class="gc"><small>เรา</small><b>1</b><span>พิมพ์ไอเดีย</span><em>"อยากได้เว็บจองคิวร้านตัดผม"</em></div>
-      <div class="gc hi"><small>ก่อนเริ่ม</small><b>2</b><span>AI อ่านกติกาก่อน</span><em>AGENTS.md ทุกครั้ง ถ้าเป็นงานเดิมอ่าน PROJECT-STATE.md ด้วย</em></div>
-      <div class="gc stop"><small>ด่าน 1</small><b>3</b><span>ถามจี้ทีละข้อ แล้วเขียนแผน</span><em>BRIEF + SPEC + DESIGN</em><i>หยุดรอเราสั่ง "สร้างเลย"</i></div>
-      <div class="gc"><small>ด่าน 2</small><b>4</b><span>ลองของจริงจุดเสี่ยงก่อน</span><em>login ฐานข้อมูล จ่ายเงิน ทดสอบเล็กๆ ให้ผ่านก่อน (งาน UI ธรรมดาข้ามได้)</em></div>
-      <div class="gc"><small>ด่าน 3</small><b>5</b><span>สร้างเส้นหลักให้ใช้ได้จริง</span><em>ใน web-apps/ชื่องาน ทีละส่วน ไม่ทำหลายอย่างพร้อมกัน</em></div>
-      <div class="gc"><small>ด่าน 4</small><b>6</b><span>ตรวจ 5 มุม แก้บั๊กทีละจุด</span><em>ความถูกต้อง ความปลอดภัย โครงสร้าง หน้าตา ทดสอบ</em></div>
-      <div class="gc stop"><small>ด่าน 5</small><b>7</b><span>ให้เราตรวจของจริง</span><em>ผลเขียนใน ACCEPTANCE.md</em><i>หยุดรอเราอนุมัติ แล้วค่อยขึ้นเว็บ</i></div>
-    </div>
-    <div class="abs r wimp sm" style="left:6cqw;right:6cqw;top:36.5cqw;--d:.9">
-      <div class="wih">3 อย่างที่ต้องจำ</div>
-      <ol>
-        <li><b>เปิด my-vibecode-workspace ทุกครั้ง</b> AI ถึงจะเจอกติกา เปิดโฟลเดอร์อื่น = ไม่มีกติกา</li>
-        <li><b>AI จะไม่สร้างทันที</b> มันถามก่อน วางแผนก่อน แล้วรอเราสั่ง ถ้าอยากข้ามให้บอกว่า "งานเล็ก ทำเลย"</li>
-        <li><b>เปลี่ยนแชทได้ งานไม่หาย</b> เพราะ AI จดไว้ใน PROJECT-STATE.md และ HANDOFF.md</li>
-      </ol>
-    </div>
-  </section>
-  <section class="slide" data-dust="none">
-    <div class="r" style="--d:0"><div class="kick">02.7</div><h2>install git: <em>คัดลอก วาง กด Enter</em></h2></div>
-    <div class="abs r gsteps" style="left:6cqw;right:6cqw;top:12.4cqw;--d:.4">
-      <div><b>1</b>เปิดแท็บ Code หรือ Codex แล้วเลือกโฟลเดอร์งาน</div>
-      <div><b>2</b>คัดลอก ① ไปวาง แล้วตอบเมื่อ AI ขอข้อมูลที่ยังไม่มี</div>
-      <div><b>3</b>รอให้ AI ยืนยันว่าพร้อม <small class="hint">แล้วค่อยคัดลอก ② ไปวางในแชทเดิม</small></div>
-    </div>
-    <div class="abs r pcard" style="left:6cqw;width:43cqw;top:19.6cqw;--d:.7">
-      <div class="phead"><span>Prompt ① ติดตั้ง Git <small class="once">ทำครั้งเดียวต่อเครื่อง</small></span><button type="button" class="cpy" data-for="gp1">คัดลอก</button></div>
-      <pre id="gp1">ช่วยเตรียม Git ให้เครื่องนี้พร้อมเก็บจุดเซฟ ฉันเป็นมือใหม่ ให้ลงมือทำเองเท่าที่ทำได้
-
-1. ตรวจระบบปฏิบัติการและ Git ถ้ามีแล้วให้ใช้ของเดิม ถ้ายังไม่มี ให้ติดตั้งจากแหล่งทางการที่เหมาะกับเครื่องนี้ ไม่ต้องสมัคร GitHub
-2. ตรวจด้วย git --version ว่าเรียกใช้ได้จริง ถ้าติดตั้งแล้วแต่แอปยังหาไม่เจอ ให้ลองใช้ตำแหน่งที่ติดตั้งก่อน อย่าติดตั้งซ้ำ หากต้องปิดแล้วเปิดแอปใหม่ ให้บอกวิธีกลับมาทำต่อ ถ้าต้องกดอนุญาตหรือใส่รหัสผ่าน ให้ฉันทำเองพร้อมแนะนำทีละขั้น
-3. ตรวจชื่อและอีเมลผู้บันทึกงาน ถ้ามีให้คงเดิม ถ้ายังขาดให้ถามเฉพาะข้อมูลที่ขาดพร้อมกันครั้งเดียว ใช้ชื่อเล่นได้ ไม่ต้องมีบัญชี GitHub และไม่ต้องให้รหัสผ่าน เมื่อฉันตอบแล้วจึงตั้งเฉพาะค่าที่ขาดสำหรับผู้ใช้เครื่องนี้
-
-ห้ามเดาชื่อหรืออีเมล ห้ามแก้หรือลบไฟล์งาน และยังไม่ต้องสร้างจุดเซฟ
-ถ้าทำต่อไม่ได้ ให้บอกสิ่งที่ฉันต้องทำทีละขั้น อย่ารายงานว่าพร้อมจนกว่าจะตรวจ Git และชื่อกับอีเมลผ่านจริง
-
-รายงานสั้น ๆ 3 บรรทัด: เวอร์ชัน Git / ชื่อและอีเมลที่ใช้งาน / พร้อมวาง Prompt ② หรือยัง และถ้ายัง ฉันต้องทำอะไรต่อ</pre>
-    </div>
-    <div class="abs r pcard" style="left:51cqw;width:43cqw;top:19.6cqw;--d:.9">
-      <div class="phead"><span>Prompt ② เริ่มเก็บจุดเซฟ <small class="once">ทำครั้งเดียวต่อโฟลเดอร์งาน</small></span><button type="button" class="cpy" data-for="gp2">คัดลอก</button></div>
-      <pre id="gp2">ช่วยเริ่มเก็บจุดเซฟให้โฟลเดอร์งานที่ฉันเปิดอยู่ โดยรักษางานเดิมทั้งหมด
-
-1. ตรวจว่า Git และชื่อกับอีเมลพร้อมจาก Prompt ① แล้ว ถ้ายังไม่พร้อม ให้ช่วยแก้จุดที่ขาดก่อน
-2. ตรวจตำแหน่งโฟลเดอร์และราก Git ถ้าไม่รู้ว่าฉันเปิดโฟลเดอร์ไหน หรือ Git ครอบคลุมถึงโฟลเดอร์แม่ ให้ถามยืนยันขอบเขตก่อน ห้ามสร้าง Git ซ้อนเอง ถ้ามี Git แล้วให้คง branch ประวัติ และไฟล์ที่เตรียมบันทึกไว้เดิม ถ้ายังไม่มีจึงเริ่ม Git ด้วย branch ชื่อ main
-3. ถ้ามีจุดเซฟแล้ว ให้รายงานจุดล่าสุดกับสถานะงาน ไม่สร้างจุดเซฟซ้ำหรือรวมงานค้างให้เอง ถ้ายังไม่มี ให้สร้างหรือเติม .gitignore โดยคงรายการเดิม กันไฟล์ลับ เช่น .env และไฟล์ติดตั้งหรือไฟล์ชั่วคราวตามชนิดงาน
-4. ก่อนเซฟ ตรวจทั้งเนื้อหาและรายชื่อไฟล์ที่จะบันทึก เลือกเฉพาะไฟล์งานที่ตรวจแล้ว .gitignore ไม่ได้ซ่อนรหัสผ่านในโค้ดหรือกันไฟล์ที่ Git เก็บไว้แล้ว ถ้าพบสิ่งน่าสงสัยให้หยุดก่อนบันทึกและบอกเฉพาะชื่อไฟล์ ห้ามแสดงค่าลับหรือแก้ไฟล์นั้นเอง
-5. ถ้าปลอดภัย ให้สร้างจุดเซฟแรกชื่อ "เริ่มโปรเจกต์" ถ้าโฟลเดอร์ว่างให้บันทึกเฉพาะ .gitignore แล้วตรวจว่าจุดเซฟสำเร็จจริง ถ้าไม่สำเร็จให้บอกสาเหตุและขั้นตอนถัดไป
-
-ห้ามลบหรือเขียนทับไฟล์งาน ห้ามย้อนประวัติ อนุญาตเฉพาะการตั้งค่า Git เติม .gitignore และสร้างจุดเซฟตามเงื่อนไขข้างต้น
-ขั้นนี้เก็บในเครื่องเท่านั้น ไม่สร้าง GitHub repo หรือส่งไฟล์ขึ้นอินเทอร์เน็ต เมื่อถึงบท push หรือ deploy และฉันสั่ง จึงค่อยทำ
-
-เสร็จแล้วบอกสั้น ๆ: โฟลเดอร์ที่ใช้ / ชื่อและรหัสจุดเซฟ / ไฟล์ที่เก็บและเว้นไว้ / พร้อมทำงานต่อหรือยัง</pre>
-    </div>
-    <p class="abs r" style="left:6cqw;right:6cqw;bottom:4.6cqw;--d:1.2;font-size:1.3cqw;line-height:1.45"><b style="color:#b4552f">วาง ① จน AI บอกว่าพร้อม แล้วค่อยวาง ② · เลื่อนในกล่องเพื่ออ่าน Prompt ได้ครบ</b><br>เปิดโฟลเดอร์งานใหม่ → วาง ② ให้ AI ตรวจขอบเขต Git ก่อน · หากต้องติดตั้งด้วยตัวเอง ใช้ <b style="color:var(--gold)">git-scm.com/downloads</b> และให้ AI แนะนำตามเครื่องของเรา ไม่ต้องสมัคร GitHub ในขั้นนี้</p>
-  </section>
-  <section class="slide" data-dust="none">
-    <div class="r" style="--d:0"><div class="kick">02.8</div><h2>Git มีไว้ทำอะไร: <em>จุดเซฟ เหมือนเซฟเกม</em></h2></div>
-    <div class="abs r gline" style="left:6cqw;right:6cqw;top:13.5cqw;--d:.5">
-      <div class="gl"></div>
-      <div class="gp"><i></i><b>จุดเซฟ 1</b><span>เริ่มโปรเจกต์</span></div>
-      <div class="gp"><i></i><b>จุดเซฟ 2</b><span>มีหน้าจองคิว</span></div>
-      <div class="gp now"><i></i><b>จุดเซฟ 3</b><span>เพิ่มปุ่มยกเลิก</span></div>
-      <div class="gp bad"><i>✕</i><b>แก้ต่อ</b><span>แอปพัง</span></div>
-      <div class="gback">↶ สั่ง "ย้อนกลับไปจุดเซฟ 3" แอปกลับมาใช้ได้</div>
-    </div>
-    <div class="abs r gcloud" style="left:6cqw;right:6cqw;top:27.5cqw;--d:.8"><span class="cl">GitHub</span> = สำเนาจุดเซฟทั้งหมดบนอินเทอร์เน็ต คอมเสียก็ไม่หาย แชร์ให้คนอื่นได้ ส่งขึ้นเมื่อเราอนุมัติเท่านั้น</div>
-    <div class="abs r gex" style="left:6cqw;right:6cqw;top:34cqw;--d:1">
-      <div><b>จุดเซฟ (commit)</b><p>บันทึกงานเป็นจุดๆ แต่ละจุดมีชื่อบอกว่าแก้อะไร</p></div>
-      <div><b>ย้อนกลับ</b><p>งานพัง หรือไม่ชอบที่แก้ สั่งให้ AI ย้อนไปจุดก่อนหน้าได้</p></div>
-      <div><b>สั่งเป็นภาษาคน</b><p>"เซฟจุดนี้ไว้หน่อย" · "ย้อนกลับไปจุดเซฟเมื่อกี้" ไม่ต้องจำคำสั่ง</p></div>
-    </div>
-  </section>
-  <section class="slide" data-dust="row:file,save,file,rewind">
-    <div class="r" style="--d:0"><div class="kick">02.9</div><h2>ลงมือ: เซฟก่อนแก้ <em>แก้แล้วไม่ชอบก็ย้อนได้</em></h2></div>
-    <div class="abs lab r" style="left:7cqw;width:20cqw;top:31cqw;--d:1.00">1. ให้ AI สร้างเว็บเล็กๆ<small>"สร้างหน้าเว็บ 1 หน้า ชื่อร้านตัดผมของผม มีเบอร์โทรกับเวลาเปิด" แล้วเปิดดู</small></div><div class="abs lab r" style="left:29cqw;width:20cqw;top:31cqw;--d:1.15">2. เซฟก่อนแก้<small>"เซฟจุดนี้ไว้หน่อย ตั้งชื่อว่า หน้าเว็บเวอร์ชันแรก"</small></div><div class="abs lab r" style="left:51cqw;width:20cqw;top:31cqw;--d:1.30">3. ลองแก้ แล้วไม่ชอบ<small>"เปลี่ยนพื้นหลังเป็นสีดำ ตัวหนังสือสีแดง" เปิดดูแล้วไม่สวย</small></div><div class="abs lab r" style="left:73cqw;width:20cqw;top:31cqw;--d:1.45">4. ย้อนกลับ<small>"เอาหน้าเว็บกลับไปตอนที่เซฟไว้ หน้าเว็บเวอร์ชันแรก" เปิดดู กลับเป็นแบบเดิม</small></div>
-    <p class="ft abs r" style="left:6cqw;right:6cqw;bottom:5.4cqw;--d:1.8">Git เซฟงานจริงที่ AI สร้างทุกชิ้น ทั้งเว็บ เกม เอกสาร · บท 04 ตอนสร้างเว็บจริง ใช้ประโยคเดิมนี้ก่อนแก้ใหญ่ทุกครั้ง แก้แล้วไม่ดีเท่าเดิม ย้อนได้ใน 1 ประโยค</p>
-  </section>
+  <section class="slide" data-dust="none" id="s025"></section>
+  <section class="slide" data-dust="none"></section>
+  <section class="slide" data-dust="none"></section>
+  <section class="slide" data-dust="none"></section>
+  <section class="slide" data-dust="row:file,save,file,rewind"></section>
 
   <div class="foot"><span>VIBE CODE · บท 02 ติดตั้ง + install git</span><span id="pg">01 / 07</span></div>
   <div class="bar" id="bar"></div>
