@@ -58,6 +58,9 @@ html, n = blank_sections(
     r'(?P<open><section class="demo" data-lesson="(?P<lesson>[^"]+)">)(?:(?!<section class="demo").)*?(?P<close></section>)',
     lambda lesson, i: f"{lesson}/{i}" in keep_c,
 )
+# the copy's "← กลับหน้าแรก" link resolves (via <base>) to the full course home: hide it
+if 'id="talk-hide-home"' not in html:
+    html = html.replace("</head>", '<style id="talk-hide-home">.home-link { display: none !important; }</style></head>', 1)
 p.write_text(html, encoding="utf-8", newline="\n")
 report.append(f"creative/menu.html: {n} slides blanked, {len(keep_c)} kept")
 
