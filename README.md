@@ -15,3 +15,4 @@
 - Talk copy of cover/creative/menu.html is hand-edited: Varoriya page 1 no longer says "ดูในหน้า 4–6" (2026-11-05). Re-running scripts/apply-space-skin.py refetches it and undoes this; re-apply by hand.
 - Talk copy: Varoriya pages 7 and 9 rewritten as one page each (Claude / ChatGPT MCP connect), 2026-11-05.
 - Talk copy: Varoriya page 1 lost its "ตัวอย่างงานจริง" strip; new section 18 "ผลงานจริง 6 คลิป" appended after section 17 (2026-11-05).
+- Talk copy: Varoriya page 16 rewritten as web prompts (Seedream Pro, Seedance 2.5, Grok Pro, OmniHuman lip sync, Seed Audio), no MCP wording (2026-11-05).
