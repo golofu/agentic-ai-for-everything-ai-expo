@@ -58,6 +58,7 @@ remote = {
     "creative/menu.html": ("https://ai-for-creative-work.vercel.app/menu.html", "https://ai-for-creative-work.vercel.app/"),
     "vibe/deck-01.html": ("https://vibe-code-weblink.vercel.app/decks/deck-01.html", "https://vibe-code-weblink.vercel.app/decks/"),
     "vibe/deck-04.html": ("https://vibe-code-weblink.vercel.app/decks/deck-04.html", "https://vibe-code-weblink.vercel.app/decks/"),
+    "vibe/deck-02.html": ("https://vibe-code-weblink.vercel.app/decks/deck-02.html", "https://vibe-code-weblink.vercel.app/decks/"),
     "profile-site/index.html": ("https://handoff-profile-web.vercel.app/", "https://handoff-profile-web.vercel.app/"),
     "profile-site/ai-creative.html": ("https://handoff-profile-web.vercel.app/ai-creative.html", "https://handoff-profile-web.vercel.app/"),
     "profile-site/vibe-coding.html": ("https://handoff-profile-web.vercel.app/vibe-coding.html", "https://handoff-profile-web.vercel.app/"),
