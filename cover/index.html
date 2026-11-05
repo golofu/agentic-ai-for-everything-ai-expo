@@ -339,6 +339,20 @@
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after { animation: none !important; transition: none !important; }
     }
+
+    /* Copyright rules (2026-11-04): button on the cover opens the rules; no gate so the stage flow stays one click */
+    .copyright-link { background: none; border: 1px solid var(--line); color: var(--muted); border-radius: 999px; padding: 8px 14px; font: 600 12px var(--body, "Noto Sans Thai"), sans-serif; cursor: pointer; }
+    .copyright-link:hover, .copyright-link:focus-visible { color: var(--ink); border-color: var(--cyan); outline: none; }
+    .copyright-dialog { width: min(860px, calc(100vw - 32px)); max-height: calc(100svh - 48px); padding: 0; border: 1px solid var(--line); border-radius: 22px; background: rgba(8,13,30,.97); color: var(--ink); box-shadow: 0 30px 80px rgba(0,0,0,.6); }
+    .copyright-dialog::backdrop { background: rgba(2,4,12,.72); backdrop-filter: blur(6px); }
+    .copyright-dialog .cd-body { padding: clamp(22px,3vw,36px); overflow: auto; max-height: calc(100svh - 50px); font-family: "Noto Sans Thai", sans-serif; }
+    .copyright-dialog h2 { margin: 0 0 4px; font-size: clamp(20px,2.2vw,26px); }
+    .copyright-dialog .cd-owner { margin: 0 0 20px; color: var(--cyan); font-weight: 600; font-size: 14px; }
+    .copyright-dialog ol { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 18px 26px; }
+    .copyright-dialog li h3 { margin: 0 0 6px; font-size: 15px; color: var(--violet); }
+    .copyright-dialog li p { margin: 0; font-size: 13.5px; line-height: 1.75; color: #c9d1e6; }
+    .copyright-dialog .cd-close { margin-top: 22px; }
+    @media (max-width: 720px) { .copyright-dialog ol { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
@@ -383,15 +397,58 @@
         <div class="actions">
           <a class="start-button" href="menu.html">เริ่ม</a>
           <span class="speaker">วิทยากร <strong>ปัญจพัฒน์ เกรียงวีระยุทธ</strong> · Gen AI Space</span>
+          <button class="copyright-link" type="button" id="openCopyright">© ลิขสิทธิ์และเงื่อนไขการใช้</button>
         </div>
       </section>
     </main>
 
     <footer class="footer">
-      <p class="credit">Agentic AI for Everything · Gen AI Space · 2026 · Sky: ESO/S. Brunier · Deep field: NASA, ESA, Hubble</p>
+      <p class="credit">© 2026 บริษัท เจน เอไอ สเปซ จำกัด — สงวนลิขสิทธิ์ · Agentic AI for Everything · Sky: ESO/S. Brunier · Deep field: NASA, ESA, Hubble</p>
     </footer>
   </div>
 
+
+  <dialog class="copyright-dialog" id="copyrightDialog" aria-labelledby="copyrightTitle">
+    <div class="cd-body">
+      <h2 id="copyrightTitle">คำเตือนเรื่องลิขสิทธิ์และเงื่อนไขการใช้บทเรียน</h2>
+      <p class="cd-owner">© 2026 บริษัท เจน เอไอ สเปซ จำกัด — สงวนลิขสิทธิ์</p>
+      <ol class="copyright-terms">
+        <li>
+          <h3>1. เจ้าของลิขสิทธิ์</h3>
+          <p>ลิขสิทธิ์ในเนื้อหาและการเรียบเรียงบทเรียน Agentic AI for Everything รวมถึงสไลด์ เอกสารประกอบ ตัวอย่าง และสื่อการสอน เฉพาะส่วนที่บริษัทฯ เป็นเจ้าของลิขสิทธิ์โดยชอบด้วยกฎหมาย เป็นของ <strong>บริษัท เจน เอไอ สเปซ จำกัด แต่เพียงผู้เดียว</strong> การเข้าถึงบทเรียนไม่เป็นการโอนลิขสิทธิ์หรือให้สิทธิใช้เกินกว่าที่ระบุไว้</p>
+        </li>
+        <li>
+          <h3>2. ขอบเขตการใช้สำหรับผู้เรียน</h3>
+          <p>ผู้เรียนที่ได้รับอนุญาตสามารถใช้บทเรียนเพื่อการเรียนรู้และทบทวนของตน และนำความรู้ไปประยุกต์ใช้ในการทำงานได้ การอนุญาตนี้ไม่ครอบคลุมการนำตัวบทเรียนหรือสื่อการสอนไปเผยแพร่ แจกต่อ จำหน่าย หรือใช้จัดการอบรมให้บุคคลอื่น</p>
+        </li>
+        <li>
+          <h3>3. การใช้ที่ต้องขออนุญาต</h3>
+          <p>ห้ามคัดลอก ทำซ้ำ ดัดแปลง แปล บันทึกภาพหรือเสียงเพื่อเผยแพร่ต่อ แจกจ่าย จำหน่าย อัปโหลด หรือเผยแพร่ต่อสาธารณชน รวมถึงนำบทเรียนหรือสื่อการสอนไปใช้จัดอบรม สร้างหลักสูตร หรือใช้แสวงหาประโยชน์ทางการค้า ไม่ว่าทั้งหมดหรือส่วนอันเป็นสาระสำคัญ เว้นแต่ได้รับอนุญาตเป็นลายลักษณ์อักษรล่วงหน้าจากบริษัทฯ หรือเข้าข้อยกเว้นตามกฎหมาย การอ้างชื่อหรือให้เครดิตเพียงอย่างเดียวไม่ใช่การอนุญาต</p>
+        </li>
+        <li>
+          <h3>4. สิทธิของบุคคลภายนอก</h3>
+          <p>ภาพ วิดีโอ เพลง เครื่องหมายการค้า และผลงานของบุคคลภายนอกที่ใช้เป็นตัวอย่างหรืออ้างอิง ยังคงเป็นสิทธิของเจ้าของเดิมตามกฎหมายและเงื่อนไขที่เกี่ยวข้อง บริษัทฯ ไม่อ้างลิขสิทธิ์ในผลงานเหล่านั้น การปรากฏในบทเรียนไม่เป็นการอนุญาตให้ผู้เรียนนำไปใช้ต่อโดยอัตโนมัติ</p>
+        </li>
+        <li>
+          <h3>5. การสงวนสิทธิและการดำเนินการตามกฎหมาย</h3>
+          <p>หากมีการละเมิด บริษัทฯ สงวนสิทธิเรียกร้องให้ยุติการกระทำ เรียกค่าสินไหมทดแทน และดำเนินคดีตามกฎหมายตามสิทธิและข้อเท็จจริงของแต่ละกรณี ผู้ประสงค์ใช้บทเรียนเกินขอบเขตที่อนุญาตต้องติดต่อบริษัทฯ เพื่อขออนุญาตเป็นลายลักษณ์อักษรก่อน</p>
+        </li>
+        <li>
+          <h3>6. ข้อยกเว้นตามกฎหมายและข้อตกลงเฉพาะ</h3>
+          <p>ประกาศนี้ไม่ตัดสิทธิหรือข้อยกเว้นที่กฎหมายรับรอง รวมถึงข้อยกเว้นตามพระราชบัญญัติลิขสิทธิ์ พ.ศ. 2537 และที่แก้ไขเพิ่มเติม และไม่เปลี่ยนแปลงสิทธิที่คู่สัญญาตกลงกันไว้โดยชอบเป็นลายลักษณ์อักษร</p>
+        </li>
+      </ol>
+      <button class="start-button cd-close" type="button" id="closeCopyright">รับทราบ</button>
+    </div>
+  </dialog>
+  <script>
+    (() => {
+      const d = document.getElementById("copyrightDialog");
+      document.getElementById("openCopyright").addEventListener("click", () => d.showModal());
+      document.getElementById("closeCopyright").addEventListener("click", () => d.close());
+      d.addEventListener("click", e => { if (e.target === d) d.close(); });
+    })();
+  </script>
   <script src="assets/three.min.js"></script>
   <script>
     (() => {
