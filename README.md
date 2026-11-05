@@ -17,3 +17,4 @@
 - Talk copy: Varoriya page 1 lost its "ตัวอย่างงานจริง" strip; new section 18 "ผลงานจริง 6 คลิป" appended after section 17 (2026-11-05).
 - Talk copy: Varoriya page 16 rewritten as web prompts (Seedream Pro, Seedance 2.5, Grok Pro, OmniHuman lip sync, Seed Audio), no MCP wording (2026-11-05).
 - IMPORTANT (2026-11-05): run `python scripts/strip-unused.py` after apply-space-skin.py or any menu page-list change. It blanks every embedded slide the talk does not show (no full course hand-out) and adds a guard so copies only open inside the viewer.
+- Talk Vibe Code Way: 6-skill zip at cover/assets/skills/vibe-code-way-6-skills.zip (scrutinize + debug-mantra removed); deck-04 text fixes live in TALK_TEXT_FIXES in apply-space-skin.py; git prompt page = deck-02 #8 (2026-11-05).

@@ -22,6 +22,9 @@ def skin(html, base=None):
     return html[:head.end()] + insert + html[head.end():]
 
 
+TALK_TEXT_FIXES = [('href="../assets/skills/vibe-code-skills.zip?v=2" download="vibe-code-skills.zip"', 'href="https://agentic-ai-for-everything.vercel.app/assets/skills/vibe-code-way-6-skills.zip" download="vibe-code-way-6-skills.zip"'), ('ดาวน์โหลดรวม 8 skill (ไฟล์เดียว .zip)', 'ดาวน์โหลดรวม 6 skill (ไฟล์เดียว .zip)'), ('ได้โฟลเดอร์ 8 โฟลเดอร์ + README.md', 'ได้โฟลเดอร์ 6 โฟลเดอร์ + README.md'), ('ลากทั้ง 8 โฟลเดอร์ไปวางทีเดียว', 'ลากทั้ง 6 โฟลเดอร์ไปวางทีเดียว'), ('(โหลดรวม 8 ตัว)', '(โหลดรวม 6 ตัว)'), (' ที่ Prompt บท 02 สร้างไว้ให้แล้ว', ' ที่สร้างไว้แล้ว'), ('วิธีสั่ง (prompt จริงจากบท 07)', 'วิธีสั่ง'), ('<div class="abs kick r" style="right:6cqw;top:5cqw">คอร์ส 1 วัน</div>', ''), ('<div class="kick">บท 04 · ความหมายในหน้าเดียว ·', '<div class="kick">ความหมายในหน้าเดียว ·'), ('<div class="kick">บท 04 · ติดตั้งครั้งเดียว</div>', '<div class="kick">ติดตั้งครั้งเดียว</div>'), ('VIBE CODE · บท 04 Vibe Code Way', 'VIBE CODE · Vibe Code Way'), ('<div class="kick">บท 04</div><h2', '<div class="kick">Vibe Code</div><h2'), ('มีจุดเซฟ ย้อนกลับได้ (บท 02)', 'มีจุดเซฟ ย้อนกลับได้'), ('ทำครั้งเดียวต่อเครื่อง (บท 02)', 'ทำครั้งเดียวต่อเครื่อง'), ('ได้ DESIGN.md (บท 07)', 'ได้ DESIGN.md'), ('ครั้งเดียวต่อเครื่อง ก่อนเริ่มงานแรก (ทำไปแล้วในบท 02 สไลด์ 8)', 'ครั้งเดียวต่อเครื่อง ก่อนเริ่มงานแรก'), ('"เริ่มเก็บจุดเซฟ" จากบท 02 สไลด์ 8', '"เริ่มเก็บจุดเซฟ" จากหน้าถัดไป'), (' · เรียนละเอียด + 5 ตัวอย่างเว็บ/เกมในบท 05', ''), (' วิธีละเอียด เครื่องมือ 3 ตัว และหลัก 8 ข้อ อยู่ในบท 07', ''), ('(ใน workspace บท 03 คือ BRIEF.md + SPEC.md)', '(ใน workspace คือ BRIEF.md + SPEC.md)'), ('create เซฟทุกส่วนที่ใช้ได้, push github ส่งจุดเซฟขึ้นคลาวด์', 'create เซฟทุกส่วนที่ใช้ได้'), ('ยังไม่ใช่งานเสร็จ ต้องไปขั้น test ทุกครั้ง แล้ววนกลับมา create ก้อนถัดไป', 'ยังไม่ใช่งานเสร็จ ลองใช้ก้อนนี้ให้ผ่านก่อน แล้วสั่ง create ก้อนถัดไป')]
+
+
 def trim_talk_deck(html):
     """Reapply the nine-step talk edit after fetching; safe to run twice."""
     html = html.replace("14 ขั้น", "9 ขั้น").replace(" / 14", " / 9")
@@ -34,6 +37,8 @@ def trim_talk_deck(html):
     html = re.sub(r'^.*<div class="vn end"[^\n]*\n', '', html, flags=re.M)
     html = re.sub(r'^.*<div class="row"><code>(?:scrutinize|debug-mantra)</code>[^\n]*\n', '', html, flags=re.M)
     html = html.replace('01 / 16', '01 / 12')
+    for a, b in TALK_TEXT_FIXES:
+        html = html.replace(a, b)
     # Preserve step 9 copy, hiding only the out-of-scope next-step indicator.
     marker = '<style id="talk-nine-steps">.slide:nth-of-type(12) .nx{display:none}</style>'
     if marker not in html:
