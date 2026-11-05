@@ -351,7 +351,9 @@
     .copyright-dialog ol { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 18px 26px; }
     .copyright-dialog li h3 { margin: 0 0 6px; font-size: 15px; color: var(--violet); }
     .copyright-dialog li p { margin: 0; font-size: 13.5px; line-height: 1.75; color: #c9d1e6; }
-    .copyright-dialog .cd-close { margin-top: 22px; }
+    .copyright-dialog .cd-ack { margin: 22px 0 0; font-size: 14px; line-height: 1.75; }
+    .copyright-dialog .cd-actions { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-top: 16px; }
+    .copyright-dialog .cd-small { margin: 14px 0 0; color: #8892ad; font-size: 12px; line-height: 1.7; }
     @media (max-width: 720px) { .copyright-dialog ol { grid-template-columns: 1fr; } }
   </style>
 </head>
@@ -395,7 +397,7 @@
         </ol>
 
         <div class="actions">
-          <a class="start-button" href="menu.html">เริ่ม</a>
+          <a class="start-button" href="menu.html" id="courseStart">เริ่ม</a>
           <span class="speaker">วิทยากร <strong>ปัญจพัฒน์ เกรียงวีระยุทธ</strong> · Gen AI Space</span>
           <button class="copyright-link" type="button" id="openCopyright">© ลิขสิทธิ์และเงื่อนไขการใช้</button>
         </div>
@@ -438,15 +440,30 @@
           <p>ประกาศนี้ไม่ตัดสิทธิหรือข้อยกเว้นที่กฎหมายรับรอง รวมถึงข้อยกเว้นตามพระราชบัญญัติลิขสิทธิ์ พ.ศ. 2537 และที่แก้ไขเพิ่มเติม และไม่เปลี่ยนแปลงสิทธิที่คู่สัญญาตกลงกันไว้โดยชอบเป็นลายลักษณ์อักษร</p>
         </li>
       </ol>
-      <button class="start-button cd-close" type="button" id="closeCopyright">รับทราบ</button>
+      <p class="cd-ack">เมื่อกด “ตกลงและเข้าเรียน” ข้าพเจ้ารับทราบประกาศเรื่องลิขสิทธิ์และตกลงใช้บทเรียนภายในขอบเขตที่ได้รับอนุญาต โดยไม่กระทบสิทธิหรือข้อยกเว้นตามกฎหมาย</p>
+      <div class="cd-actions">
+        <button class="start-button" type="button" id="acceptCopyright">ตกลงและเข้าเรียน</button>
+        <button class="copyright-link" type="button" id="closeCopyright">ปิด</button>
+      </div>
+      <p class="cd-small">เว็บไซต์จดจำการรับทราบในเบราว์เซอร์นี้ เมื่อเปลี่ยนเบราว์เซอร์ เปลี่ยนอุปกรณ์ หรือล้างข้อมูลเว็บไซต์ จะต้องรับทราบใหม่</p>
     </div>
   </dialog>
   <script>
     (() => {
+      // Copyright gate: first visit must accept before entering the menu (same key is checked in menu.html)
+      const KEY = "aafe-copyright-accepted-v1";
+      const accepted = () => { try { return localStorage.getItem(KEY) === "yes"; } catch (e) { return false; } };
       const d = document.getElementById("copyrightDialog");
-      document.getElementById("openCopyright").addEventListener("click", () => d.showModal());
+      const open = () => { if (!d.open) d.showModal(); };
+      document.getElementById("openCopyright").addEventListener("click", open);
       document.getElementById("closeCopyright").addEventListener("click", () => d.close());
       d.addEventListener("click", e => { if (e.target === d) d.close(); });
+      document.getElementById("courseStart").addEventListener("click", e => { if (!accepted()) { e.preventDefault(); open(); } });
+      document.getElementById("acceptCopyright").addEventListener("click", () => {
+        try { localStorage.setItem(KEY, "yes"); } catch (e) {}
+        location.href = "menu.html";
+      });
+      if (location.hash === "#copyright") open();
     })();
   </script>
   <script src="assets/three.min.js"></script>

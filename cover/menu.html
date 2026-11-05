@@ -5,6 +5,15 @@
   <link rel="icon" href="assets/gen-ai-space-logo.png">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>สารบัญ — Agentic AI for Everything</title>
+  <script>
+    // Copyright gate (2026-11-05): first visit goes to the cover to accept the rules. Embedded/automated loads are not gated.
+    (() => {
+      try {
+        if (navigator.webdriver || window.self !== window.top) return;
+        if (localStorage.getItem("aafe-copyright-accepted-v1") !== "yes") location.replace("index.html#copyright");
+      } catch (e) {}
+    })();
+  </script>
   <meta name="description" content="Agentic AI for Everything · AI Expo Thailand 2026 · Gen AI Space">
   <meta name="theme-color" content="#fbfcff">
   <style>html.course-awaiting-consent { visibility: hidden; }    .lesson-card.project { background: linear-gradient(145deg,#eeeaff,#e7f8f0); }
