@@ -13,3 +13,4 @@
 - How-to clips (Setup menu + AI Work Playbook): REAL screen recordings of Claude Desktop on the trainer's PC, cut only (speed-up, captions, privacy blur). Pipeline in scripts/howto/: make_jobs.py (prompts verbatim from the pages + fresh workspace per job) -> record-job.ps1 (drives Claude Desktop, records with ffmpeg gdigrab) -> make_spec.py + edit.py (cut to cover/assets/videos/howto-<id>.mp4). record-open.ps1 + fix_open.py redo only the 'open the output file' ending. Inputs for the Setup cards: cover/assets/playbook-samples/setup-*.
 
 - Talk copy of cover/creative/menu.html is hand-edited: Varoriya page 1 no longer says "ดูในหน้า 4–6" (2026-11-05). Re-running scripts/apply-space-skin.py refetches it and undoes this; re-apply by hand.
+- Talk copy: Varoriya pages 7 and 9 rewritten as one page each (Claude / ChatGPT MCP connect), 2026-11-05.
