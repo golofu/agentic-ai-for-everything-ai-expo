@@ -41,7 +41,10 @@ def blank_sections(html, pattern, keep):
             # keep the slide's <header> (titles feed the page's own nav) and an empty .stage so page scripts keep working
             hdr = re.search(r"<header>.*?</header>", mt.group(0), flags=re.S)
             shell = (hdr.group(0) if hdr else "") + ('<div class="stage"></div>' if 'class="stage' in mt.group(0) else "")
-            out.append(mt.group("open") + shell + keep_assets(mt.group(0)) + mt.group("close"))
+            # keep an empty hidden stub for every id in the slide: page scripts call getElementById(...) on them
+            # at load, and a missing element throws and stops the whole deck from showing (2026-11-06)
+            ids = "".join(f'<div id="{i}" hidden></div>' for i in re.findall(r'id="([^"]+)"', mt.group(0)))
+            out.append(mt.group("open") + shell + ids + keep_assets(mt.group(0)) + mt.group("close"))
             blanked += 1
         last = mt.end()
     out.append(html[last:])
