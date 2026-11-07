@@ -1989,6 +1989,7 @@
     }
     /* Long prompt pages: bigger text */
     .advance-prompt-text { font-size: clamp(15px, 1.35vw, 20px); line-height: 1.65; }  </style>
+<script>window.va=window.va||function(){(window.vaq=window.vaq||[]).push([].slice.call(arguments))};</script>
 <script defer src="/_vercel/insights/script.js"></script>
 </head>
 <body>
@@ -3735,6 +3736,8 @@
       showSlide(0);
       document.getElementById("closeViewer").focus({preventScroll: true});
       if (updateHash) history.pushState({lesson:key}, "", `#${key}`);
+      // 2026-11-07: count each menu opened in Vercel Web Analytics (Boss sees /menu/<key> rows)
+      try { window.va("pageview", { route: `/menu/${key}`, path: `/menu/${key}` }); } catch {}
     }
 
     function closeLesson(updateHash = true) {
